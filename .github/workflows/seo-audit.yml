@@ -25,19 +25,20 @@ jobs:
       - name: Install browser test requirements
         run: |
           npm install --no-save playwright@1.56.1
-          npx playwright install --with-deps chromium
+          google-chrome --version || chromium --version || true
+          if ! command -v google-chrome >/dev/null 2>&1; then npx playwright install chromium; fi
       - name: Start static site server
         run: |
           python3 -m http.server 8080 --bind 127.0.0.1 > /tmp/seo-site.log 2>&1 &
           for i in $(seq 1 30); do curl -sf http://127.0.0.1:8080/ -o /dev/null && break; sleep 1; done
       - name: Functional and responsive smoke tests
-        run: node tests/seo-smoke.mjs
+        run: USE_SYSTEM_CHROME=1 node tests/seo-smoke.mjs
       - name: Lighthouse lab audit (mobile)
         if: always()
         continue-on-error: true
         run: |
           mkdir -p artifacts
-          export CHROME_PATH="$(node --input-type=module -e "import { chromium } from 'playwright'; console.log(chromium.executablePath())")"
+          export CHROME_PATH="$(command -v google-chrome || node --input-type=module -e "import { chromium } from 'playwright'; console.log(chromium.executablePath())")"
           npx --yes lighthouse@12.8.2 http://127.0.0.1:8080/ --quiet --chrome-flags="--headless --no-sandbox --disable-dev-shm-usage" --output=json --output-path=artifacts/lighthouse-mobile.json --only-categories=performance,seo,accessibility
           node --input-type=module -e "import fs from 'node:fs'; const d=JSON.parse(fs.readFileSync('artifacts/lighthouse-mobile.json')); console.log(JSON.stringify({scores:Object.fromEntries(Object.entries(d.categories).map(([k,v])=>[k,v.score])),metrics:Object.fromEntries(['first-contentful-paint','largest-contentful-paint','speed-index','total-blocking-time','cumulative-layout-shift'].map(k=>[k,d.audits[k]?.displayValue])),diagnostics:d.audits['render-blocking-resources']?.details?.items?.length},null,2));"
       - name: Upload browser screenshots and reports
