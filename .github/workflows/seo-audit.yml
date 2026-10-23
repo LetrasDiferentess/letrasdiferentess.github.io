@@ -32,7 +32,8 @@ jobs:
           python3 -m http.server 8080 --bind 127.0.0.1 > /tmp/seo-site.log 2>&1 &
           for i in $(seq 1 30); do curl -sf http://127.0.0.1:8080/ -o /dev/null && break; sleep 1; done
       - name: Functional and responsive smoke tests
-        run: USE_SYSTEM_CHROME=1 node tests/seo-smoke.mjs
+        run: |
+          if command -v google-chrome >/dev/null 2>&1; then USE_SYSTEM_CHROME=1 node tests/seo-smoke.mjs; else node tests/seo-smoke.mjs; fi
       - name: Lighthouse lab audit (mobile)
         if: always()
         continue-on-error: true
