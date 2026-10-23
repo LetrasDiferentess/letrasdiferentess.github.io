@@ -1,22 +1,31 @@
-# Letras Diferentes — Brasil (pt-BR)
+# Letras Diferentes — Ferramenta grátis em português do Brasil
 
-Ferramenta gratuita de letras diferentes, fontes bonitas e símbolos Unicode para copiar e colar. Inclui estilos de letra de mão, personalização de bios do Instagram e nomes para jogos.
+**Website oficial do projeto:** https://letrasdiferentess.github.io/  
+**Idioma principal:** Português do Brasil (`pt-BR`)
 
-**Site:** https://letrasdiferentess.github.io/  
-**Idioma:** Português do Brasil (`pt-BR`)
+Gerador gratuito de letras diferentes, fontes de letras bonitas e símbolos Unicode para copiar e colar. Inclui editor de letra de mão, bio do Instagram e nomes para jogos.
 
-## Arquivos do site
+## Páginas
 
-- `index.html`: aplicativo web e conteúdo em português do Brasil.
-- `favicon.svg`: ícone do site.
-- `robots.txt`: orientações de rastreamento e localização do sitemap.
-- `sitemap.xml`: URL canônica da página inicial.
-- `.nojekyll`: desativa o processamento Jekyll.
+- [Gerador principal](https://letrasdiferentess.github.io/)
+- [Sobre o projeto](https://letrasdiferentess.github.io/sobre/)
+- [Política de Privacidade](https://letrasdiferentess.github.io/privacidade/)
 
-## Publicação no GitHub Pages
+## Infraestrutura e publicação
 
-Em **Settings → Pages → Build and deployment**, escolha **Deploy from a branch**, selecione `main` e `/(root)` e salve. Verifique a publicação e o acesso aos arquivos estáticos.
+GitHub Pages publica a partir de `main`. O workflow `.github/workflows/pages.yml` realiza a implantação automática. Consulte a aba **Actions** para verificar a conclusão, sem confundir sucesso do deploy com indexação no Google.
+
+Os arquivos `robots.txt` e `sitemap.xml` sinalizam as URLs canônicas. A configuração de Search Console e a confirmação de indexação dependem do proprietário.
 
 ## SEO
 
-O site inclui idioma `pt-BR`, título e descrição, H1, textos explicativos e FAQ, canonical, Open Graph e dados estruturados. A indexação não é garantida: ela depende do rastreamento e dos sistemas de busca.
+- Um destino principal para a intenção **letras diferentes para copiar e colar**.
+- SEO semântico, conteúdo português do Brasil e marcações WebSite/WebPage/WebApplication.
+- Conteúdo descritivo visível no HTML e navegação por seções.
+- Plano de palavras-chave, verificações técnicas e próximos passos em [SEO-PTBR.md](SEO-PTBR.md).
+
+## Limitações
+
+Os caracteres Unicode não são fontes instaláveis e nem sempre são aceitos por todos os serviços. Alguns dispositivos podem não mostrar certas variações. Teste o resultado na plataforma final.
+
+Projeto independente; não afiliado às plataformas mencionadas como exemplos de uso.
