@@ -9,7 +9,7 @@ const cases=[
 ];
 const failures=[];
 const observations=[];
-const browser=await chromium.launch({headless:true,args:['--no-sandbox','--disable-dev-shm-usage']});
+const browser=await chromium.launch({headless:true,...(process.env.USE_SYSTEM_CHROME==='1'?{channel:'chrome'}:{}),args:['--no-sandbox','--disable-dev-shm-usage']});
 for(const device of cases){
  const context=await browser.newContext({viewport:device.viewport,deviceScaleFactor:device.deviceScaleFactor,isMobile:device.isMobile,hasTouch:device.hasTouch,locale:'pt-BR'});
  const page=await context.newPage();
