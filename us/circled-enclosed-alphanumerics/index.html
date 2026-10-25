@@ -1,0 +1,105 @@
+<!doctype html><html lang="en-US"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Circled and Enclosed Unicode Alphanumerics: Mapping, Normalization and Compatibility | Letras Diferentes Research Library</title><meta name="description" content="A comprehensive reference to circled digits and Latin letters, parenthesized forms, negative and double circles, CJK enclosed symbols, NFKC folding and font fallback."><meta name="robots" content="index,follow"><link rel="canonical" href="https://letrasdiferentess.github.io/us/circled-enclosed-alphanumerics/"><meta property="og:type" content="article"><meta property="og:title" content="Circled and Enclosed Unicode Alphanumerics: Mapping, Normalization and Compatibility"><meta property="og:description" content="A comprehensive reference to circled digits and Latin letters, parenthesized forms, negative and double circles, CJK enclosed symbols, NFKC folding and font fallback."><meta property="og:url" content="https://letrasdiferentess.github.io/us/circled-enclosed-alphanumerics/"><link rel="stylesheet" href="/us/library/article.css"><script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","@id":"https://letrasdiferentess.github.io/us/circled-enclosed-alphanumerics/#article","headline":"Circled and Enclosed Unicode Alphanumerics: Mapping, Normalization and Compatibility","description":"A comprehensive reference to circled digits and Latin letters, parenthesized forms, negative and double circles, CJK enclosed symbols, NFKC folding and font fallback.","inLanguage":"en-US","datePublished":"2026-10-25","dateModified":"2026-10-25","author":{"@type":"Organization","name":"Letras Diferentes"},"publisher":{"@type":"Organization","name":"Letras Diferentes","url":"https://letrasdiferentess.github.io/"},"mainEntityOfPage":"https://letrasdiferentess.github.io/us/circled-enclosed-alphanumerics/","isPartOf":{"@type":"WebPage","@id":"https://letrasdiferentess.github.io/us/library/"}}</script></head><body><a class="skip" href="#main">Skip to article</a><header class="sitehead"><div class="shell"><a class="brand" href="/us/">Letras <span>Diferentes</span></a><nav aria-label="Site"><a href="/us/">Fancy Text Tool</a><a href="/us/library/">Research Library</a></nav></div></header><div class="shell"><nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/us/">Home</a><span aria-hidden="true">/</span><a href="/us/library/">Research Library</a><span aria-hidden="true">/</span>Styled Text &amp; Special Characters</nav><div class="headercopy"><span class="eyebrow">Unicode research · Enclosed symbols</span><h1>Circled and Enclosed Unicode Alphanumerics: Mapping, Normalization and Compatibility</h1><p class="dek">A comprehensive reference to circled digits and Latin letters, parenthesized forms, negative and double circles, CJK enclosed symbols, NFKC folding and font fallback.</p><div class="meta"><span>Technical reference</span><span>Unicode baseline: 18.0.0</span><time datetime="2026-10-25">Updated 25 October 2026</time></div></div><div class="layout"><main id="main" class="article"><article>
+<h2 id="purpose">Enclosed symbols are characters, not CSS borders</h2>
+<p>Unicode includes many characters that visually enclose a letter, number or abbreviation in a circle, parenthesis, square or other frame. <code>①</code> is the single encoded character <code>U+2460 CIRCLED DIGIT ONE</code>, not the character <code>1</code> with an HTML border attached. Likewise, <code>Ⓐ</code> is <code>U+24B6 CIRCLED LATIN CAPITAL LETTER A</code>. The enclosure is part of the code point's character identity, though the glyph design itself still depends on a font.</p>
+<p>Many enclosed forms entered Unicode for compatibility with historical East Asian character encodings and common typesetting conventions such as numbered bullets, circled list references and broadcast labels. Their appearance can be useful for copyable plain-text lists, but these symbols are not a universal way to encircle arbitrary text. A generic string like <code>"203"</code> does not necessarily have a single corresponding encoded circled symbol in the same repertoire.</p>
+<p>The Unicode Standard distinguishes simple circled forms with explicit <em>compatibility decompositions</em> from more elaborate negative, double-circled and other forms treated as atomic symbols. As a result, normalizing one enclosed symbol can yield ordinary letters or digits while an almost-identical-looking enclosed symbol remains unchanged.</p>
+<div class="note"><strong>Do not infer identity by appearance:</strong> circled <code>①</code>, negative circled <code>❶</code> and double circled <code>⓵</code> are distinct characters with different code points and normalization properties.</div>
+
+<h2 id="families">Unicode blocks and enclosed-number families</h2>
+<p>The primary <strong>Enclosed Alphanumerics</strong> block spans <code>U+2460..U+24FF</code>. It includes circled digits and numbers, parenthesized numbers and letters, digits with full stops, circled Latin capital and lowercase letters, and selected negative/double-circled forms. Other related characters appear in the <em>Dingbats</em> block, <em>Enclosed Alphanumeric Supplement</em> (<code>U+1F100..U+1F1FF</code>), and <em>Enclosed CJK Letters and Months</em> (<code>U+3200..U+32FF</code>).</p>
+<p>Those blocks were designed around historical repertoires and application needs. They do not provide all possible combinations of a character with a frame; the numeric coverage is uneven. For example, <code>①..⑳</code> represent circled numbers 1–20, while a continuation of higher circled values, including ㉑, appears in the Enclosed CJK Letters and Months block. A developer should not assume that incrementing a code point indefinitely encodes the next number.</p>
+<p>In particular, a circled numeral may have a defined compatibility decomposition representing multiple digits. <code>⑩</code> is a single code point but its NFKC decomposition is the two-character string <code>"10"</code>. This changes not just shape but also string length and potentially search behavior.</p>
+
+<h2 id="tables">Verified ranges, names and examples</h2>
+<div class="table-scroll"><table><thead><tr><th>Form</th><th>Code point / range</th><th>Role and NFKC outcome</th></tr></thead><tbody>
+<tr><td><code>①</code></td><td><code>U+2460</code></td><td>CIRCLED DIGIT ONE → <code>1</code></td></tr>
+<tr><td><code>⑩</code></td><td><code>U+2469</code></td><td>CIRCLED NUMBER TEN → <code>10</code></td></tr>
+<tr><td><code>⑳</code></td><td><code>U+2473</code></td><td>CIRCLED NUMBER TWENTY → <code>20</code></td></tr>
+<tr><td><code>⓪</code></td><td><code>U+24EA</code></td><td>CIRCLED DIGIT ZERO → <code>0</code></td></tr>
+<tr><td><code>Ⓐ</code></td><td><code>U+24B6</code></td><td>CIRCLED LATIN CAPITAL LETTER A → <code>A</code></td></tr>
+<tr><td><code>ⓐ</code></td><td><code>U+24D0</code></td><td>CIRCLED LATIN SMALL LETTER A → <code>a</code></td></tr>
+<tr><td><code>⑴</code></td><td><code>U+2474</code></td><td>PARENTHESIZED DIGIT ONE → <code>(1)</code></td></tr>
+<tr><td><code>⒈</code></td><td><code>U+2488</code></td><td>DIGIT ONE FULL STOP → <code>1.</code></td></tr>
+<tr><td><code>㉑</code></td><td><code>U+3251</code></td><td>CIRCLED NUMBER TWENTY ONE → <code>21</code></td></tr>
+<tr><td><code>⓫</code></td><td><code>U+24EB</code></td><td>NEGATIVE CIRCLED NUMBER ELEVEN; atomic under NFKC</td></tr>
+<tr><td><code>⓵</code></td><td><code>U+24F5</code></td><td>DOUBLE CIRCLED DIGIT ONE; atomic under NFKC</td></tr>
+<tr><td><code>🅐</code></td><td><code>U+1F150</code></td><td>NEGATIVE CIRCLED LATIN CAPITAL LETTER A; atomic under NFKC</td></tr>
+</tbody></table></div>
+<p>The table shows that apparent enclosure similarity does not predict a decomposition. Unicode Chapter 22 explains that a single digit or letter in a simple circle frequently has a compatibility mapping tagged <code>&lt;circle&gt;</code>, whereas several elaborated negative or double-circled symbols are deliberately atomic. <code>U+24EA</code> is the precomposed circled zero, not a private-use glyph. <code>U+20DD COMBINING ENCLOSING CIRCLE</code> is a different mechanism entirely.</p>
+<h3>Combining enclosing marks are not precomposed circled symbols</h3>
+<p>You can store <code>U+0041 U+20DD</code> (A followed by COMBINING ENCLOSING CIRCLE), but Unicode does not declare this sequence canonically equivalent to <code>U+24B6 Ⓐ</code>. Full mark-to-base placement is also not universally supported, and no general standardized mechanism says that one enclosing mark should wrap an arbitrarily long preceding string. Avoid claiming a single combining mark can encode circled words of unlimited length.</p>
+
+<h2 id="equivalence">Compatibility decompositions versus atomic signs</h2>
+<p>Canonical normalization (NFC/NFD) generally preserves circled alphanumeric code points. Compatibility normalization (NFKC/NFKD) expands forms that carry a compatibility mapping into their underlying letters, digits or punctuation. The expansion can increase length, remove the enclosure and make the text compare equal to an ordinary string.</p>
+<pre><code>console.log("\u2460".normalize("NFKC")); // "1"
+console.log("\u2469".normalize("NFKC")); // "10"
+console.log("\u2474".normalize("NFKC")); // "(1)"
+console.log("\u24B6".normalize("NFKC")); // "A"
+console.log("\u3251".normalize("NFKC")); // "21"
+
+// Not every circled-looking symbol has a decomposition.
+console.log("\u24F5".normalize("NFKC") === "\u24F5");
+// true: double-circled one remains atomic
+console.log("\u{1F150}".normalize("NFKC") === "\u{1F150}");
+// true: negative circled capital A</code></pre>
+<p>This distinction is important for archival text, transcription, search and comparison. Two visually related enclosed symbols can normalize differently. A site that promises “remove all circles with NFKC” will be wrong for atomic negative/double-circled forms. Conversely, a site that needs to preserve an ordered list's exact glyph should avoid overwriting the original text with NFKC output.</p>
+<p>Compatibility equivalence is deliberately weaker than canonical equivalence. A circled number can have a separate textual purpose even if it decomposes to ordinary digits; an interface should not assume NFKC always preserves the user's intended meaning or list structure.</p>
+
+<h2 id="algorithms">Creating safe circled-letter and number mappings</h2>
+<p>Some subsets are regular enough for a careful arithmetic converter. Circled Latin uppercase A–Z occupy <code>U+24B6..U+24CF</code> and lowercase a–z occupy <code>U+24D0..U+24E9</code>. Circled numbers one through twenty run from <code>U+2460</code> to <code>U+2473</code>, with zero handled separately by <code>U+24EA</code>. Those ranges should be used only within their exact documented bounds.</p>
+<pre><code>function circledLatin(text) {
+  return [...text].map(ch =&gt; {
+    const cp = ch.codePointAt(0);
+    if (cp &gt;= 0x41 &amp;&amp; cp &lt;= 0x5A)
+      return String.fromCodePoint(0x24B6 + cp - 0x41);
+    if (cp &gt;= 0x61 &amp;&amp; cp &lt;= 0x7A)
+      return String.fromCodePoint(0x24D0 + cp - 0x61);
+    return ch;
+  }).join("");
+}
+function circledNumber(n) {
+  if (!Number.isInteger(n) || n &lt; 0 || n &gt; 20)
+    return null;
+  return String.fromCodePoint(
+    n === 0 ? 0x24EA : 0x2460 + n - 1
+  );
+}
+console.log(circledLatin("Abz")); // Ⓐⓑⓩ
+console.log(circledNumber(10));    // ⑩
+console.log(circledNumber(21));    // null: different block</code></pre>
+<p>Note that a converter for circled numbers 21–50 needs a separate verified range in Enclosed CJK Letters and Months; values beyond the supported repertoire may require drawing HTML/CSS, a font feature, or plain text—not a guessed Unicode scalar. The circled-Latin mapping also leaves non-Latin letters, accented letters and digits unchanged by design.</p>
+<p>A <a href="/us/">Fancy Text generator</a> can expose circled alphabet variants for copying, but it should not silently substitute an unrelated character when a requested circle form does not exist. For a product needing circles around arbitrary words, use real presentation markup instead of misrepresenting Unicode coverage.</p>
+
+<h2 id="fonts">Rendering, list semantics and accessibility</h2>
+<p>The same circled character can render with different ring size, stroke, baseline and font fallback. In a proportional layout, it does not guarantee a monospaced cell. East Asian legacy forms may have default fullwidth behavior, but actual glyph advance depends on font and shaping. Terminal and spreadsheet implementations can disagree about how many columns a symbol occupies.</p>
+<p>When a document contains a genuine ordered list, semantic HTML such as <code>&lt;ol&gt;</code> with CSS counters is usually better than manually typing circled numeral characters into every item. It preserves list structure for assistive technology, supports arbitrary item counts and avoids exhausting the available Unicode circled-number repertoire. Circled code points are appropriate when a specific reference sign needs to survive as literal plain text.</p>
+<p>Screen readers may announce the Unicode name of a circled or negative symbol, say its digit/letter, or produce less consistent speech. For important instructions, a nearby ordinary-language label is safer than relying on a decorative circle to be understood.</p>
+
+<h2 id="security">Searching, copying, validation and confusables</h2>
+<p>Exact equality distinguishes <code>"1"</code> from <code>"①"</code> unless an application explicitly applies compatibility normalization. As with mathematical letters, NFKC may make some circled symbols compare equal to plain text, but cannot be assumed to do so for every enclosed variant. A security-sensitive username policy should define whether such variants are accepted, normalized or flagged.</p>
+<p>When text is copied through messaging apps, some platforms keep the literal symbols while others filter unsupported characters or display missing-glyph boxes. Always compare returned code points rather than relying only on appearance. Validate UTF-8 byte budgets separately from a visual item count: one circled character can use multiple bytes where an ASCII digit uses one.</p>
+<p>Do not use the presence of an enclosing symbol as proof of a semantic status, such as verified identity, official certification or product rating. Unicode encodes the shape as text data; any meaning beyond that comes from the author and application context.</p>
+
+<h2 id="tests">Test vectors and interoperability diagnostics</h2>
+<div class="table-scroll"><table><thead><tr><th>Check</th><th>Expected</th></tr></thead><tbody>
+<tr><td><code>U+2460</code></td><td>①; NFKC → <code>1</code></td></tr>
+<tr><td><code>U+2469</code></td><td>⑩; NFKC → <code>10</code></td></tr>
+<tr><td><code>U+24B6</code></td><td>Ⓐ; NFKC → <code>A</code></td></tr>
+<tr><td><code>U+24D0</code></td><td>ⓐ; NFKC → <code>a</code></td></tr>
+<tr><td><code>U+2474</code></td><td>⑴; NFKC → <code>(1)</code></td></tr>
+<tr><td><code>U+24F5</code></td><td>⓵ remains atomic under NFKC</td></tr>
+<tr><td><code>U+1F150</code></td><td>🅐 remains atomic under NFKC</td></tr>
+<tr><td><code>U+3251</code></td><td>㉑; NFKC → <code>21</code></td></tr>
+<tr><td><code>U+0041 U+20DD</code></td><td>Not canonically equivalent to <code>U+24B6</code></td></tr>
+</tbody></table></div>
+<p>Conformance testing should use the official code charts and the corresponding Unicode normalization data for the runtime's UCD version. Include unsupported inputs and negative/double-circled cases to catch accidental assumptions. Inspect the generated character's name with a UCD lookup rather than accepting a screenshot as the only evidence of correctness.</p>
+
+<h2 id="sources">Official Unicode code charts and standards</h2>
+<ol class="references">
+<li><a href="https://www.unicode.org/versions/Unicode18.0.0/core-spec/chapter-22/" rel="nofollow">Unicode Standard Chapter 22 — Enclosed and Square Symbols</a>, simple versus atomic enclosures.</li>
+<li><a href="https://www.unicode.org/charts/PDF/U2460.pdf" rel="nofollow">Unicode Code Chart — Enclosed Alphanumerics</a>, named characters and ranges.</li>
+<li><a href="https://www.unicode.org/charts/PDF/U1F100.pdf" rel="nofollow">Unicode Code Chart — Enclosed Alphanumeric Supplement</a>.</li>
+<li><a href="https://www.unicode.org/charts/PDF/U3200.pdf" rel="nofollow">Unicode Code Chart — Enclosed CJK Letters and Months</a>.</li>
+<li><a href="https://www.unicode.org/reports/tr15/" rel="nofollow">UAX #15 — Unicode Normalization Forms</a>, compatibility decomposition.</li>
+<li><a href="https://www.unicode.org/reports/tr44/" rel="nofollow">UAX #44 — Unicode Character Database</a>, property data and names.</li>
+</ol><hr><section class="related" aria-labelledby="related-title"><h2 id="related-title">Related technical references</h2><ul><li><a href="/us/mathematical-alphanumeric-symbols/">Mathematical Alphanumeric Symbols</a></li><li><a href="/us/styled-unicode-text-vs-fonts/">Styled Unicode Text versus Fonts</a></li><li><a href="/us/bold-italic-script-unicode-letters/">Bold, Italic and Script Unicode Letters</a></li></ul></section><p class="small">Independent technical research on Unicode enclosed alphanumeric characters; semantics and screen-reader behavior depend on context and platform.</p></article></main><aside class="toc" aria-label="On this page"><h2>On this page</h2><a href="#purpose">Enclosed symbols are characters, not CSS borders</a><a href="#families">Unicode blocks and enclosed-number families</a><a href="#tables">Verified ranges, names and examples</a><a href="#equivalence">Compatibility decompositions versus atomic signs</a><a href="#algorithms">Creating safe circled-letter and number mappings</a><a href="#fonts">Rendering, list semantics and accessibility</a><a href="#security">Searching, copying, validation and confusables</a><a href="#tests">Test vectors and interoperability diagnostics</a><a href="#sources">Official Unicode code charts and standards</a></aside></div></div><footer class="footer"><div class="shell"><span>© 2026 Letras Diferentes · Unicode Research Library</span><a href="/us/library/#styled-text">Styled Text &amp; Special Characters</a></div></footer></body></html>
