@@ -1,0 +1,105 @@
+<!doctype html><html lang="en-US"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Unicode Superscripts and Subscripts: Encoded Repertoire, Missing Letters and Math Semantics | Letras Diferentes Research Library</title><meta name="description" content="A rigorous guide to superscript and subscript Unicode digits, modifier letters, incomplete alphabets, NFKC, CSS/MathML alternatives and safe copyable-text mapping."><meta name="robots" content="index,follow"><link rel="canonical" href="https://letrasdiferentess.github.io/us/superscript-subscript-unicode-limits/"><meta property="og:type" content="article"><meta property="og:title" content="Unicode Superscripts and Subscripts: Encoded Repertoire, Missing Letters and Math Semantics"><meta property="og:description" content="A rigorous guide to superscript and subscript Unicode digits, modifier letters, incomplete alphabets, NFKC, CSS/MathML alternatives and safe copyable-text mapping."><meta property="og:url" content="https://letrasdiferentess.github.io/us/superscript-subscript-unicode-limits/"><link rel="stylesheet" href="/us/library/article.css"><script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","@id":"https://letrasdiferentess.github.io/us/superscript-subscript-unicode-limits/#article","headline":"Unicode Superscripts and Subscripts: Encoded Repertoire, Missing Letters and Math Semantics","description":"A rigorous guide to superscript and subscript Unicode digits, modifier letters, incomplete alphabets, NFKC, CSS/MathML alternatives and safe copyable-text mapping.","inLanguage":"en-US","datePublished":"2026-10-25","dateModified":"2026-10-25","author":{"@type":"Organization","name":"Letras Diferentes"},"publisher":{"@type":"Organization","name":"Letras Diferentes","url":"https://letrasdiferentess.github.io/"},"mainEntityOfPage":"https://letrasdiferentess.github.io/us/superscript-subscript-unicode-limits/","isPartOf":{"@type":"WebPage","@id":"https://letrasdiferentess.github.io/us/library/"}}</script></head><body><a class="skip" href="#main">Skip to article</a><header class="sitehead"><div class="shell"><a class="brand" href="/us/">Letras <span>Diferentes</span></a><nav aria-label="Site"><a href="/us/">Fancy Text Tool</a><a href="/us/library/">Research Library</a></nav></div></header><div class="shell"><nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/us/">Home</a><span aria-hidden="true">/</span><a href="/us/library/">Research Library</a><span aria-hidden="true">/</span>Styled Text &amp; Special Characters</nav><div class="headercopy"><span class="eyebrow">Unicode research · Superscripts and subscripts</span><h1>Unicode Superscripts and Subscripts: Encoded Repertoire, Missing Letters and Math Semantics</h1><p class="dek">A rigorous guide to superscript and subscript Unicode digits, modifier letters, incomplete alphabets, NFKC, CSS/MathML alternatives and safe copyable-text mapping.</p><div class="meta"><span>Technical reference</span><span>Unicode baseline: 18.0.0</span><time datetime="2026-10-25">Updated 25 October 2026</time></div></div><div class="layout"><main id="main" class="article"><article>
+<h2 id="models">Encoded raised characters versus real text layout</h2>
+<p>There are two distinct ways to display raised and lowered text. An application can use ordinary characters positioned with a layout system (such as HTML <code>&lt;sup&gt;</code> and <code>&lt;sub&gt;</code>, CSS baseline shifts or MathML scripts), or it can use Unicode characters whose glyphs are themselves conventionally superscript or subscript forms. These approaches may look similar, but their underlying content differs.</p>
+<p>The encoded digit <code>²</code> is <code>U+00B2 SUPERSCRIPT TWO</code>. In contrast, a <code>2</code> rendered as a superscript with HTML remains <code>U+0032 DIGIT TWO</code> in the DOM text. The encoded superscript can survive plain-text copying without markup, but it has limited repertoire and compatibility-normalization behavior. Real mathematical layout can raise arbitrary expressions and preserve structural relationships that Unicode standalone superscript characters cannot represent.</p>
+<p>Historically, Unicode retained superscript and subscript symbols for compatibility with existing encodings, linguistic modifier letters, phonetic notation, and certain common scientific or technical uses. The standard deliberately does <em>not</em> encode a complete raised and lowered duplicate of every ordinary writing system's repertoire. A “full superscript alphabet” generator that fills gaps with vaguely similar characters is likely to misrepresent some letters or produce inconsistent results.</p>
+<div class="note"><strong>Architectural decision:</strong> For a controllable document or equation, use structured markup/layout. For a plain-text field, Unicode supplies some genuine raised/lowered characters but not a universal layout mechanism.</div>
+
+<h2 id="digits">Complete superscript and subscript digit sets</h2>
+<p>Decimal superscript digits are distributed across several Unicode locations. The superscript glyphs for 1, 2 and 3 are historical Latin-1 characters, while superscript 0 and digits 4–9 occur in the Superscripts and Subscripts block. The ten basic subscript digits are contiguous from <code>U+2080</code> through <code>U+2089</code>. Therefore a single arithmetic offset cannot generate all superscript digits correctly, but an explicit ten-entry map can.</p>
+<div class="table-scroll"><table><thead><tr><th>Ordinary digit</th><th>Superscript</th><th>Unicode code point</th><th>Subscript</th><th>Code point</th></tr></thead><tbody>
+<tr><td>0</td><td>⁰</td><td><code>U+2070</code></td><td>₀</td><td><code>U+2080</code></td></tr>
+<tr><td>1</td><td>¹</td><td><code>U+00B9</code></td><td>₁</td><td><code>U+2081</code></td></tr>
+<tr><td>2</td><td>²</td><td><code>U+00B2</code></td><td>₂</td><td><code>U+2082</code></td></tr>
+<tr><td>3</td><td>³</td><td><code>U+00B3</code></td><td>₃</td><td><code>U+2083</code></td></tr>
+<tr><td>4</td><td>⁴</td><td><code>U+2074</code></td><td>₄</td><td><code>U+2084</code></td></tr>
+<tr><td>5</td><td>⁵</td><td><code>U+2075</code></td><td>₅</td><td><code>U+2085</code></td></tr>
+<tr><td>6</td><td>⁶</td><td><code>U+2076</code></td><td>₆</td><td><code>U+2086</code></td></tr>
+<tr><td>7</td><td>⁷</td><td><code>U+2077</code></td><td>₇</td><td><code>U+2087</code></td></tr>
+<tr><td>8</td><td>⁸</td><td><code>U+2078</code></td><td>₈</td><td><code>U+2088</code></td></tr>
+<tr><td>9</td><td>⁹</td><td><code>U+2079</code></td><td>₉</td><td><code>U+2089</code></td></tr>
+</tbody></table></div>
+<p>These symbols are valid Unicode characters with dedicated code points. They are not guaranteed to align visually like a typeset superscript exponent in all fonts, and their use is not interchangeable with arbitrary placement of larger mathematical expressions. For example, the encoded sequence <code>x²</code> may communicate a simple exponent in prose; a structured equation needs grouping, precedence and layout information when expressions become complex.</p>
+
+<h2 id="letters">Why the superscript/subscript alphabets are incomplete</h2>
+<p>Unicode includes modifier letters, phonetic superscript letters and a narrower set of subscript letters spread across several blocks. Examples include <code>U+1D43 ᵃ MODIFIER LETTER SMALL A</code>, <code>U+207F ⁿ SUPERSCRIPT LATIN SMALL LETTER N</code>, <code>U+1D2C ᴬ MODIFIER LETTER CAPITAL A</code>, <code>U+2093 ₓ LATIN SUBSCRIPT SMALL LETTER X</code>, and <code>U+1D62 ᵢ LATIN SUBSCRIPT SMALL LETTER I</code>. These names and properties reflect different linguistic and scientific uses, not one uniform font-substitution alphabet.</p>
+<p>A superscript-looking character could belong to General_Category=<code>Lm</code> (modifier letter), <code>No</code> (other number), <code>Sm</code> (mathematical symbol), or another class. Appearance is not an adequate basis for assembling a mapping. Some letters have no standardized corresponding superscript or subscript code point. The glyph designer may also choose a letterform that is unconventional in ordinary English typography because the encoded character originated in phonetics.</p>
+<p>Suppose a tool is asked to write <code>"SUBSCRIPT"</code> as fully lowered text. It may have to leave several letters in their ordinary form, choose unsuitable lookalike symbols from unrelated scripts, or use HTML/CSS instead. The technically correct choice is to disclose the repertoire limit and either preserve missing letters or switch to actual markup when the destination permits it.</p>
+<p>Unicode normalization data can help reveal compatibility relationships but does not prove that a character belongs to a legitimate complete subscript alphabet. Some modifier symbols have linguistic functions rather than mere presentation purposes. Stripping or rewriting them can change phonetic content.</p>
+
+<h2 id="operators">Operators, signs, fractions and mathematical meaning</h2>
+<p>Unicode also encodes a modest range of superscript and subscript operators, including superscript plus <code>U+207A ⁺</code>, minus <code>U+207B ⁻</code>, equals <code>U+207C ⁼</code>, and parentheses <code>U+207D ⁽</code>, <code>U+207E ⁾</code>. Corresponding subscript operators occupy <code>U+208A..U+208E</code>. Their placement convention is reflected in their character identity, but these do not constitute a general mathematical grammar.</p>
+<p>Consider the notation <code>10⁻³</code>: the superscript minus is not the ordinary ASCII hyphen-minus <code>U+002D</code>. Under NFKC, it maps to <code>U+2212 MINUS SIGN</code>, not to ASCII hyphen-minus. This means that a simplistic routine that expects NFKC to convert every exponent into only ASCII digits and punctuation can fail. Exact code-point handling matters.</p>
+<p>Unicode does not provide superscript variants of every mathematical operator, Greek letter, radical or multi-line fraction. A character like <code>½</code> is a vulgar fraction with its own compatibility decomposition and meaning, not a complete generic fraction-layout format. For an arbitrary rational expression such as (a+b)/(c+d), use MathML or another structured math representation rather than searching for a single Unicode superscript or fraction code point.</p>
+<p>Unit notation and scientific quantities must also distinguish mathematical exponents from phonetic or ordinal uses of raised letters. Meaning comes from context. A generic “make all text superscript” transformation does not create a semantically validated scientific formula.</p>
+
+<h2 id="normalization">NFKC and the loss of positional distinctions</h2>
+<p>Under Unicode Standard Annex #15, <strong>NFKC</strong> applies compatibility mappings that usually convert encoded superscript/subscript numbers and many modifier letters to ordinary letters or digits. <strong>NFC</strong> normally preserves their encoded positional forms. That difference is important for indexing, copyable decoration and scientific notation.</p>
+<pre><code>console.log("\u00B2".normalize("NFC"));  // "²"
+console.log("\u00B2".normalize("NFKC")); // "2"
+console.log("\u2082".normalize("NFKC")); // "2"
+console.log("\u2093".normalize("NFKC")); // "x"
+console.log("\u207B".normalize("NFKC")); // "−" (U+2212)
+console.log("\u207A".normalize("NFKC")); // "+"</code></pre>
+<p>If a platform normalizes <code>x²</code> to NFKC, the stored result may become <code>x2</code>, losing the exponent presentation and potentially changing the intended expression. The same is true for <code>H₂O</code>, which folds to <code>H2O</code>. Compatibility normalization is useful for selected equivalence operations but not a safe universal rewrite for mathematical or chemical display.</p>
+<p>When designing search systems, preserve the original displayed string while deriving optional normalized keys for retrieval. A scientific database should not decide that two formulas are semantically identical solely because their NFKC text matches; true formula understanding requires parsing the scientific notation.</p>
+
+<h2 id="implementation">Precise digit mapping and controlled fallbacks</h2>
+<p>Use complete explicit maps for the ten digits, not an inferred contiguous superscript range. A simple converter can retain unsupported letters and punctuation. For a user-facing editor, an explicit indication of unsupported characters is preferable to silently substituting unrelated modifier symbols.</p>
+<pre><code>const superDigits = ["⁰","¹","²","³","⁴","⁵","⁶","⁷","⁸","⁹"];
+const subDigits   = ["₀","₁","₂","₃","₄","₅","₆","₇","₈","₉"];
+
+function convertDigits(input, mode = "super") {
+  const alphabet = mode === "super" ? superDigits :
+    mode === "sub" ? subDigits : null;
+  if (!alphabet) throw new RangeError("Unknown mode");
+  return [...input].map(ch =&gt; /^[0-9]$/.test(ch)
+    ? alphabet[ch.codePointAt(0) - 0x30] : ch).join("");
+}
+
+console.log(convertDigits("10-3"));        // "¹⁰-³"
+console.log(convertDigits("H2O", "sub"));   // "H₂O"
+console.log(convertDigits("x³ + y²"));     // unchanged pre-styled symbols</code></pre>
+<p>The function performs only ASCII decimal digit substitution. Its behavior for already superscript digits, other numeral scripts or mathematics operators is explicit: it leaves them alone. If sign conversion is required, define an additional mapping for minus/plus and confirm whether the destination wants <code>U+207B</code> or a true mathematical superscript element in markup. Avoid accidental changes in punctuation or exponent semantics.</p>
+<p>A <a href="/us/">Fancy Text generator</a> can offer these digit variants as copyable symbols, with a visible explanation that there is no universal complete superscript/subscript alphabet in Unicode. A well-designed product can distinguish “Unicode character substitution” from “CSS-raised text” and offer the latter when a rich-text output format is supported.</p>
+
+<h2 id="markup">Semantic superscripts with HTML, CSS and MathML</h2>
+<p>HTML provides <code>&lt;sup&gt;</code> and <code>&lt;sub&gt;</code> for typographic and semantic annotations such as footnotes, chemical formulas and exponents in ordinary documents. Their text content remains the normal Unicode letters and numbers. For mathematical expressions with grouping, use MathML Core elements such as <code>&lt;msup&gt;</code>, <code>&lt;msub&gt;</code> and <code>&lt;msubsup&gt;</code>, which represent structure beyond simple raised glyphs.</p>
+<pre><code>&lt;p&gt;Area: m&lt;sup&gt;2&lt;/sup&gt;&lt;/p&gt;
+&lt;p&gt;Water: H&lt;sub&gt;2&lt;/sub&gt;O&lt;/p&gt;
+
+&lt;math xmlns="http://www.w3.org/1998/Math/MathML"&gt;
+  &lt;msup&gt;&lt;mi&gt;x&lt;/mi&gt;&lt;mn&gt;2&lt;/mn&gt;&lt;/msup&gt;
+&lt;/math&gt;</code></pre>
+<p>When those examples are copied into a plain-text-only destination, markup-dependent positioning may not survive; that is where encoded Unicode superscript digits have a different practical role. However, choosing encoded characters for a long scientific document solely to retain plain-text appearance can compromise accessibility, editing and search.</p>
+<p>CSS <code>vertical-align: super</code> or manual transforms can visually raise characters but do not convey MathML's expression tree or change the underlying code points. Semantics, layout and interchange are separate decisions.</p>
+
+<h2 id="practical">Scientific notation, interoperability and accessibility</h2>
+<p>Encoded superscripts and subscripts can be convenient for short plain-text expressions, e.g. <code>m²</code>, <code>CO₂</code> or simple reference markers. But technical usage may need specific distinctions, such as indices with several letters, mixed scripts, nested powers and stacked subscripts. A Unicode single-character substitute cannot faithfully represent every such construction.</p>
+<p>Screen readers may announce “superscript two,” read it as an ordinary number, or interpret mathematical markup differently depending on context. Rich mathematical markup often provides more structured information to assistive technology than a flat sequence of special characters. Test real screen-reader behavior for the target output rather than assuming a typography-only solution is accessible.</p>
+<p>Some fields impose byte limits; the superscript digit <code>²</code> is a two-byte UTF-8 character versus the one-byte ASCII <code>2</code>. Unicode modifier letters scattered across different blocks have their own byte lengths and property values. A plain-text generator should document both supported repertoire and target-platform constraints.</p>
+<p>For identifiers and security-sensitive data, normalize and validate according to the application or protocol policy. A subscript-styled account name can look distinct while normalizing to ordinary letters. Confusable handling and identifier acceptance require explicit policy, not only display preview.</p>
+
+<h2 id="tests">Reproducible code points and test vectors</h2>
+<div class="table-scroll"><table><thead><tr><th>Case</th><th>Expected</th></tr></thead><tbody>
+<tr><td>Superscript zero</td><td><code>U+2070</code></td></tr>
+<tr><td>Superscript one/two/three</td><td><code>U+00B9 / U+00B2 / U+00B3</code></td></tr>
+<tr><td>Superscript nine</td><td><code>U+2079</code></td></tr>
+<tr><td>Subscript zero–nine</td><td><code>U+2080..U+2089</code></td></tr>
+<tr><td>Latin subscript small x</td><td><code>U+2093</code></td></tr>
+<tr><td>Superscript minus NFKC</td><td><code>U+2212</code> MINUS SIGN</td></tr>
+<tr><td>Subscript two NFKC</td><td><code>U+0032</code> DIGIT TWO</td></tr>
+<tr><td><code>H₂O</code> after NFKC</td><td><code>H2O</code></td></tr>
+<tr><td>Unsupported letter in digit-only map</td><td>Preserve original character</td></tr>
+</tbody></table></div>
+<p>In a complete test harness, query the UCD Character Name, General_Category and compatibility decomposition for every supported character. Preserve exact code points in expected outputs. Add copies from real messaging apps and text editors to detect platform-specific normalization, filtering and screen-reader incompatibility.</p>
+
+<h2 id="sources">Official Unicode, HTML and math references</h2>
+<ol class="references">
+<li><a href="https://www.unicode.org/versions/Unicode18.0.0/core-spec/chapter-22/" rel="nofollow">Unicode Standard Chapter 22 — Superscripts and Subscripts</a>, intended repertoire and compatibility roles.</li>
+<li><a href="https://www.unicode.org/charts/PDF/U2070.pdf" rel="nofollow">Unicode Code Chart U+2070..U+209F — Superscripts and Subscripts</a>.</li>
+<li><a href="https://www.unicode.org/reports/tr15/" rel="nofollow">UAX #15 — Unicode Normalization Forms</a>, canonical versus compatibility mappings.</li>
+<li><a href="https://www.unicode.org/reports/tr44/" rel="nofollow">UAX #44 — Unicode Character Database</a>, names, categories and decompositions.</li>
+<li><a href="https://html.spec.whatwg.org/multipage/text-level-semantics.html#the-sub-and-sup-elements" rel="nofollow">WHATWG HTML Living Standard — sub and sup elements</a>, text-level semantics.</li>
+<li><a href="https://www.w3.org/TR/mathml-core/" rel="nofollow">W3C MathML Core</a>, structured mathematical scripts and layout.</li>
+</ol><hr><section class="related" aria-labelledby="related-title"><h2 id="related-title">Related technical references</h2><ul><li><a href="/us/mathematical-alphanumeric-symbols/">Mathematical Alphanumeric Symbols</a></li><li><a href="/us/styled-unicode-text-vs-fonts/">Styled Unicode Text versus Fonts</a></li><li><a href="/us/circled-enclosed-alphanumerics/">Circled and Enclosed Alphanumerics</a></li></ul></section><p class="small">Independent Unicode and mathematical-text research; a Unicode subscript character is not a substitute for structured math in every context.</p></article></main><aside class="toc" aria-label="On this page"><h2>On this page</h2><a href="#models">Encoded raised characters versus real text layout</a><a href="#digits">Complete superscript and subscript digit sets</a><a href="#letters">Why the superscript/subscript alphabets are incomplete</a><a href="#operators">Operators, signs, fractions and mathematical meaning</a><a href="#normalization">NFKC and the loss of positional distinctions</a><a href="#implementation">Precise digit mapping and controlled fallbacks</a><a href="#markup">Semantic superscripts with HTML, CSS and MathML</a><a href="#practical">Scientific notation, interoperability and accessibility</a><a href="#tests">Reproducible code points and test vectors</a><a href="#sources">Official Unicode, HTML and math references</a></aside></div></div><footer class="footer"><div class="shell"><span>© 2026 Letras Diferentes · Unicode Research Library</span><a href="/us/library/#styled-text">Styled Text &amp; Special Characters</a></div></footer></body></html>
