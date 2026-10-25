@@ -1,0 +1,49 @@
+name: US Fancy Text UX and SEO audit
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'us/index.html'
+      - 'tests/us-seo-smoke.mjs'
+      - '.github/workflows/us-seo-audit.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  us-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install Playwright
+        run: |
+          npm install --no-save playwright@1.56.1
+          if ! command -v google-chrome >/dev/null 2>&1; then npx playwright install chromium; fi
+      - name: Start local site
+        run: |
+          python3 -m http.server 8080 --bind 127.0.0.1 > /tmp/us-seo-site.log 2>&1 &
+          for i in $(seq 1 30); do curl -sf http://127.0.0.1:8080/us/ -o /dev/null && break; sleep 1; done
+      - name: Mobile and desktop functional tests
+        run: |
+          if command -v google-chrome >/dev/null 2>&1; then USE_SYSTEM_CHROME=1 node tests/us-seo-smoke.mjs; else node tests/us-seo-smoke.mjs; fi
+      - name: Lighthouse mobile lab scores
+        if: always()
+        continue-on-error: true
+        run: |
+          mkdir -p artifacts
+          export CHROME_PATH="$(command -v google-chrome || node --input-type=module -e "import { chromium } from 'playwright'; console.log(chromium.executablePath())")"
+          npx --yes lighthouse@12.8.2 http://127.0.0.1:8080/us/ --quiet --chrome-flags="--headless --no-sandbox --disable-dev-shm-usage" --output=json --output-path=artifacts/us-lighthouse-mobile.json --only-categories=performance,seo,accessibility
+          node --input-type=module -e "import fs from 'node:fs'; const r=JSON.parse(fs.readFileSync('artifacts/us-lighthouse-mobile.json'));console.log('US_LIGHTHOUSE',JSON.stringify({scores:Object.fromEntries(Object.entries(r.categories).map(([k,v])=>[k,v.score])),metrics:Object.fromEntries(['largest-contentful-paint','first-contentful-paint','total-blocking-time','cumulative-layout-shift','speed-index'].map(k=>[k,r.audits[k]?.displayValue])),seoIssues:Object.values(r.audits).filter(a=>a.score===0&&r.categories.seo.auditRefs.some(z=>z.id===a.id)).map(a=>({id:a.id,title:a.title}))},null,2));"
+      - name: Upload audit outputs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: us-fancy-text-audit
+          path: artifacts/
+          if-no-files-found: ignore
