@@ -10,6 +10,7 @@ on:
       - 'scripts/test-unicode-library-links.mjs'
       - 'scripts/test-unicode-batch3.mjs'
       - 'scripts/test-unicode-batch4.mjs'
+      - 'scripts/test-unicode-batch5.mjs'
       - '.github/workflows/unicode-library-link-policy.yml'
       - 'us/**'
   pull_request:
@@ -21,6 +22,7 @@ on:
       - 'scripts/test-unicode-library-links.mjs'
       - 'scripts/test-unicode-batch3.mjs'
       - 'scripts/test-unicode-batch4.mjs'
+      - 'scripts/test-unicode-batch5.mjs'
       - '.github/workflows/unicode-library-link-policy.yml'
       - 'us/**'
 permissions:
@@ -41,3 +43,5 @@ jobs:
         run: node --test scripts/test-unicode-batch3.mjs
       - name: Verify Batch 4 encoding vectors and publication invariants
         run: node --test scripts/test-unicode-batch4.mjs
+      - name: Verify Batch 5 UTF integrity, escapes and NFC/NFD examples
+        run: node --test scripts/test-unicode-batch5.mjs

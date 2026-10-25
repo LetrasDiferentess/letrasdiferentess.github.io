@@ -1,0 +1,75 @@
+<!doctype html><html lang="en-US"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Malformed Unicode Encoding Sequences: Detection, Recovery and Security | Letras Diferentes Research Library</title><meta name="description" content="Conformance-oriented guide to invalid UTF-8, unpaired UTF-16 surrogates, forbidden UTF-32 values, strict versus replacement decoders, chunk boundaries and security invariants."><meta name="robots" content="index,follow"><link rel="canonical" href="https://letrasdiferentess.github.io/us/malformed-unicode-encoding-sequences/"><meta property="og:type" content="article"><meta property="og:title" content="Malformed Unicode Encoding Sequences: Detection, Recovery and Security"><meta property="og:description" content="Conformance-oriented guide to invalid UTF-8, unpaired UTF-16 surrogates, forbidden UTF-32 values, strict versus replacement decoders, chunk boundaries and security invariants."><meta property="og:url" content="https://letrasdiferentess.github.io/us/malformed-unicode-encoding-sequences/"><link rel="stylesheet" href="/us/library/article.css"><script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","@id":"https://letrasdiferentess.github.io/us/malformed-unicode-encoding-sequences/#article","headline":"Malformed Unicode Encoding Sequences: Detection, Recovery and Security","description":"Conformance-oriented guide to invalid UTF-8, unpaired UTF-16 surrogates, forbidden UTF-32 values, strict versus replacement decoders, chunk boundaries and security invariants.","inLanguage":"en-US","datePublished":"2026-10-26","dateModified":"2026-10-26","author":{"@type":"Organization","name":"Letras Diferentes"},"publisher":{"@type":"Organization","name":"Letras Diferentes","url":"https://letrasdiferentess.github.io/"},"mainEntityOfPage":"https://letrasdiferentess.github.io/us/malformed-unicode-encoding-sequences/","isPartOf":{"@type":"WebPage","@id":"https://letrasdiferentess.github.io/us/library/"}}</script></head><body><a class="skip" href="#main">Skip to article</a><header class="sitehead"><div class="shell"><a class="brand" href="/us/">Letras <span>Diferentes</span></a><nav aria-label="Site"><a href="/us/">Fancy Text Tool</a><a href="/us/library/">Research Library</a></nav></div></header><div class="shell"><nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/us/">Home</a><span aria-hidden="true">/</span><a href="/us/library/">Research Library</a><span aria-hidden="true">/</span>Character Encoding &amp; Data Interchange</nav><div class="headercopy"><span class="eyebrow">Unicode research · UTF validation and malformed data</span><h1>Malformed Unicode Encoding Sequences: Detection, Recovery and Security</h1><p class="dek">Conformance-oriented guide to invalid UTF-8, unpaired UTF-16 surrogates, forbidden UTF-32 values, strict versus replacement decoders, chunk boundaries and security invariants.</p><div class="meta"><span>Technical reference</span><span>Unicode baseline: 18.0.0</span><time datetime="2026-10-26">Updated 26 October 2026</time></div></div><div class="layout"><main id="main" class="article"><article>
+<h2 id="meaning">Well-formed Unicode streams versus damaged code units</h2>
+<p>A Unicode scalar value ranges from U+0000 through U+10FFFF, excluding U+D800..U+DFFF. UTF-8, UTF-16 and UTF-32 are encoding forms for scalar sequences. A malformed encoding sequence is a group of code units or bytes that cannot be interpreted as such a sequence under the relevant form. It is not the same as an unusual assigned character, an invisible control or an unsupported font glyph.</p>
+<p>Examples include an illegal UTF-8 leading byte, a truncated UTF-8 multibyte prefix at end of stream, a lone UTF-16 high surrogate, a UTF-16 low surrogate without its preceding high surrogate, and a UTF-32 word with a surrogate or value greater than U+10FFFF. The application must define what happens when these arrive from untrusted input.</p>
+<h2 id="utf8">Malformed UTF-8: lead, continuation and shortest-form rules</h2>
+<p>Modern UTF-8 uses one to four bytes per scalar. Continuation bytes have the form <code>10xxxxxx</code>, hexadecimal 80..BF. Legal leading bytes are ASCII 00..7F, C2..DF, E0..EF and F0..F4, with additional range constraints on the second byte in certain sequences. An isolated 80..BF byte cannot begin a character, and C0..C1 or F5..FF are forbidden as modern UTF-8 leading bytes.</p>
+<div class="table-scroll"><table><thead><tr><th>Hex input</th><th>Disposition under strict UTF-8</th><th>Explanation</th></tr></thead><tbody>
+<tr><td><code>41</code></td><td>Accept U+0041</td><td>ASCII is valid UTF-8</td></tr>
+<tr><td><code>C2 80</code></td><td>Accept U+0080</td><td>First two-byte scalar</td></tr>
+<tr><td><code>C0 AF</code></td><td>Reject</td><td>Overlong encoding of slash</td></tr>
+<tr><td><code>E0 80 80</code></td><td>Reject</td><td>Overlong encoding below U+0800</td></tr>
+<tr><td><code>ED A0 80</code></td><td>Reject</td><td>Represents UTF-16 surrogate U+D800</td></tr>
+<tr><td><code>F0 80 80 80</code></td><td>Reject</td><td>Overlong four-byte representation</td></tr>
+<tr><td><code>F4 90 80 80</code></td><td>Reject</td><td>Scalar greater than U+10FFFF</td></tr>
+<tr><td><code>F0 9F 98</code> at EOF</td><td>Reject or replace by stated policy</td><td>Missing continuation byte</td></tr>
+</tbody></table></div>
+<p>Overlong forms are especially important for security. If one component treats an invalid byte sequence as an ASCII slash and another rejects it, path validation and authorization can disagree. Validating <em>before</em> policy checks, then using the same decoded representation through the stack, avoids canonicalization gaps.</p>
+<h2 id="utf16">Malformed UTF-16 and the internal string trap</h2>
+<p>UTF-16 stores supplementary scalars as a high surrogate D800..DBFF immediately followed by a low surrogate DC00..DFFF. A lone high surrogate at end of buffer, a low surrogate at the beginning, or a high surrogate followed by a BMP letter is ill-formed as serialized UTF-16. It is incorrect to encode an isolated surrogate independently into UTF-8 or UTF-32.</p>
+<p>Some runtimes, notably JavaScript, represent strings as sequences of UTF-16 code units and can hold unpaired surrogates internally. A JavaScript string containing <code>\uD800</code> does not thereby become valid Unicode scalar data. <code>String.prototype.isWellFormed()</code> can detect such units, while <code>toWellFormed()</code> substitutes U+FFFD for each unpaired surrogate, losing exact information.</p>
+<pre><code>const broken = "\uD800";
+console.log(broken.isWellFormed());  // false
+console.log(broken.toWellFormed());  // U+FFFD replacement character
+console.log([..."\uD83D\uDE00"].length); // 1 valid scalar
+console.log("\uD83D\uDE00".length);       // 2 code units</code></pre>
+<h2 id="utf32">Invalid UTF-32 words and noncharacter confusion</h2>
+<p>UTF-32 uses one 32-bit code unit per Unicode scalar. Values U+D800..U+DFFF and values above U+10FFFF are malformed as scalars, even though they fit inside a 32-bit integer. A stream with a byte count that is not a multiple of four is truncated for an explicitly endian UTF-32 codec.</p>
+<p>Noncharacters such as U+FDD0, U+FFFE and U+10FFFF are reserved for internal-use conventions, but they remain valid Unicode scalar values and can be well-formed in UTF encodings. A higher-level interchange profile might reject them; do not conflate profile restrictions with encoding conformance. U+FEFF used as a BOM is likewise distinct from the malformed-byte question.</p>
+<h2 id="error-policy">Fatal errors, replacement, and information loss</h2>
+<p>A strict decoder rejects malformed input. A replacement decoder emits U+FFFD for invalid subsequences according to its specified algorithm, allowing processing to continue. The replacement character is a valid scalar, but its appearance means the original bytes are no longer reconstructible from the decoded string alone. An <code>ignore</code> policy is even more lossy because it removes offending data without evidence.</p>
+<p>Replacement granularity matters: robust UTF-8 decoding follows the Unicode recommendation to replace maximal subparts of an ill-formed subsequence rather than silently skipping arbitrary portions or decoding overlong forms. Different nonconforming decoders can yield different counts of replacement characters. Test the decoder implementation and Unicode version rather than assuming that every implementation replaces identical byte groups.</p>
+<pre><code>const malformed = Uint8Array.of(0xED, 0xA0, 0x80);
+try {
+  new TextDecoder("utf-8", {fatal: true}).decode(malformed);
+  throw new Error("Should reject malformed UTF-8");
+} catch (error) {
+  if (!(error instanceof TypeError)) throw error;
+}
+console.log(new TextDecoder("utf-8").decode(malformed));
+// Replacement characters, not a valid surrogate scalar.</code></pre>
+<h2 id="stream">Streaming chunks must not be validated in isolation</h2>
+<p>Consider a valid four-byte encoding <code>F0 9F 98 80</code> for U+1F600. A network chunk containing <code>F0 9F</code> is incomplete, not necessarily malformed. A decoder maintaining state across chunks can retain that prefix and consume the remaining <code>98 80</code> when it arrives. If the transport definitively ends after <code>F0 9F</code>, the same prefix is malformed at end of stream.</p>
+<pre><code>const bytes = Uint8Array.of(0xF0,0x9F,0x98,0x80);
+const dec = new TextDecoder("utf-8",{fatal:true});
+const first = dec.decode(bytes.slice(0,2),{stream:true});
+const rest = dec.decode(bytes.slice(2),{stream:true});
+const finish = dec.decode(); 
+console.log(first + rest + finish === "😀"); // true</code></pre>
+<p>Boundary-aware validation is essential for WebSocket frames, file streams, multipart uploads and database chunks. Splitting a UTF-8 stream into arbitrary chunks and decoding each independently can inject replacement characters into otherwise well-formed data.</p>
+<h2 id="python">Python strict-mode fixtures</h2>
+<p>Python's strict codecs make malformed sequences observable as <code>UnicodeDecodeError</code>. The following test contains both valid and rejected streams. A permissive mode may be desirable for logs shown to humans, but security-sensitive identifiers and protocol payloads should have a documented rejection policy.</p>
+<pre><code>ok = bytes.fromhex("f0 9f 98 80").decode("utf-8", "strict")
+assert ok == "😀"
+invalid = ["c0 af", "ed a0 80", "f4 90 80 80", "e2 82"]
+for case in invalid:
+    try:
+        bytes.fromhex(case).decode("utf-8", "strict")
+        raise AssertionError(f"accepted {case}")
+    except UnicodeDecodeError:
+        pass
+assert bytes.fromhex("ed a0 80").decode("utf-8", "replace") != "😀"</code></pre>
+<h2 id="security">Security boundaries: validate bytes before interpreting paths</h2>
+<p>Malformed data should not be allowed to travel across layers that interpret it differently. Overlong encoding attacks, mixed strict and replacement decoders, and CESU-8 surrogate encodings can create ambiguous identities. CESU-8 and modified UTF-8 may encode surrogate code units for compatibility purposes; such sequences are <em>not valid UTF-8</em> and must not be silently accepted as conforming UTF-8.</p>
+<p>Different application rules apply after decoding: Unicode normalization can fold canonically equivalent strings, case-folding may alter search identities, and confusable detection may flag lookalike characters. These are independent tasks. A validator that accepts well-formed UTF-8 cannot on that basis claim that a username or file path is secure, human-readable or visually unambiguous.</p>
+<h2 id="tests">A decoder conformance checklist for implementers</h2>
+<div class="table-scroll"><table><thead><tr><th>Case</th><th>Correct strict behavior</th><th>Diagnostic purpose</th></tr></thead><tbody>
+<tr><td>ASCII NUL <code>00</code></td><td>Accept as U+0000</td><td>Application prohibition is separate</td></tr>
+<tr><td>Lowest 3-byte scalar <code>E0 A0 80</code></td><td>Accept U+0800</td><td>Valid boundary</td></tr>
+<tr><td>Highest 4-byte scalar <code>F4 8F BF BF</code></td><td>Accept U+10FFFF</td><td>Upper boundary</td></tr>
+<tr><td>Invalid continuation</td><td>Reject; replacement policy is explicit</td><td>Do not skip arbitrary bytes</td></tr>
+<tr><td>Unpaired UTF-16 surrogate</td><td>Reject as UTF-16 interchange sequence</td><td>Protect scalar invariant</td></tr>
+<tr><td>UTF-32 0x00110000</td><td>Reject</td><td>Out-of-range word</td></tr>
+<tr><td>U+FFFF</td><td>Well-formed scalar</td><td>Noncharacter not an encoding error</td></tr>
+</tbody></table></div>
+<h2 id="sources">Standards and technical references</h2><ol class="references"><li><a href="https://www.unicode.org/versions/Unicode18.0.0/core-spec/chapter-3/" rel="nofollow">Unicode Standard Chapter 3 — Conformance and ill-formed sequences</a></li><li><a href="https://www.unicode.org/reports/tr36/" rel="nofollow">UTR #36 — Unicode Security Considerations</a></li><li><a href="https://www.rfc-editor.org/rfc/rfc3629" rel="nofollow">RFC 3629 — UTF-8 restrictions</a></li><li><a href="https://encoding.spec.whatwg.org/" rel="nofollow">WHATWG Encoding Standard — UTF-8 decoding error algorithm</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/TextDecoder/fatal" rel="nofollow">MDN — TextDecoder.fatal</a></li><li><a href="https://docs.python.org/3/library/codecs.html" rel="nofollow">Python codec error handling</a></li></ol><hr><section class="related" aria-labelledby="related-title"><h2 id="related-title">Related technical references</h2><ul><li><a href="/us/utf8-byte-sequences/">UTF-8 Byte Sequences</a></li><li><a href="/us/utf16-surrogate-pairs/">UTF-16 Surrogate Pairs</a></li><li><a href="/us/utf32-scalar-value-storage/">UTF-32 Scalar Value Storage</a></li></ul></section><p class="small">Independent technical research. Use strict byte-level evidence to diagnose encoding defects before transforming data.</p></article></main><aside class="toc" aria-label="On this page"><h2>On this page</h2><a href="#meaning">Well-formed Unicode streams versus damaged code units</a><a href="#utf8">Malformed UTF-8: lead, continuation and shortest-form rules</a><a href="#utf16">Malformed UTF-16 and the internal string trap</a><a href="#utf32">Invalid UTF-32 words and noncharacter confusion</a><a href="#error-policy">Fatal errors, replacement, and information loss</a><a href="#stream">Streaming chunks must not be validated in isolation</a><a href="#python">Python strict-mode fixtures</a><a href="#security">Security boundaries: validate bytes before interpreting paths</a><a href="#tests">A decoder conformance checklist for implementers</a><a href="#sources">Standards and technical references</a></aside></div></div><footer class="footer"><div class="shell"><span>© 2026 Letras Diferentes · Unicode Research Library</span><a href="/us/library/#character-encoding">Character Encoding &amp; Data Interchange</a></div></footer></body></html>

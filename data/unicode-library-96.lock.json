@@ -129,22 +129,22 @@
         {
           "slug": "mojibake-causes-diagnosis",
           "url": "https://letrasdiferentess.github.io/us/mojibake-causes-diagnosis/",
-          "status": "PLANNED"
+          "status": "PUBLISHED"
         },
         {
           "slug": "malformed-unicode-encoding-sequences",
           "url": "https://letrasdiferentess.github.io/us/malformed-unicode-encoding-sequences/",
-          "status": "PLANNED"
+          "status": "PUBLISHED"
         },
         {
           "slug": "unicode-escapes-json-javascript",
           "url": "https://letrasdiferentess.github.io/us/unicode-escapes-json-javascript/",
-          "status": "PLANNED"
+          "status": "PUBLISHED"
         },
         {
           "slug": "round-trip-text-encoding",
           "url": "https://letrasdiferentess.github.io/us/round-trip-text-encoding/",
-          "status": "PLANNED"
+          "status": "PUBLISHED"
         }
       ]
     },
@@ -156,7 +156,7 @@
         {
           "slug": "unicode-normalization-nfc-nfd",
           "url": "https://letrasdiferentess.github.io/us/unicode-normalization-nfc-nfd/",
-          "status": "PLANNED"
+          "status": "PUBLISHED"
         },
         {
           "slug": "unicode-normalization-nfkc-nfkd",
