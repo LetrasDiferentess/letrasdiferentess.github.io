@@ -1,0 +1,86 @@
+<!doctype html><html lang="en-US"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>UTF-8 Byte Sequences: Encoding Rules, Boundaries and Validation | Letras Diferentes Research Library</title><meta name="description" content="A technical guide to UTF-8 byte patterns, scalar value boundaries, shortest-form validation, malformed sequences, streaming decoders and reliable byte-level interchange."><meta name="robots" content="index,follow"><link rel="canonical" href="https://letrasdiferentess.github.io/us/utf8-byte-sequences/"><meta property="og:type" content="article"><meta property="og:title" content="UTF-8 Byte Sequences: Encoding Rules, Boundaries and Validation"><meta property="og:description" content="A technical guide to UTF-8 byte patterns, scalar value boundaries, shortest-form validation, malformed sequences, streaming decoders and reliable byte-level interchange."><meta property="og:url" content="https://letrasdiferentess.github.io/us/utf8-byte-sequences/"><link rel="stylesheet" href="/us/library/article.css"><script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","@id":"https://letrasdiferentess.github.io/us/utf8-byte-sequences/#article","headline":"UTF-8 Byte Sequences: Encoding Rules, Boundaries and Validation","description":"A technical guide to UTF-8 byte patterns, scalar value boundaries, shortest-form validation, malformed sequences, streaming decoders and reliable byte-level interchange.","inLanguage":"en-US","datePublished":"2026-10-26","dateModified":"2026-10-26","author":{"@type":"Organization","name":"Letras Diferentes"},"publisher":{"@type":"Organization","name":"Letras Diferentes","url":"https://letrasdiferentess.github.io/"},"mainEntityOfPage":"https://letrasdiferentess.github.io/us/utf8-byte-sequences/","isPartOf":{"@type":"WebPage","@id":"https://letrasdiferentess.github.io/us/library/"}}</script></head><body><a class="skip" href="#main">Skip to article</a><header class="sitehead"><div class="shell"><a class="brand" href="/us/">Letras <span>Diferentes</span></a><nav aria-label="Site"><a href="/us/">Fancy Text Tool</a><a href="/us/library/">Research Library</a></nav></div></header><div class="shell"><nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/us/">Home</a><span aria-hidden="true">/</span><a href="/us/library/">Research Library</a><span aria-hidden="true">/</span>Character Encoding &amp; Data Interchange</nav><div class="headercopy"><span class="eyebrow">Unicode research · UTF-8 encoding</span><h1>UTF-8 Byte Sequences: Encoding Rules, Boundaries and Validation</h1><p class="dek">A technical guide to UTF-8 byte patterns, scalar value boundaries, shortest-form validation, malformed sequences, streaming decoders and reliable byte-level interchange.</p><div class="meta"><span>Technical reference</span><span>Unicode baseline: 18.0.0</span><time datetime="2026-10-26">Updated 26 October 2026</time></div></div><div class="layout"><main id="main" class="article"><article>
+<h2 id="model">UTF-8 encodes scalar values into octets</h2>
+<p>UTF-8 is a variable-length Unicode encoding form. It serializes a <em>Unicode scalar value</em>—a code point excluding the surrogate range U+D800..U+DFFF—into one, two, three or four 8-bit code units (octets). One octet is identical to ASCII for U+0000..U+007F. This preservation of ASCII byte values is one of the reasons UTF-8 fits protocols, source files and modern web content.</p>
+<p>Encoding and decoding are not glyph operations. The glyph rendered for U+1D400 may be bold, missing or substituted by a fallback font; its UTF-8 bytes are still defined exactly. Likewise, <code>é</code> encoded as U+00E9 uses different bytes from the canonically equivalent sequence U+0065 U+0301. Normalization and encoding solve different problems.</p>
+<h2 id="patterns">The one-to-four-byte bit templates</h2>
+<p>The initial octet determines the expected sequence length; continuation octets have their two most significant bits set to <code>10</code>. A conforming decoder checks both the pattern and whether the decoded integer is a valid scalar represented with the shortest possible sequence.</p>
+<div class="table-scroll"><table><thead><tr><th>Scalar range</th><th>Leading bits</th><th>UTF-8 form</th><th>Example</th></tr></thead><tbody>
+<tr><td>U+0000..U+007F</td><td><code>0xxxxxxx</code></td><td>1 octet</td><td>A U+0041 → <code>41</code></td></tr>
+<tr><td>U+0080..U+07FF</td><td><code>110xxxxx</code></td><td>2 octets</td><td>é U+00E9 → <code>C3 A9</code></td></tr>
+<tr><td>U+0800..U+FFFF except surrogates</td><td><code>1110xxxx</code></td><td>3 octets</td><td>€ U+20AC → <code>E2 82 AC</code></td></tr>
+<tr><td>U+10000..U+10FFFF</td><td><code>11110xxx</code></td><td>4 octets</td><td>😀 U+1F600 → <code>F0 9F 98 80</code></td></tr>
+</tbody></table></div>
+<p>Legal continuation octets range from 80 to BF in hexadecimal. An octet from C0 or C1 cannot begin a valid shortest-form UTF-8 sequence, nor can F5..FF begin any valid sequence under RFC 3629. Literal octets FE and FF are never part of well-formed UTF-8 text. The original older proposals with five- and six-octet sequences do not define valid modern UTF-8.</p>
+<h2 id="construction">Encoding U+1F600 step by step</h2>
+<p>The supplementary scalar U+1F600 has a 21-bit binary representation placed into the four-byte template <code>11110xxx 10xxxxxx 10xxxxxx 10xxxxxx</code>. Grouping its bits into the available payload positions yields <code>F0 9F 98 80</code>. This form is independent of CPU endianness: UTF-8 has no byte-order variation.</p>
+<p>Each code point maps to a unique shortest well-formed UTF-8 sequence. However, an arbitrary string of multiple Unicode scalars can have multiple encodings of <em>visually equivalent</em> text because scalar sequences themselves may differ canonically, and because glyph layout is not an encoding function. A robust text pipeline can choose NFC if its application requires canonical normalization, but should never confuse NFC with UTF-8 byte validation.</p>
+<h2 id="boundaries">Boundary octets a validator must reject</h2>
+<p>Decoders must reject overlong representations, UTF-8 encodings of surrogate values, values above U+10FFFF and truncated or malformed continuation sequences. The lead byte alone does not capture every constraint; particular second bytes have narrower legal ranges.</p>
+<div class="table-scroll"><table><thead><tr><th>Lead</th><th>Allowed next octet</th><th>Reason</th></tr></thead><tbody>
+<tr><td><code>E0</code></td><td><code>A0..BF</code></td><td>Disallow 3-byte encodings below U+0800</td></tr>
+<tr><td><code>ED</code></td><td><code>80..9F</code></td><td>Disallow U+D800..U+DFFF surrogates</td></tr>
+<tr><td><code>F0</code></td><td><code>90..BF</code></td><td>Disallow 4-byte encodings below U+10000</td></tr>
+<tr><td><code>F4</code></td><td><code>80..8F</code></td><td>Disallow values over U+10FFFF</td></tr>
+<tr><td><code>C2..DF</code></td><td><code>80..BF</code></td><td>Normal two-byte leading range</td></tr>
+</tbody></table></div>
+<p>The remaining continuation octets in each sequence must also be within 80..BF. RFC 3629 and Unicode conformance disallow a decoder from silently treating overlong forms as a different way of spelling the same scalar. These cases have security implications: different decoders accepting and rejecting the same bytes can create bypasses in validation or path processing.</p>
+<h2 id="code">Working encode/decode examples</h2>
+<p>In web JavaScript, <code>TextEncoder</code> produces UTF-8 bytes from a JavaScript string. <code>TextDecoder</code> can decode UTF-8 with replacement behavior by default or reject malformed input with the <code>fatal</code> option. JavaScript strings are UTF-16 code-unit sequences, so a lone surrogate supplied to TextEncoder is replaced with U+FFFD as part of converting input to valid Unicode scalar text.</p>
+<pre><code>const data = "Aé€😀𝐀";
+const bytes = new TextEncoder().encode(data);
+console.log(Array.from(bytes, b =&gt;
+  b.toString(16).padStart(2, "0")).join(" "));
+// 41 c3 a9 e2 82 ac f0 9f 98 80 f0 9d 90 80
+const roundTrip = new TextDecoder("utf-8", {fatal: true}).decode(bytes);
+console.log(roundTrip === data); // true
+
+try {
+  new TextDecoder("utf-8", {fatal: true})
+    .decode(Uint8Array.of(0xC0, 0xAF)); // overlong '/'
+} catch (e) {
+  console.log(e.name); // TypeError
+}</code></pre>
+<p>Python exposes strict conversion explicitly through <code>.encode("utf-8")</code> and <code>.decode("utf-8", errors="strict")</code>. An exception from strict decoding is important information; using <code>errors="ignore"</code> silently discards data, while replacing invalid input deliberately loses byte-level fidelity.</p>
+<pre><code>text = "Aé€😀𝐀"
+raw = text.encode("utf-8")
+print(raw.hex(" "))
+assert raw.decode("utf-8", errors="strict") == text
+for raw_bad in (bytes.fromhex("c0 af"),
+                bytes.fromhex("ed a0 80"),
+                bytes.fromhex("f4 90 80 80")):
+    try:
+        raw_bad.decode("utf-8", errors="strict")
+        raise AssertionError("accepted malformed bytes")
+    except UnicodeDecodeError:
+        pass</code></pre>
+<h2 id="streaming">Streaming and chunk boundaries</h2>
+<p>A transport may deliver only part of a multi-octet sequence. A valid UTF-8 stream divided between chunks can therefore contain an incomplete <em>chunk</em> without containing malformed text. A streaming decoder retains incomplete lead/continuation state across input boundaries; it cannot simply decode each chunk independently with separate replacement behavior.</p>
+<pre><code>const enc = new TextEncoder().encode("😀"); // f0 9f 98 80
+const dec = new TextDecoder("utf-8", { fatal: true });
+const first = dec.decode(enc.slice(0, 2), { stream: true });
+const second = dec.decode(enc.slice(2), { stream: true });
+const finish = dec.decode();
+console.log(first + second + finish === "😀"); // true</code></pre>
+<p>At end of stream a trailing incomplete prefix must be handled using the selected error policy. Converting partial bytes into U+FFFD prematurely can corrupt otherwise valid network text. For byte-oriented protocols, specify whether malformed input triggers rejection, replacement or an error report; never allow ambiguous processing of untrusted byte strings.</p>
+<h2 id="counting">Bytes versus user-visible character counts</h2>
+<p>The UTF-8 byte size of <code>A</code>, <code>é</code>, <code>€</code> and <code>😀</code> is respectively 1, 2, 3 and 4 in their precomposed/scalar forms. Four bytes does not mean four characters. The mathematical styled capital <code>𝐀</code> also occupies four UTF-8 bytes; compared with ASCII A, this affects byte-limited fields and storage budgets without changing the number of visible letters.</p>
+<p>For an application offering copyable styled Unicode text, a useful check is the difference between <code>new TextEncoder().encode(text).length</code>, the count of scalar values and the number of user-perceived grapheme clusters. Each answers a different question. The <a href="/us/">US Fancy Text tool</a> illustrates why visually similar output can impose different byte limits on downstream services.</p>
+<h2 id="interchange">File formats, signatures and diagnostic procedure</h2>
+<p>UTF-8 does not need a BOM for endianness. An optional initial <code>EF BB BF</code> can act as an encoding signature, but some protocols and file formats treat it specially or reject it. A BOM is not part of the encoded payload of a normal ASCII-first UTF-8 text file. Determine transport or format requirements rather than inserting it universally.</p>
+<p>When a file appears corrupted, first capture the original bytes before any lossy decode. Next verify the declared encoding and use a strict UTF-8 decoder. Compare the resulting scalar sequence with the intended content. Distinguish the wrong-encoding symptom often called <em>mojibake</em> (e.g. UTF-8 bytes interpreted as a different legacy encoding) from invalid UTF-8, normalization changes or missing fonts.</p>
+<h2 id="tests">Conformance-oriented byte test vectors</h2>
+<div class="table-scroll"><table><thead><tr><th>Byte sequence</th><th>Expected result</th><th>Rationale</th></tr></thead><tbody>
+<tr><td><code>00</code></td><td>U+0000 valid</td><td>ASCII range includes NUL (application may forbid it)</td></tr>
+<tr><td><code>7F</code></td><td>U+007F valid</td><td>Upper ASCII boundary</td></tr>
+<tr><td><code>C2 80</code></td><td>U+0080 valid</td><td>First two-byte scalar</td></tr>
+<tr><td><code>E0 A0 80</code></td><td>U+0800 valid</td><td>First three-byte scalar</td></tr>
+<tr><td><code>F0 90 80 80</code></td><td>U+10000 valid</td><td>First four-byte scalar</td></tr>
+<tr><td><code>F4 8F BF BF</code></td><td>U+10FFFF valid</td><td>Highest Unicode scalar</td></tr>
+<tr><td><code>C0 AF</code></td><td>Reject</td><td>Overlong slash</td></tr>
+<tr><td><code>ED A0 80</code></td><td>Reject</td><td>Encodes surrogate U+D800</td></tr>
+<tr><td><code>F4 90 80 80</code></td><td>Reject</td><td>Above Unicode range</td></tr>
+<tr><td><code>E2 82</code> at EOF</td><td>Reject or replace by explicit policy</td><td>Truncated sequence</td></tr>
+</tbody></table></div>
+<p>Test the chosen error policy on malformed input and document it. A conforming UTF-8 validator must not report malformed data as a valid scalar sequence; a replacement decoder may produce U+FFFD as a recovery strategy. Both behaviors are useful when chosen deliberately for the surrounding protocol.</p>
+
+<h2 id="sources">Standards and implementation references</h2><ol class="references"><li><a href="https://www.rfc-editor.org/rfc/rfc3629" rel="nofollow">RFC 3629 — UTF-8, a transformation format of ISO 10646</a></li><li><a href="https://www.unicode.org/versions/Unicode18.0.0/core-spec/chapter-3/" rel="nofollow">Unicode Standard Chapter 3 — Conformance, Encoding Forms</a></li><li><a href="https://www.unicode.org/faq/utf_bom.html" rel="nofollow">Unicode FAQ — UTF-8 and byte-order marks</a></li><li><a href="https://encoding.spec.whatwg.org/" rel="nofollow">WHATWG Encoding Standard</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/TextDecoder" rel="nofollow">MDN — TextDecoder</a></li><li><a href="https://www.unicode.org/reports/tr15/" rel="nofollow">UAX #15 — Unicode Normalization Forms</a></li></ol><hr><section class="related" aria-labelledby="related-title"><h2 id="related-title">Related technical references</h2><ul><li><a href="/us/unicode-scalar-values-surrogates/">Unicode Scalar Values and Surrogates</a></li><li><a href="/us/unicode-code-points-characters-glyphs/">Code Points versus Glyphs</a></li><li><a href="/us/decorative-unicode-text-compatibility/">Decorative Text Compatibility</a></li></ul></section><p class="small">Independent Unicode interoperability research. Examples describe encoded data, not a guarantee about how every font, editor, or platform will render it.</p></article></main><aside class="toc" aria-label="On this page"><h2>On this page</h2><a href="#model">UTF-8 encodes scalar values into octets</a><a href="#patterns">The one-to-four-byte bit templates</a><a href="#construction">Encoding U+1F600 step by step</a><a href="#boundaries">Boundary octets a validator must reject</a><a href="#code">Working encode/decode examples</a><a href="#streaming">Streaming and chunk boundaries</a><a href="#counting">Bytes versus user-visible character counts</a><a href="#interchange">File formats, signatures and diagnostic procedure</a><a href="#tests">Conformance-oriented byte test vectors</a><a href="#sources">Standards and implementation references</a></aside></div></div><footer class="footer"><div class="shell"><span>© 2026 Letras Diferentes · Unicode Research Library</span><a href="/us/library/#character-encoding">Character Encoding &amp; Data Interchange</a></div></footer></body></html>
