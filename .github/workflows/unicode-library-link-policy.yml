@@ -1,0 +1,35 @@
+name: Unicode Library URL Lock and Link Policy
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'data/unicode-library-96.lock.json'
+      - 'docs/UNICODE_LIBRARY_LINK_POLICY.md'
+      - 'AGENTS.md'
+      - 'scripts/check-unicode-library-links.mjs'
+      - 'scripts/test-unicode-library-links.mjs'
+      - '.github/workflows/unicode-library-link-policy.yml'
+      - 'us/**'
+  pull_request:
+    paths:
+      - 'data/unicode-library-96.lock.json'
+      - 'docs/UNICODE_LIBRARY_LINK_POLICY.md'
+      - 'AGENTS.md'
+      - 'scripts/check-unicode-library-links.mjs'
+      - 'scripts/test-unicode-library-links.mjs'
+      - '.github/workflows/unicode-library-link-policy.yml'
+      - 'us/**'
+permissions:
+  contents: read
+jobs:
+  verify-url-lock:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check locked URL list and links in published articles
+        run: node scripts/check-unicode-library-links.mjs
+      - name: Verify guards against invented URLs, GPT tracking and external nofollow violations
+        run: node --test scripts/test-unicode-library-links.mjs

@@ -1,0 +1,575 @@
+{
+  "schemaVersion": 1,
+  "policy": "LOCKED - changes to the canonical list require explicit owner approval",
+  "siteOrigin": "https://letrasdiferentess.github.io",
+  "libraryHub": "https://letrasdiferentess.github.io/us/library/",
+  "moneyPage": "https://letrasdiferentess.github.io/us/",
+  "canonicalUrlsSha256": "59d5a23d48ee7631c0653afe313444fdea2ff45cd6049b38e4076c7e0aa0e5ec",
+  "lockedCount": 96,
+  "categories": [
+    {
+      "id": "unicode-characters",
+      "name": "Unicode Character Model & Properties",
+      "order": 1,
+      "articles": [
+        {
+          "slug": "unicode-code-points-characters-glyphs",
+          "url": "https://letrasdiferentess.github.io/us/unicode-code-points-characters-glyphs/",
+          "status": "PLANNED"
+        },
+        {
+          "slug": "unicode-scalar-values-surrogates",
+          "url": "https://letrasdiferentess.github.io/us/unicode-scalar-values-surrogates/",
+          "status": "PLANNED"
+        },
+        {
+          "slug": "unicode-general-categories",
+          "url": "https://letrasdiferentess.github.io/us/unicode-general-categories/",
+          "status": "PLANNED"
+        },
+        {
+          "slug": "unicode-script-properties",
+          "url": "https://letrasdiferentess.github.io/us/unicode-script-properties/",
+          "status": "PLANNED"
+        },
+        {
+          "slug": "combining-marks-diacritics",
+          "url": "https://letrasdiferentess.github.io/us/combining-marks-diacritics/",
+          "status": "PLANNED"
+        },
+        {
+          "slug": "grapheme-clusters-user-perceived-characters",
+          "url": "https://letrasdiferentess.github.io/us/grapheme-clusters-user-perceived-characters/",
+          "status": "PLANNED"
+        },
+        {
+          "slug": "default-ignorable-code-points",
+          "url": "https://letrasdiferentess.github.io/us/default-ignorable-code-points/",
+          "status": "PLANNED"
+        },
+        {
+          "slug": "unicode-versioning-character-stability",
+          "url": "https://letrasdiferentess.github.io/us/unicode-versioning-character-stability/",
+          "status": "PLANNED"
+        }
+      ]
+    },
+    {
+      "id": "styled-text",
+      "name": "Styled Text & Special Characters",
+      "order": 2,
+      "articles": [
+        {
+          "slug": "styled-unicode-text-vs-fonts",
+          "url": "https://letrasdiferentess.github.io/us/styled-unicode-text-vs-fonts/",
+          "status": "PLANNED"
+        },
+        {
+          "slug": "mathematical-alphanumeric-symbols",
+          "url": "https://letrasdiferentess.github.io/us/mathematical-alphanumeric-symbols/",
+          "status": "PLANNED"
+        },
+        {
+          "slug": "bold-italic-script-unicode-letters",
+          "url": "https://letrasdiferentess.github.io/us/bold-italic-script-unicode-letters/",
+          "status": "PLANNED"
+        },
+        {
+          "slug": "double-struck-fraktur-characters",
+          "url": "https://letrasdiferentess.github.io/us/double-struck-fraktur-characters/",
+          "status": "PLANNED"
+        },
+        {
+          "slug": "circled-enclosed-alphanumerics",
+          "url": "https://letrasdiferentess.github.io/us/circled-enclosed-alphanumerics/",
+          "status": "PLANNED"
+        },
+        {
+          "slug": "fullwidth-small-form-variants",
+          "url": "https://letrasdiferentess.github.io/us/fullwidth-small-form-variants/",
+          "status": "PLANNED"
+        },
+        {
+          "slug": "superscript-subscript-unicode-limits",
+          "url": "https://letrasdiferentess.github.io/us/superscript-subscript-unicode-limits/",
+          "status": "PLANNED"
+        },
+        {
+          "slug": "decorative-unicode-text-compatibility",
+          "url": "https://letrasdiferentess.github.io/us/decorative-unicode-text-compatibility/",
+          "status": "PLANNED"
+        }
+      ]
+    },
+    {
+      "id": "character-encoding",
+      "name": "Character Encoding & Data Interchange",
+      "order": 3,
+      "articles": [
+        {
+          "slug": "utf8-byte-sequences",
+          "url": "https://letrasdiferentess.github.io/us/utf8-byte-sequences/",
+          "status": "PLANNED"
+        },
+        {
+          "slug": "utf16-surrogate-pairs",
+          "url": "https://letrasdiferentess.github.io/us/utf16-surrogate-pairs/",
+          "status": "PLANNED"
+        },
+        {
+          "slug": "utf32-scalar-value-storage",
+          "url": "https://letrasdiferentess.github.io/us/utf32-scalar-value-storage/",
+          "status": "PLANNED"
+        },
+        {
+          "slug": "byte-order-marks-endianness",
+          "url": "https://letrasdiferentess.github.io/us/byte-order-marks-endianness/",
+          "status": "PLANNED"
+        },
+        {
+          "slug": "mojibake-causes-diagnosis",
+          "url": "https://letrasdiferentess.github.io/us/mojibake-causes-diagnosis/",
+          "status": "PLANNED"
+        },
+        {
+          "slug": "malformed-unicode-encoding-sequences",
+          "url": "https://letrasdiferentess.github.io/us/malformed-unicode-encoding-sequences/",
+          "status": "PLANNED"
+        },
+        {
+          "slug": "unicode-escapes-json-javascript",
+          "url": "https://letrasdiferentess.github.io/us/unicode-escapes-json-javascript/",
+          "status": "PLANNED"
+        },
+        {
+          "slug": "round-trip-text-encoding",
+          "url": "https://letrasdiferentess.github.io/us/round-trip-text-encoding/",
+          "status": "PLANNED"
+        }
+      ]
+    },
+    {
+      "id": "normalization-search",
+      "name": "Normalization, Casing, Collation & Search",
+      "order": 4,
+      "articles": [
+        {
+          "slug": "unicode-normalization-nfc-nfd",
+          "url": "https://letrasdiferentess.github.io/us/unicode-normalization-nfc-nfd/",
+          "status": "PLANNED"
+        },
+        {
+          "slug": "unicode-normalization-nfkc-nfkd",
+          "url": "https://letrasdiferentess.github.io/us/unicode-normalization-nfkc-nfkd/",
+          "status": "PLANNED"
+        },
+        {
+          "slug": "canonical-combining-class-reordering",
+          "url": "https://letrasdiferentess.github.io/us/canonical-combining-class-reordering/",
+          "status": "PLANNED"
+        },
+        {
+          "slug": "normalization-styled-unicode-text",
+          "url": "https://letrasdiferentess.github.io/us/normalization-styled-unicode-text/",
+          "status": "PLANNED"
+        },
+        {
+          "slug": "unicode-case-folding",
+          "url": "https://letrasdiferentess.github.io/us/unicode-case-folding/",
+          "status": "PLANNED"
+        },
+        {
+          "slug": "locale-sensitive-case-mapping",
+          "url": "https://letrasdiferentess.github.io/us/locale-sensitive-case-mapping/",
+          "status": "PLANNED"
+        },
+        {
+          "slug": "unicode-collation-algorithm",
+          "url": "https://letrasdiferentess.github.io/us/unicode-collation-algorithm/",
+          "status": "PLANNED"
+        },
+        {
+          "slug": "accent-insensitive-text-search",
+          "url": "https://letrasdiferentess.github.io/us/accent-insensitive-text-search/",
+          "status": "PLANNED"
+        },
+        {
+          "slug": "canonical-equivalence-text-matching",
+          "url": "https://letrasdiferentess.github.io/us/canonical-equivalence-text-matching/",
+          "status": "PLANNED"
+        },
+        {
+          "slug": "unicode-normalization-data-consistency",
+          "url": "https://letrasdiferentess.github.io/us/unicode-normalization-data-consistency/",
+          "status": "PLANNED"
+        }
+      ]
+    },
+    {
+      "id": "text-segmentation",
+      "name": "Text Segmentation, Regex & Cursor Behavior",
+      "order": 5,
+      "articles": [
+        {
+          "slug": "extended-grapheme-cluster-boundaries",
+          "url": "https://letrasdiferentess.github.io/us/extended-grapheme-cluster-boundaries/",
+          "status": "PLANNED"
+        },
+        {
+          "slug": "unicode-word-boundary-rules",
+          "url": "https://letrasdiferentess.github.io/us/unicode-word-boundary-rules/",
+          "status": "PLANNED"
+        },
+        {
+          "slug": "unicode-sentence-boundary-rules",
+          "url": "https://letrasdiferentess.github.io/us/unicode-sentence-boundary-rules/",
+          "status": "PLANNED"
+        },
+        {
+          "slug": "unicode-property-escapes-regex",
+          "url": "https://letrasdiferentess.github.io/us/unicode-property-escapes-regex/",
+          "status": "PLANNED"
+        },
+        {
+          "slug": "unicode-aware-regex-case-matching",
+          "url": "https://letrasdiferentess.github.io/us/unicode-aware-regex-case-matching/",
+          "status": "PLANNED"
+        },
+        {
+          "slug": "cursor-movement-complex-text",
+          "url": "https://letrasdiferentess.github.io/us/cursor-movement-complex-text/",
+          "status": "PLANNED"
+        },
+        {
+          "slug": "deleting-grapheme-clusters",
+          "url": "https://letrasdiferentess.github.io/us/deleting-grapheme-clusters/",
+          "status": "PLANNED"
+        },
+        {
+          "slug": "string-length-bytes-units-codepoints-graphemes",
+          "url": "https://letrasdiferentess.github.io/us/string-length-bytes-units-codepoints-graphemes/",
+          "status": "PLANNED"
+        }
+      ]
+    },
+    {
+      "id": "font-rendering",
+      "name": "Fonts, Shaping & Text Rendering",
+      "order": 6,
+      "articles": [
+        {
+          "slug": "font-coverage-unicode-support",
+          "url": "https://letrasdiferentess.github.io/us/font-coverage-unicode-support/",
+          "status": "PLANNED"
+        },
+        {
+          "slug": "font-fallback-mechanisms",
+          "url": "https://letrasdiferentess.github.io/us/font-fallback-mechanisms/",
+          "status": "PLANNED"
+        },
+        {
+          "slug": "missing-glyphs-tofu-boxes",
+          "url": "https://letrasdiferentess.github.io/us/missing-glyphs-tofu-boxes/",
+          "status": "PLANNED"
+        },
+        {
+          "slug": "text-shaping-vs-glyph-rendering",
+          "url": "https://letrasdiferentess.github.io/us/text-shaping-vs-glyph-rendering/",
+          "status": "PLANNED"
+        },
+        {
+          "slug": "ligatures-opentype-features",
+          "url": "https://letrasdiferentess.github.io/us/ligatures-opentype-features/",
+          "status": "PLANNED"
+        },
+        {
+          "slug": "harfbuzz-text-shaping",
+          "url": "https://letrasdiferentess.github.io/us/harfbuzz-text-shaping/",
+          "status": "PLANNED"
+        },
+        {
+          "slug": "unicode-range-font-subsetting",
+          "url": "https://letrasdiferentess.github.io/us/unicode-range-font-subsetting/",
+          "status": "PLANNED"
+        },
+        {
+          "slug": "cross-platform-text-rendering",
+          "url": "https://letrasdiferentess.github.io/us/cross-platform-text-rendering/",
+          "status": "PLANNED"
+        },
+        {
+          "slug": "font-metrics-line-height",
+          "url": "https://letrasdiferentess.github.io/us/font-metrics-line-height/",
+          "status": "PLANNED"
+        },
+        {
+          "slug": "combining-mark-placement-fonts",
+          "url": "https://letrasdiferentess.github.io/us/combining-mark-placement-fonts/",
+          "status": "PLANNED"
+        }
+      ]
+    },
+    {
+      "id": "clipboard-editors",
+      "name": "Clipboard, Editors & Markup",
+      "order": 7,
+      "articles": [
+        {
+          "slug": "clipboard-text-plain-vs-text-html",
+          "url": "https://letrasdiferentess.github.io/us/clipboard-text-plain-vs-text-html/",
+          "status": "PLANNED"
+        },
+        {
+          "slug": "unicode-copy-paste-round-trips",
+          "url": "https://letrasdiferentess.github.io/us/unicode-copy-paste-round-trips/",
+          "status": "PLANNED"
+        },
+        {
+          "slug": "invisible-characters-text-editors",
+          "url": "https://letrasdiferentess.github.io/us/invisible-characters-text-editors/",
+          "status": "PLANNED"
+        },
+        {
+          "slug": "rich-text-plain-text-conversion",
+          "url": "https://letrasdiferentess.github.io/us/rich-text-plain-text-conversion/",
+          "status": "PLANNED"
+        },
+        {
+          "slug": "contenteditable-unicode-text",
+          "url": "https://letrasdiferentess.github.io/us/contenteditable-unicode-text/",
+          "status": "PLANNED"
+        },
+        {
+          "slug": "markdown-escaping-special-characters",
+          "url": "https://letrasdiferentess.github.io/us/markdown-escaping-special-characters/",
+          "status": "PLANNED"
+        },
+        {
+          "slug": "html-entities-vs-unicode-characters",
+          "url": "https://letrasdiferentess.github.io/us/html-entities-vs-unicode-characters/",
+          "status": "PLANNED"
+        },
+        {
+          "slug": "text-selection-grapheme-clusters",
+          "url": "https://letrasdiferentess.github.io/us/text-selection-grapheme-clusters/",
+          "status": "PLANNED"
+        },
+        {
+          "slug": "unicode-text-spreadsheet-import-export",
+          "url": "https://letrasdiferentess.github.io/us/unicode-text-spreadsheet-import-export/",
+          "status": "PLANNED"
+        }
+      ]
+    },
+    {
+      "id": "multilingual-text",
+      "name": "Multilingual Text & Input Systems",
+      "order": 8,
+      "articles": [
+        {
+          "slug": "unicode-bidirectional-algorithm",
+          "url": "https://letrasdiferentess.github.io/us/unicode-bidirectional-algorithm/",
+          "status": "PLANNED"
+        },
+        {
+          "slug": "right-to-left-text-web-interfaces",
+          "url": "https://letrasdiferentess.github.io/us/right-to-left-text-web-interfaces/",
+          "status": "PLANNED"
+        },
+        {
+          "slug": "bcp47-language-tags-unicode",
+          "url": "https://letrasdiferentess.github.io/us/bcp47-language-tags-unicode/",
+          "status": "PLANNED"
+        },
+        {
+          "slug": "ime-composition-events",
+          "url": "https://letrasdiferentess.github.io/us/ime-composition-events/",
+          "status": "PLANNED"
+        },
+        {
+          "slug": "dead-keys-combining-character-input",
+          "url": "https://letrasdiferentess.github.io/us/dead-keys-combining-character-input/",
+          "status": "PLANNED"
+        },
+        {
+          "slug": "transliteration-vs-script-conversion",
+          "url": "https://letrasdiferentess.github.io/us/transliteration-vs-script-conversion/",
+          "status": "PLANNED"
+        },
+        {
+          "slug": "mixed-script-text-processing",
+          "url": "https://letrasdiferentess.github.io/us/mixed-script-text-processing/",
+          "status": "PLANNED"
+        },
+        {
+          "slug": "unicode-line-breaking-scripts",
+          "url": "https://letrasdiferentess.github.io/us/unicode-line-breaking-scripts/",
+          "status": "PLANNED"
+        },
+        {
+          "slug": "vertical-writing-systems-web",
+          "url": "https://letrasdiferentess.github.io/us/vertical-writing-systems-web/",
+          "status": "PLANNED"
+        }
+      ]
+    },
+    {
+      "id": "emoji-sequences",
+      "name": "Emoji & Symbol Sequences",
+      "order": 9,
+      "articles": [
+        {
+          "slug": "emoji-vs-text-presentation",
+          "url": "https://letrasdiferentess.github.io/us/emoji-vs-text-presentation/",
+          "status": "PLANNED"
+        },
+        {
+          "slug": "emoji-variation-selectors",
+          "url": "https://letrasdiferentess.github.io/us/emoji-variation-selectors/",
+          "status": "PLANNED"
+        },
+        {
+          "slug": "emoji-zwj-sequences",
+          "url": "https://letrasdiferentess.github.io/us/emoji-zwj-sequences/",
+          "status": "PLANNED"
+        },
+        {
+          "slug": "emoji-skin-tone-modifiers",
+          "url": "https://letrasdiferentess.github.io/us/emoji-skin-tone-modifiers/",
+          "status": "PLANNED"
+        },
+        {
+          "slug": "regional-indicator-flag-sequences",
+          "url": "https://letrasdiferentess.github.io/us/regional-indicator-flag-sequences/",
+          "status": "PLANNED"
+        },
+        {
+          "slug": "emoji-rendering-compatibility",
+          "url": "https://letrasdiferentess.github.io/us/emoji-rendering-compatibility/",
+          "status": "PLANNED"
+        }
+      ]
+    },
+    {
+      "id": "unicode-security",
+      "name": "Identifiers, Confusables & Security",
+      "order": 10,
+      "articles": [
+        {
+          "slug": "unicode-confusables-lookalikes",
+          "url": "https://letrasdiferentess.github.io/us/unicode-confusables-lookalikes/",
+          "status": "PLANNED"
+        },
+        {
+          "slug": "unicode-homograph-attacks",
+          "url": "https://letrasdiferentess.github.io/us/unicode-homograph-attacks/",
+          "status": "PLANNED"
+        },
+        {
+          "slug": "mixed-script-identifier-detection",
+          "url": "https://letrasdiferentess.github.io/us/mixed-script-identifier-detection/",
+          "status": "PLANNED"
+        },
+        {
+          "slug": "invisible-character-spoofing",
+          "url": "https://letrasdiferentess.github.io/us/invisible-character-spoofing/",
+          "status": "PLANNED"
+        },
+        {
+          "slug": "unicode-identifier-security-profiles",
+          "url": "https://letrasdiferentess.github.io/us/unicode-identifier-security-profiles/",
+          "status": "PLANNED"
+        },
+        {
+          "slug": "idna-internationalized-domain-names",
+          "url": "https://letrasdiferentess.github.io/us/idna-internationalized-domain-names/",
+          "status": "PLANNED"
+        },
+        {
+          "slug": "displaying-untrusted-unicode-safely",
+          "url": "https://letrasdiferentess.github.io/us/displaying-untrusted-unicode-safely/",
+          "status": "PLANNED"
+        }
+      ]
+    },
+    {
+      "id": "text-accessibility",
+      "name": "Text Accessibility",
+      "order": 11,
+      "articles": [
+        {
+          "slug": "screen-readers-styled-unicode",
+          "url": "https://letrasdiferentess.github.io/us/screen-readers-styled-unicode/",
+          "status": "PLANNED"
+        },
+        {
+          "slug": "accessible-alternatives-decorative-text",
+          "url": "https://letrasdiferentess.github.io/us/accessible-alternatives-decorative-text/",
+          "status": "PLANNED"
+        },
+        {
+          "slug": "emoji-names-assistive-technology",
+          "url": "https://letrasdiferentess.github.io/us/emoji-names-assistive-technology/",
+          "status": "PLANNED"
+        },
+        {
+          "slug": "bidirectional-text-accessibility",
+          "url": "https://letrasdiferentess.github.io/us/bidirectional-text-accessibility/",
+          "status": "PLANNED"
+        },
+        {
+          "slug": "visual-vs-accessible-text-meaning",
+          "url": "https://letrasdiferentess.github.io/us/visual-vs-accessible-text-meaning/",
+          "status": "PLANNED"
+        }
+      ]
+    },
+    {
+      "id": "text-apis",
+      "name": "Text APIs & Implementation Patterns",
+      "order": 12,
+      "articles": [
+        {
+          "slug": "javascript-strings-code-points",
+          "url": "https://letrasdiferentess.github.io/us/javascript-strings-code-points/",
+          "status": "PLANNED"
+        },
+        {
+          "slug": "javascript-intl-segmenter",
+          "url": "https://letrasdiferentess.github.io/us/javascript-intl-segmenter/",
+          "status": "PLANNED"
+        },
+        {
+          "slug": "python-unicodedata",
+          "url": "https://letrasdiferentess.github.io/us/python-unicodedata/",
+          "status": "PLANNED"
+        },
+        {
+          "slug": "icu-unicode-text-apis",
+          "url": "https://letrasdiferentess.github.io/us/icu-unicode-text-apis/",
+          "status": "PLANNED"
+        },
+        {
+          "slug": "unicode-safe-string-truncation",
+          "url": "https://letrasdiferentess.github.io/us/unicode-safe-string-truncation/",
+          "status": "PLANNED"
+        },
+        {
+          "slug": "unicode-input-validation",
+          "url": "https://letrasdiferentess.github.io/us/unicode-input-validation/",
+          "status": "PLANNED"
+        },
+        {
+          "slug": "unicode-regression-test-cases",
+          "url": "https://letrasdiferentess.github.io/us/unicode-regression-test-cases/",
+          "status": "PLANNED"
+        },
+        {
+          "slug": "text-interoperability-test-checklist",
+          "url": "https://letrasdiferentess.github.io/us/text-interoperability-test-checklist/",
+          "status": "PLANNED"
+        }
+      ]
+    }
+  ]
+}
