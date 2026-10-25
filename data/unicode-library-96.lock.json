@@ -40,17 +40,17 @@
         {
           "slug": "grapheme-clusters-user-perceived-characters",
           "url": "https://letrasdiferentess.github.io/us/grapheme-clusters-user-perceived-characters/",
-          "status": "PLANNED"
+          "status": "PUBLISHED"
         },
         {
           "slug": "default-ignorable-code-points",
           "url": "https://letrasdiferentess.github.io/us/default-ignorable-code-points/",
-          "status": "PLANNED"
+          "status": "PUBLISHED"
         },
         {
           "slug": "unicode-versioning-character-stability",
           "url": "https://letrasdiferentess.github.io/us/unicode-versioning-character-stability/",
-          "status": "PLANNED"
+          "status": "PUBLISHED"
         }
       ]
     },
@@ -62,12 +62,12 @@
         {
           "slug": "styled-unicode-text-vs-fonts",
           "url": "https://letrasdiferentess.github.io/us/styled-unicode-text-vs-fonts/",
-          "status": "PLANNED"
+          "status": "PUBLISHED"
         },
         {
           "slug": "mathematical-alphanumeric-symbols",
           "url": "https://letrasdiferentess.github.io/us/mathematical-alphanumeric-symbols/",
-          "status": "PLANNED"
+          "status": "PUBLISHED"
         },
         {
           "slug": "bold-italic-script-unicode-letters",
