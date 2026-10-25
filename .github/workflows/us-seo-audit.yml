@@ -2,6 +2,11 @@ name: US Fancy Text UX and SEO audit
 
 on:
   workflow_dispatch:
+  pull_request:
+    paths:
+      - 'us/index.html'
+      - 'tests/us-seo-smoke.mjs'
+      - '.github/workflows/us-seo-audit.yml'
   push:
     branches: [main]
     paths:

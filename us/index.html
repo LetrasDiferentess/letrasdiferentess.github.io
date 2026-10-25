@@ -425,6 +425,229 @@ window.usPrioritizeFonts = function(list){
 @media(max-width:600px){.seo-info{padding:12px 17px}}
 </style>
 
+<!-- Critical tool layout and 4-tab mobile CSS were previously at document end; loading before first paint prevents layout reflow. -->
+<style id="ultimate-mobile-no-che">
+#lf194-root,
+#lf194-root *{box-sizing:border-box !important;}
+
+#lf194-root{
+  width:100% !important;
+  max-width:1280px !important;
+  margin:0 auto !important;
+  padding:0 8px 20px !important;
+  overflow-x:clip !important;
+}
+
+#lf194-root .lf-card,
+#lf194-root .lf-tabs,
+#lf194-root .lf-tabs-hint,
+#lf194-root .lf-header{
+  width:100% !important;
+  max-width:100% !important;
+  margin-left:0 !important;
+  margin-right:0 !important;
+}
+
+#lf194-root #view-bio .preview-before-fonts,
+#lf194-root #view-bio .fonts-in-red-box,
+#lf194-root #view-bio .bio-preview-card,
+#lf194-root #view-bio .bio-layout,
+#lf194-root #view-bio .bio-layout > div,
+#lf194-root #view-bio .ig-prof-header,
+#lf194-root #view-bio .ig-prof-info,
+#lf194-root #view-bio .ig-prof-actions{
+  width:100% !important;
+  max-width:100% !important;
+  min-width:0 !important;
+  margin-left:0 !important;
+  margin-right:0 !important;
+}
+
+#lf194-root #view-bio .preview-before-fonts,
+#lf194-root #view-bio .fonts-in-red-box,
+#lf194-root #view-bio .bio-preview-card{
+  overflow:hidden !important;
+}
+
+#lf194-root #view-bio .bio-layout{overflow:visible !important;}
+
+#lf194-root #bio-input,
+#lf194-root .lf-input{
+  width:100% !important;
+  max-width:100% !important;
+  min-width:0 !important;
+}
+
+#lf194-root #view-bio .deco-wrap{
+  width:100% !important;
+  max-width:100% !important;
+  display:flex !important;
+  flex-wrap:wrap !important;
+  gap:6px !important;
+  overflow:visible !important;
+  padding:0 !important;
+}
+
+#lf194-root #view-bio .deco-wrap button,
+#lf194-root #view-bio [style*="flex-wrap:wrap"] button{
+  flex:0 0 auto !important;
+  max-width:100% !important;
+  min-width:0 !important;
+}
+
+#lf194-root #view-bio .lf-row{
+  width:100% !important;
+  max-width:100% !important;
+  flex-wrap:wrap !important;
+  gap:8px !important;
+}
+
+#lf194-root #view-bio #bio-grid{
+  width:100% !important;
+  max-width:100% !important;
+  grid-template-columns:minmax(0,1fr) !important;
+  overflow:hidden !important;
+}
+
+#lf194-root #view-bio #bio-grid button{
+  width:100% !important;
+  max-width:100% !important;
+  min-width:0 !important;
+  overflow:hidden !important;
+  padding:10px 12px !important;
+}
+#lf194-root #view-writer,
+#lf194-root #view-writer .tw-compact-root,
+#lf194-root #view-writer .tw-card,
+#lf194-root #view-writer .tw-main-card{
+  width:100% !important;
+  max-width:100% !important;
+  min-width:0 !important;
+}
+
+@media(min-width:769px){
+  #lf194-root{
+    max-width:1280px !important;
+    padding-left:12px !important;
+    padding-right:12px !important;
+  }
+}
+
+@media(max-width:768px){
+  #lf194-root{
+    width:100% !important;
+    max-width:100% !important;
+    padding:0 4px 16px !important;
+  }
+
+  #lf194-root .lf-header{padding:12px !important;}
+  #lf194-root .lf-card{padding:12px !important;}
+  #lf194-root #bio-input{height:80px !important;}
+
+  #lf194-root .lf-btn,
+  #lf194-root #view-bio button,
+  #lf194-root #view-writer button,
+  #lf194-root #lf194-icon-close,
+  #bio-icon-picker button,
+  #bio-fonts-picker button{
+    min-height:44px !important;
+  }
+
+  #lf194-root #lf194-icon-close{
+    width:44px !important;
+    height:44px !important;
+    flex:0 0 44px !important;
+  }
+
+  #lf194-root #view-bio .ig-prof-info{overflow:hidden !important;}
+}
+
+@media(max-width:400px){
+  #lf194-root .lf-card{padding:10px !important;}
+}
+</style>
+<style id="mobile-tabs-fit-4">
+@media(max-width:768px){
+  #lf194-root .lf-tabs{
+    display:grid !important;
+    grid-template-columns:repeat(4,minmax(0,1fr)) !important;
+    gap:4px !important;
+    width:100% !important;
+    max-width:100% !important;
+    margin:0 0 10px !important;
+    padding:3px !important;
+    overflow:visible !important;
+  }
+
+  #lf194-root .lf-tab{
+    width:100% !important;
+    min-width:0 !important;
+    max-width:none !important;
+    min-height:44px !important;
+    height:44px !important;
+    padding:0 3px !important;
+    gap:2px !important;
+    justify-content:center !important;
+    white-space:nowrap !important;
+    overflow:hidden !important;
+  }
+
+  #lf194-root .lf-tab-icon{
+    font-size:12px !important;
+    line-height:1 !important;
+    flex:0 0 auto !important;
+  }
+
+  #lf194-root .lf-tab-text{
+    min-width:0 !important;
+    max-width:100% !important;
+    overflow:hidden !important;
+    align-items:center !important;
+    justify-content:center !important;
+  }
+
+  #lf194-root .lf-tab-title{
+    font-size:9.4px !important;
+    line-height:1 !important;
+    letter-spacing:-0.15px !important;
+    white-space:nowrap !important;
+    overflow:hidden !important;
+  }
+
+  #lf194-root .lf-tab-sub{display:none !important;}
+  #lf194-root .lf-tab.lf-active::after{
+    top:3px !important;
+    right:3px !important;
+    font-size:5px !important;
+  }
+}
+
+
+@media(max-width:430px){
+  #lf194-root .lf-tab-title{font-size:0 !important;letter-spacing:0 !important;overflow:visible !important;}
+  #lf194-root .lf-tab-title::after{font-size:9.2px;line-height:1;font-weight:900;white-space:nowrap;}
+  #lf194-root .lf-tab:nth-child(1) .lf-tab-title::after{content:'Mão';}
+  #lf194-root .lf-tab:nth-child(2) .lf-tab-title::after{content:'Letras';}
+  #lf194-root .lf-tab:nth-child(3) .lf-tab-title::after{content:'Bio';}
+  #lf194-root .lf-tab:nth-child(4) .lf-tab-title::after{content:'Jogos';}
+  #lf194-root .lf-tab-icon{font-size:11px !important;}
+}
+
+@media(max-width:360px){
+  #lf194-root .lf-tab{
+    min-height:44px !important;
+    height:44px !important;
+    padding:0 1px !important;
+    gap:1px !important;
+  }
+  #lf194-root .lf-tab-icon{font-size:10px !important;}
+  #lf194-root .lf-tab-title{
+    font-size:0 !important;
+    letter-spacing:0 !important;
+  }
+  #lf194-root .lf-tab-title::after{font-size:8.8px !important;}
+}
+</style>
 </head><body style="margin:0;background:#0A0A0E">
 <div id="lf194-root"><h1 id="inicio" style="font:800 clamp(20px,2.6vw,26px)/1.25 Inter,system-ui,sans-serif;padding:12px 16px 3px;margin:0;color:#fff;">Fancy Text Generator – Copy & Paste Fonts</h1><p style="color:#aaa;padding:0 16px 8px;margin:0;font:12px/1.45 system-ui,sans-serif">Create stylish Unicode text for bios, nicknames and messages. Choose from English-friendly fonts and copy instantly.</p>
 <style>
@@ -2008,9 +2231,9 @@ window.FSDMarketFonts={version:VERSION,market:MARKET,detectMarket,apply,coverage
 })();
 </script>
 
-<script src="/assets/font-converter.js"></script>
+<script defer src="/assets/font-converter.js"></script>
 
-<script src="/assets/generator-engine.js"></script>
+<script defer src="/assets/generator-engine.js"></script>
 
 
 <div id="bio-icon-picker" style="position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:999999;display:none;align-items:center;justify-content:center;padding:16px">
@@ -2285,146 +2508,7 @@ document.addEventListener('keydown',function(e){if(e.key==='Escape')closeBioFont
 
 
 
-<style id="ultimate-mobile-no-che">
-#lf194-root,
-#lf194-root *{box-sizing:border-box !important;}
-
-#lf194-root{
-  width:100% !important;
-  max-width:1280px !important;
-  margin:0 auto !important;
-  padding:0 8px 20px !important;
-  overflow-x:clip !important;
-}
-
-#lf194-root .lf-card,
-#lf194-root .lf-tabs,
-#lf194-root .lf-tabs-hint,
-#lf194-root .lf-header{
-  width:100% !important;
-  max-width:100% !important;
-  margin-left:0 !important;
-  margin-right:0 !important;
-}
-
-#lf194-root #view-bio .preview-before-fonts,
-#lf194-root #view-bio .fonts-in-red-box,
-#lf194-root #view-bio .bio-preview-card,
-#lf194-root #view-bio .bio-layout,
-#lf194-root #view-bio .bio-layout > div,
-#lf194-root #view-bio .ig-prof-header,
-#lf194-root #view-bio .ig-prof-info,
-#lf194-root #view-bio .ig-prof-actions{
-  width:100% !important;
-  max-width:100% !important;
-  min-width:0 !important;
-  margin-left:0 !important;
-  margin-right:0 !important;
-}
-
-#lf194-root #view-bio .preview-before-fonts,
-#lf194-root #view-bio .fonts-in-red-box,
-#lf194-root #view-bio .bio-preview-card{
-  overflow:hidden !important;
-}
-
-#lf194-root #view-bio .bio-layout{overflow:visible !important;}
-
-#lf194-root #bio-input,
-#lf194-root .lf-input{
-  width:100% !important;
-  max-width:100% !important;
-  min-width:0 !important;
-}
-
-#lf194-root #view-bio .deco-wrap{
-  width:100% !important;
-  max-width:100% !important;
-  display:flex !important;
-  flex-wrap:wrap !important;
-  gap:6px !important;
-  overflow:visible !important;
-  padding:0 !important;
-}
-
-#lf194-root #view-bio .deco-wrap button,
-#lf194-root #view-bio [style*="flex-wrap:wrap"] button{
-  flex:0 0 auto !important;
-  max-width:100% !important;
-  min-width:0 !important;
-}
-
-#lf194-root #view-bio .lf-row{
-  width:100% !important;
-  max-width:100% !important;
-  flex-wrap:wrap !important;
-  gap:8px !important;
-}
-
-#lf194-root #view-bio #bio-grid{
-  width:100% !important;
-  max-width:100% !important;
-  grid-template-columns:minmax(0,1fr) !important;
-  overflow:hidden !important;
-}
-
-#lf194-root #view-bio #bio-grid button{
-  width:100% !important;
-  max-width:100% !important;
-  min-width:0 !important;
-  overflow:hidden !important;
-  padding:10px 12px !important;
-}
-#lf194-root #view-writer,
-#lf194-root #view-writer .tw-compact-root,
-#lf194-root #view-writer .tw-card,
-#lf194-root #view-writer .tw-main-card{
-  width:100% !important;
-  max-width:100% !important;
-  min-width:0 !important;
-}
-
-@media(min-width:769px){
-  #lf194-root{
-    max-width:1280px !important;
-    padding-left:12px !important;
-    padding-right:12px !important;
-  }
-}
-
-@media(max-width:768px){
-  #lf194-root{
-    width:100% !important;
-    max-width:100% !important;
-    padding:0 4px 16px !important;
-  }
-
-  #lf194-root .lf-header{padding:12px !important;}
-  #lf194-root .lf-card{padding:12px !important;}
-  #lf194-root #bio-input{height:80px !important;}
-
-  #lf194-root .lf-btn,
-  #lf194-root #view-bio button,
-  #lf194-root #view-writer button,
-  #lf194-root #lf194-icon-close,
-  #bio-icon-picker button,
-  #bio-fonts-picker button{
-    min-height:44px !important;
-  }
-
-  #lf194-root #lf194-icon-close{
-    width:44px !important;
-    height:44px !important;
-    flex:0 0 44px !important;
-  }
-
-  #lf194-root #view-bio .ig-prof-info{overflow:hidden !important;}
-}
-
-@media(max-width:400px){
-  #lf194-root .lf-card{padding:10px !important;}
-}
-</style>
+<!-- CSS ultimate-mobile-no-che loaded in head to avoid late layout shifts -->
 
 
 
@@ -2488,7 +2572,7 @@ document.addEventListener('keydown',function(e){if(e.key==='Escape')closeBioFont
 </script>
 
 <!-- FILE IMPORT ENGINES: self-contained DOCX + PDF text-layer -->
-<script src="/assets/jszip-3.10.1.js"></script>
+<script defer src="/assets/jszip-3.10.1.js"></script>
 <script id="tw-file-parsers">// FILE IMPORT HELPERS: DOCX + PDF text layer (self-contained, no OCR)
 async function twReadDocxText(file){
   if(typeof JSZip==='undefined') throw new Error('O mecanismo DOCX não está disponível');
@@ -3007,7 +3091,7 @@ async function twReadPdfTextLayer(file){
 </script>
 
 <!-- TEXT WRITER TAB 1 - isolated JavaScript -->
-<script src="/assets/text-writer.js"></script>
+<script defer src="/assets/text-writer.js"></script>
 <script id="tw-integrated-lock-js">
 // FINAL LOCK - 300 FONTS THẬT + SOCIAL NATIVE - 2026-09-30 03:51 - b9acbb072cefa47e
 (function(){
@@ -3030,93 +3114,12 @@ async function twReadPdfTextLayer(file){
 
 
 
-<style id="mobile-tabs-fit-4">
-@media(max-width:768px){
-  #lf194-root .lf-tabs{
-    display:grid !important;
-    grid-template-columns:repeat(4,minmax(0,1fr)) !important;
-    gap:4px !important;
-    width:100% !important;
-    max-width:100% !important;
-    margin:0 0 10px !important;
-    padding:3px !important;
-    overflow:visible !important;
-  }
-
-  #lf194-root .lf-tab{
-    width:100% !important;
-    min-width:0 !important;
-    max-width:none !important;
-    min-height:44px !important;
-    height:44px !important;
-    padding:0 3px !important;
-    gap:2px !important;
-    justify-content:center !important;
-    white-space:nowrap !important;
-    overflow:hidden !important;
-  }
-
-  #lf194-root .lf-tab-icon{
-    font-size:12px !important;
-    line-height:1 !important;
-    flex:0 0 auto !important;
-  }
-
-  #lf194-root .lf-tab-text{
-    min-width:0 !important;
-    max-width:100% !important;
-    overflow:hidden !important;
-    align-items:center !important;
-    justify-content:center !important;
-  }
-
-  #lf194-root .lf-tab-title{
-    font-size:9.4px !important;
-    line-height:1 !important;
-    letter-spacing:-0.15px !important;
-    white-space:nowrap !important;
-    overflow:hidden !important;
-  }
-
-  #lf194-root .lf-tab-sub{display:none !important;}
-  #lf194-root .lf-tab.lf-active::after{
-    top:3px !important;
-    right:3px !important;
-    font-size:5px !important;
-  }
-}
-
-
-@media(max-width:430px){
-  #lf194-root .lf-tab-title{font-size:0 !important;letter-spacing:0 !important;overflow:visible !important;}
-  #lf194-root .lf-tab-title::after{font-size:9.2px;line-height:1;font-weight:900;white-space:nowrap;}
-  #lf194-root .lf-tab:nth-child(1) .lf-tab-title::after{content:'Mão';}
-  #lf194-root .lf-tab:nth-child(2) .lf-tab-title::after{content:'Letras';}
-  #lf194-root .lf-tab:nth-child(3) .lf-tab-title::after{content:'Bio';}
-  #lf194-root .lf-tab:nth-child(4) .lf-tab-title::after{content:'Jogos';}
-  #lf194-root .lf-tab-icon{font-size:11px !important;}
-}
-
-@media(max-width:360px){
-  #lf194-root .lf-tab{
-    min-height:44px !important;
-    height:44px !important;
-    padding:0 1px !important;
-    gap:1px !important;
-  }
-  #lf194-root .lf-tab-icon{font-size:10px !important;}
-  #lf194-root .lf-tab-title{
-    font-size:0 !important;
-    letter-spacing:0 !important;
-  }
-  #lf194-root .lf-tab-title::after{font-size:8.8px !important;}
-}
-</style>
+<!-- CSS mobile-tabs-fit-4 loaded in head to avoid late layout shifts -->
 
 
 
 
-<script src="/assets/aesthetic-engine.js"></script>
+<script defer src="/assets/aesthetic-engine.js"></script>
 
 <script>window.FSD_WRITER_RAW_SOURCE_FIX='1.0.0';window.FSD_BIO_RAW_SOURCE_FIX='1.0.0';</script>
 <script id="us-root-host-form-safety">

@@ -12,12 +12,30 @@ const browser=await chromium.launch({headless:true,...(process.env.USE_SYSTEM_CH
 for(const t of tests){
  const context=await browser.newContext({viewport:t.viewport,deviceScaleFactor:1,isMobile:t.mobile,hasTouch:t.mobile,locale:'en-US'});
  const page=await context.newPage();
+ await page.addInitScript(() => {
+   window.__usInitialShifts = [];
+   new PerformanceObserver(list => {
+    for (const entry of list.getEntries()) {
+     if (entry.hadRecentInput) continue;
+     window.__usInitialShifts.push({
+      value:entry.value, at:Math.round(entry.startTime),
+      sources:(entry.sources||[]).map(s=>({
+       selector:s.node?(s.node.id?'#'+s.node.id:s.node.nodeName?.toLowerCase()):null,
+       previous:s.previousRect, current:s.currentRect
+      }))
+     });
+    }
+   }).observe({type:'layout-shift',buffered:true});
+  });
  const errors=[]; page.on('pageerror', e=>errors.push(String(e).slice(0,500)));
  const begin=Date.now();
  try{
   const response=await page.goto(BASE,{waitUntil:'domcontentloaded',timeout:60000});
   if(!response?.ok())throw Error('HTTP '+response?.status());
   await page.locator('#quick-grid .lf-font-item').first().waitFor({state:'attached',timeout:45000});
+  await page.waitForTimeout(1500);
+  const initialShifts=await page.evaluate(()=>window.__usInitialShifts||[]);
+  console.log('US_LAYOUT_INITIAL',JSON.stringify({device:t.name,cls:initialShifts.reduce((sum,x)=>sum+x.value,0),shifts:initialShifts.slice(0,12)}).slice(0,12000));
   const title=await page.title();
   const headings=await page.locator('h1').allTextContents();
   const canonical=await page.locator('link[rel="canonical"]').getAttribute('href');
