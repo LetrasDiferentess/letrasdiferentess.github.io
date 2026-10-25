@@ -68,8 +68,10 @@ function utf16UnitsForScalar(cp) {
   return [0xD800 + (v &gt;&gt; 10),
           0xDC00 + (v &amp; 0x3FF)];
 }
-console.log(utf16UnitsForScalar(0x1F600));
-// [0xD83D, 0xDE00] in hexadecimal</code></pre>
+console.log(utf16UnitsForScalar(0x1F600).map(
+  x =&gt; x.toString(16).toUpperCase().padStart(4, "0")
+));
+// ["D83D", "DE00"]</code></pre>
 <p>In Python, <code>ord()</code> returns the code-point number of a one-element string, and <code>chr()</code> produces a string for a code-point position. When emitting UTF-8, the default strict encoder rejects isolated surrogates:</p>
 <pre><code>face = "\U0001F600"
 assert len(face) == 1
