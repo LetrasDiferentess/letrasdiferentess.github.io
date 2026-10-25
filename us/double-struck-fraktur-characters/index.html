@@ -1,0 +1,106 @@
+<!doctype html><html lang="en-US"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Double-Struck and Fraktur Unicode Characters: Mathematical Identity, Gaps and Glyphs | Letras Diferentes Research Library</title><meta name="description" content="Detailed Unicode reference for blackboard bold, Fraktur and bold Fraktur letter repertoires, BMP exceptions, mathematical semantics, compatibility folding and reliable code-point maps."><meta name="robots" content="index,follow"><link rel="canonical" href="https://letrasdiferentess.github.io/us/double-struck-fraktur-characters/"><meta property="og:type" content="article"><meta property="og:title" content="Double-Struck and Fraktur Unicode Characters: Mathematical Identity, Gaps and Glyphs"><meta property="og:description" content="Detailed Unicode reference for blackboard bold, Fraktur and bold Fraktur letter repertoires, BMP exceptions, mathematical semantics, compatibility folding and reliable code-point maps."><meta property="og:url" content="https://letrasdiferentess.github.io/us/double-struck-fraktur-characters/"><link rel="stylesheet" href="/us/library/article.css"><script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","@id":"https://letrasdiferentess.github.io/us/double-struck-fraktur-characters/#article","headline":"Double-Struck and Fraktur Unicode Characters: Mathematical Identity, Gaps and Glyphs","description":"Detailed Unicode reference for blackboard bold, Fraktur and bold Fraktur letter repertoires, BMP exceptions, mathematical semantics, compatibility folding and reliable code-point maps.","inLanguage":"en-US","datePublished":"2026-10-25","dateModified":"2026-10-25","author":{"@type":"Organization","name":"Letras Diferentes"},"publisher":{"@type":"Organization","name":"Letras Diferentes","url":"https://letrasdiferentess.github.io/"},"mainEntityOfPage":"https://letrasdiferentess.github.io/us/double-struck-fraktur-characters/","isPartOf":{"@type":"WebPage","@id":"https://letrasdiferentess.github.io/us/library/"}}</script></head><body><a class="skip" href="#main">Skip to article</a><header class="sitehead"><div class="shell"><a class="brand" href="/us/">Letras <span>Diferentes</span></a><nav aria-label="Site"><a href="/us/">Fancy Text Tool</a><a href="/us/library/">Research Library</a></nav></div></header><div class="shell"><nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/us/">Home</a><span aria-hidden="true">/</span><a href="/us/library/">Research Library</a><span aria-hidden="true">/</span>Styled Text &amp; Special Characters</nav><div class="headercopy"><span class="eyebrow">Unicode research · Double-struck and Fraktur</span><h1>Double-Struck and Fraktur Unicode Characters: Mathematical Identity, Gaps and Glyphs</h1><p class="dek">Detailed Unicode reference for blackboard bold, Fraktur and bold Fraktur letter repertoires, BMP exceptions, mathematical semantics, compatibility folding and reliable code-point maps.</p><div class="meta"><span>Technical reference</span><span>Unicode baseline: 18.0.0</span><time datetime="2026-10-25">Updated 25 October 2026</time></div></div><div class="layout"><main id="main" class="article"><article>
+<h2 id="identity">Double-struck and Fraktur are encoded mathematical alphabets</h2>
+<p>Double-struck letters (often informally called <em>blackboard bold</em>) and Fraktur letters are specialized mathematical letter symbols. A capital letter drawn with double vertical strokes may denote a number set, while Fraktur letters are used in some algebraic and analytic notation. Unicode encodes these mathematical alphabet forms as distinct characters to preserve symbolic distinctions in plain-text interchange. These are not merely font settings: <code>U+0043 C</code> LATIN CAPITAL LETTER C and <code>U+2102 ℂ</code> DOUBLE-STRUCK CAPITAL C are different code points with different names and mathematical uses.</p>
+<p>Unicode's general policy prefers ordinary letters with typographic markup for ordinary prose. Mathematical alphanumeric symbols are an exception because the alphabet style may identify a different variable. A double-struck symbol's mathematical meaning is not fixed universally—for example, ℂ conventionally denotes complex numbers, but authors can choose other definitions. Unicode provides the character identity, not a mathematical type system.</p>
+<p>Common styled-text generators reuse these alphabets as decoration. That produces copyable Unicode symbols rather than a true custom font. The result may be portable across plain-text fields at the code-point level, but font coverage, normalization and assistive technology determine whether the user experience survives unchanged.</p>
+<div class="note"><strong>Important distinction:</strong> Mathematical Fraktur code points are not the same thing as choosing a blackletter <em>font</em> for regular Latin text. The Unicode characters carry the mathematical alphabet identity even when rendered in a fallback typeface.</div>
+
+<h2 id="inventory">Repertoire and verified code-point examples</h2>
+<p>The primary ranges sit in the Mathematical Alphanumeric Symbols block, <code>U+1D400..U+1D7FF</code>. Fraktur uppercase A begins at <code>U+1D504</code>; Fraktur lowercase a at <code>U+1D51E</code>. Double-struck uppercase A begins at <code>U+1D538</code>; lowercase a at <code>U+1D552</code>. Bold Fraktur uppercase A begins at <code>U+1D56C</code>. Their uppercase alphabets appear in nearly consecutive mathematical runs, but several characters were already encoded in the BMP and are represented by deliberate holes.</p>
+<div class="table-scroll"><table><thead><tr><th>Character</th><th>Code point</th><th>Unicode name</th></tr></thead><tbody>
+<tr><td><code>𝔄</code></td><td><code>U+1D504</code></td><td>MATHEMATICAL FRAKTUR CAPITAL A</td></tr>
+<tr><td><code>𝔞</code></td><td><code>U+1D51E</code></td><td>MATHEMATICAL FRAKTUR SMALL A</td></tr>
+<tr><td><code>𝕬</code></td><td><code>U+1D56C</code></td><td>MATHEMATICAL BOLD FRAKTUR CAPITAL A</td></tr>
+<tr><td><code>𝔸</code></td><td><code>U+1D538</code></td><td>MATHEMATICAL DOUBLE-STRUCK CAPITAL A</td></tr>
+<tr><td><code>𝕒</code></td><td><code>U+1D552</code></td><td>MATHEMATICAL DOUBLE-STRUCK SMALL A</td></tr>
+<tr><td><code>ℂ</code></td><td><code>U+2102</code></td><td>DOUBLE-STRUCK CAPITAL C</td></tr>
+<tr><td><code>ℌ</code></td><td><code>U+210C</code></td><td>BLACK-LETTER CAPITAL H</td></tr>
+<tr><td><code>ℜ</code></td><td><code>U+211C</code></td><td>BLACK-LETTER CAPITAL R</td></tr>
+<tr><td><code>𝟘</code></td><td><code>U+1D7D8</code></td><td>MATHEMATICAL DOUBLE-STRUCK DIGIT ZERO</td></tr>
+</tbody></table></div>
+<p>Double-struck decimal digits form a separate contiguous range beginning at <code>U+1D7D8</code> for zero and ending at <code>U+1D7E1</code> for nine. The Fraktur alphabets do not imply a corresponding complete Fraktur digit set. The presence of multiple styled letter alphabets does not justify generating numerals or punctuation by arbitrary Unicode arithmetic.</p>
+<p>Not every Fraktur glyph is drawn identically across math fonts. Fonts may vary stroke weight, terminals, and ornaments while targeting the same Unicode scalar. A screenshot showing a Gothic-looking capital letter is not sufficient evidence that its underlying code point belongs to the mathematical Fraktur alphabet.</p>
+
+<h2 id="exceptions">Legacy black-letter and double-struck symbols</h2>
+<p>Historically encoded symbols from the BMP Letterlike Symbols block occupy certain positions of these mathematical alphabets. Unicode retained their existing code points; gaps in the supplementary alphabetic ranges avoid introducing duplicate abstract characters. The main historical exceptions relevant to uppercase Fraktur are:</p>
+<div class="table-scroll"><table><thead><tr><th>Fraktur letter</th><th>BMP code point</th><th>Formal legacy name</th></tr></thead><tbody>
+<tr><td>C</td><td><code>U+212D</code> ℭ</td><td>BLACK-LETTER CAPITAL C</td></tr>
+<tr><td>H</td><td><code>U+210C</code> ℌ</td><td>BLACK-LETTER CAPITAL H</td></tr>
+<tr><td>I</td><td><code>U+2111</code> ℑ</td><td>BLACK-LETTER CAPITAL I</td></tr>
+<tr><td>R</td><td><code>U+211C</code> ℜ</td><td>BLACK-LETTER CAPITAL R</td></tr>
+<tr><td>Z</td><td><code>U+2128</code> ℨ</td><td>BLACK-LETTER CAPITAL Z</td></tr>
+</tbody></table></div>
+<p>For double-struck uppercase letters, the preexisting BMP exceptions include <code>U+2102 ℂ</code> (C), <code>U+210D ℍ</code> (H), <code>U+2115 ℕ</code> (N), <code>U+2119 ℙ</code> (P), <code>U+211A ℚ</code> (Q), <code>U+211D ℝ</code> (R), and <code>U+2124 ℤ</code> (Z). They are valid, standard members of the mathematical double-struck alphabet, even though they are not in the supplementary block.</p>
+<p>Consequently, the algorithm <code>0x1D538 + (letter - 'A')</code> fails for double-struck C, and <code>0x1D504 + (letter - 'A')</code> fails for Fraktur C. Some invalid results fall in unassigned holes that a font may render as boxes. Adding a fallback glyph based only on appearance could silently change the letter's identity.</p>
+<p>These historical exceptions are further discussed in our <a href="/us/mathematical-alphanumeric-symbols/">mathematical alphanumeric repertoire reference</a>, including how the repertoire differs from a conventional complete font.</p>
+
+<h2 id="semantics">Mathematics, historical typography and Unicode intent</h2>
+<p>In mathematical prose, a double-struck symbol can distinguish a recognized number domain such as ℕ, ℤ, ℚ, ℝ, or ℂ. Fraktur may distinguish Lie algebras, ideals, or other symbolic objects according to the author's convention. Unicode does not mandate these meanings, nor does it require a particular typeface outline for mathematical letterforms.</p>
+<p>Historical blackletter fonts have a far wider repertoire of stylistic letters, ligatures and conventions than the mathematical Fraktur alphabet alone. The script used by the author and the font used for the page may be unrelated to which Unicode mathematical character was encoded. A Unicode “Fraktur converter” does not turn English text into a different language, and replacing letters with mathematical Fraktur forms does not preserve historical typesetting conventions of German blackletter documents.</p>
+<p>Unicode favors markup or font selection where font-style differences are purely presentational. If a webpage needs a decorative blackletter heading, an accessible solution is typically ordinary letters with a suitable CSS font. If a plain-text message needs to carry the encoded mathematical Fraktur symbol itself, the mathematical character repertoire is applicable—with clear limitations for accessibility and interoperability.</p>
+
+<h2 id="mapping">Reliable encoding and decoding strategies</h2>
+<p>Use an explicit dictionary of known BMP exceptions plus verified continuous runs for the remaining letters, or use a completely explicit 26-character mapping table. Parsing UCD names and compatibility decompositions can help generate and verify the table, but do not infer assignment from numeric proximity alone.</p>
+<pre><code>// Narrow uppercase double-struck converter with exceptions.
+const doubleStruckBMP = new Map([
+  ["C", 0x2102], ["H", 0x210D], ["N", 0x2115],
+  ["P", 0x2119], ["Q", 0x211A], ["R", 0x211D],
+  ["Z", 0x2124]
+]);
+function toDoubleStruckUpper(text) {
+  return [...text].map(ch =&gt; {
+    if (!/^[A-Z]$/.test(ch)) return ch;
+    const cp = doubleStruckBMP.get(ch) ??
+      (0x1D538 + ch.codePointAt(0) - 0x41);
+    return String.fromCodePoint(cp);
+  }).join("");
+}
+console.log(toDoubleStruckUpper("CNR"));
+// ℂℕℝ
+console.log([...toDoubleStruckUpper("AZ")].map(
+  c =&gt; c.codePointAt(0).toString(16).toUpperCase()
+));
+// ["1D538", "2124"]</code></pre>
+<p>This converter intentionally leaves lowercase and punctuation unchanged. A production implementation can add separately validated lowercase and digit maps. For the Fraktur uppercase alphabet, use its five corresponding BMP exceptions; a blind arithmetic mapping is not correct.</p>
+<p>Reverse folding is not lossless. Both Fraktur C and double-struck C have a compatibility relation to ordinary C, so converting them back to C discards their original mathematical style and meaning. To round-trip a user-editable design, store the original style selection or the exact original Unicode sequence.</p>
+<p>The <a href="/us/">Fancy Text tool</a> is an appropriate way to inspect the difference between ordinary and copyable mathematical-styled symbols, but correctness should be verified by copying code points—not by treating visually matching typefaces as identical encodings.</p>
+
+<h2 id="normalization">Normalization and comparison behavior</h2>
+<p>NFC/NFD are canonical forms and normally preserve these mathematical letter characters. Compatibility normalization forms, particularly NFKC, map mathematical alphabets to ordinary letters or digits. This is explicitly described in Unicode Standard Annex #15, which warns that compatibility equivalence can erase mathematically significant distinctions.</p>
+<pre><code>const examples = ["\u2102", "\u212D", "\u{1D538}", "\u{1D7D8}"];
+console.log(examples.map(ch =&gt; [
+  ch.codePointAt(0).toString(16),
+  ch.normalize("NFKC")
+]));
+// ["2102","C"], ["212d","C"],
+// ["1d538","A"], ["1d7d8","0"]</code></pre>
+<p>Even when folded values match, they are not <em>canonically</em> equivalent; their original bytes and code points remain different until a compatibility transform occurs. Normalizing all stored mathematical expressions to NFKC would conflate symbols that were deliberately distinct. For search or identifier validation, consider deriving an auxiliary compatibility-folded key while preserving source text if the semantics require it.</p>
+
+<h2 id="font">Glyph coverage, accessibility and security</h2>
+<p>Font fallback remains a practical problem: a general Latin font can lack Fraktur or double-struck glyphs, and math fonts use their own stylistic designs. If the receiving app lacks the relevant glyph, a missing-character box may appear even though the UTF-8 data are valid. No single Unicode code point guarantees a consistent appearance across phones.</p>
+<p>Screen readers can identify mathematical styles, announce character names, or provide a reduced reading depending on their implementation and context. In decorative prose, this often makes the text less accessible. Avoid stylized substitutions in important instructions, form labels and long explanations unless an accessible ordinary-text alternative is supplied.</p>
+<p>In usernames and security-sensitive identifiers, a double-struck character can look like an ordinary letter while comparing differently at the code-point level. NFKC and confusable mapping are related but distinct mechanisms; a secure identifier policy should use an appropriate Unicode profile and a documented comparison strategy instead of arbitrary string replacement.</p>
+
+<h2 id="quality">Validation cases and developer pitfalls</h2>
+<div class="table-scroll"><table><thead><tr><th>Scenario</th><th>Expected scalar / behavior</th><th>Guard</th></tr></thead><tbody>
+<tr><td>Fraktur capital A</td><td><code>U+1D504</code></td><td>Start of math Fraktur run</td></tr>
+<tr><td>Fraktur capital C</td><td><code>U+212D</code></td><td>BMP exception, not arithmetic gap</td></tr>
+<tr><td>Fraktur capital R</td><td><code>U+211C</code></td><td>BMP exception</td></tr>
+<tr><td>Double-struck capital A</td><td><code>U+1D538</code></td><td>Supplementary scalar</td></tr>
+<tr><td>Double-struck capital C</td><td><code>U+2102</code></td><td>BMP exception</td></tr>
+<tr><td>Double-struck capital Z</td><td><code>U+2124</code></td><td>BMP exception</td></tr>
+<tr><td>Double-struck digit zero</td><td><code>U+1D7D8</code></td><td>Separate decimal style range</td></tr>
+<tr><td>NFKC of ℝ</td><td>Latin <code>R</code></td><td>Compatibility fold only</td></tr>
+<tr><td>UTF-16 length of 𝔄</td><td>2</td><td>Do not split surrogate pairs</td></tr>
+</tbody></table></div>
+<p>Testing should verify code points, character names, NFKC results and actual pasted data. Test an alphabet's first, last and historical-hole positions; ensure all produced values are assigned and semantically correct. Use official data from the same UCD release. Separately test visual rendering and screen-reader behavior on target platforms.</p>
+
+<h2 id="sources">Primary Unicode and mathematics references</h2>
+<ol class="references">
+<li><a href="https://www.unicode.org/versions/Unicode18.0.0/core-spec/chapter-22/" rel="nofollow">Unicode Standard Chapter 22 — Letterlike and Mathematical Alphanumeric Symbols</a>.</li>
+<li><a href="https://www.unicode.org/charts/PDF/U2100.pdf" rel="nofollow">Unicode Letterlike Symbols chart, U+2100..U+214F</a>, legacy exceptions.</li>
+<li><a href="https://www.unicode.org/charts/PDF/U1D400.pdf" rel="nofollow">Unicode Mathematical Alphanumeric Symbols chart</a>, assigned supplementary symbols and holes.</li>
+<li><a href="https://www.unicode.org/reports/tr15/" rel="nofollow">UAX #15 — Unicode Normalization Forms</a>, compatibility normalization and mathematical semantic distinctions.</li>
+<li><a href="https://www.unicode.org/reports/tr44/" rel="nofollow">UAX #44 — Unicode Character Database</a>, names and decompositions.</li>
+<li><a href="https://www.unicode.org/reports/tr25/" rel="nofollow">UTR #25 — Unicode Support for Mathematics</a>, technical math representation.</li>
+</ol><hr><section class="related" aria-labelledby="related-title"><h2 id="related-title">Related technical references</h2><ul><li><a href="/us/mathematical-alphanumeric-symbols/">Mathematical Alphanumeric Symbols</a></li><li><a href="/us/bold-italic-script-unicode-letters/">Bold, Italic and Script Unicode Letters</a></li><li><a href="/us/styled-unicode-text-vs-fonts/">Styled Unicode versus Font Styling</a></li></ul></section><p class="small">Independent Unicode reference; mathematical conventions are contextual and rendering depends on font support.</p></article></main><aside class="toc" aria-label="On this page"><h2>On this page</h2><a href="#identity">Double-struck and Fraktur are encoded mathematical alphabets</a><a href="#inventory">Repertoire and verified code-point examples</a><a href="#exceptions">Legacy black-letter and double-struck symbols</a><a href="#semantics">Mathematics, historical typography and Unicode intent</a><a href="#mapping">Reliable encoding and decoding strategies</a><a href="#normalization">Normalization and comparison behavior</a><a href="#font">Glyph coverage, accessibility and security</a><a href="#quality">Validation cases and developer pitfalls</a><a href="#sources">Primary Unicode and mathematics references</a></aside></div></div><footer class="footer"><div class="shell"><span>© 2026 Letras Diferentes · Unicode Research Library</span><a href="/us/library/#styled-text">Styled Text &amp; Special Characters</a></div></footer></body></html>
