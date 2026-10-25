@@ -11,7 +11,7 @@
 <tr><td><code>£</code></td><td><code>C2 A3</code></td><td><code>Â£</code></td><td>The extra Â is part of the bad decode</td></tr>
 <tr><td>Right single quotation mark <code>’</code></td><td><code>E2 80 99</code></td><td><code>â€™</code></td><td>Windows-1252 maps 80 to the euro sign and 99 to ™</td></tr>
 <tr><td><code>€</code></td><td><code>E2 82 AC</code></td><td><code>â‚¬</code></td><td>Dependent on Windows-1252 mapping</td></tr>
-<tr><td><code>😀</code></td><td><code>F0 9F 98 80</code></td><td>Not always reversibly representable</td><td>Windows-1252 has undefined positions</td></tr>
+<tr><td><code>😀</code></td><td><code>F0 9F 98 80</code></td><td><code>ðŸ˜€</code></td><td>This fixture is reversible under Windows-1252; others may contain undefined bytes</td></tr>
 </tbody></table></div>
 <p>A symptom such as <code>Ã©</code> is suggestive but not conclusive. These are actual assigned Unicode characters; an author may have intended them. A one-step repair should be proposed only when the encoding history is supported by provenance, raw bytes or a controlled sample. Large datasets may contain sections produced through different encodings and need record-level or field-level inspection.</p>
 <h2 id="reproduction">Reproduce and reverse a controlled error</h2>
