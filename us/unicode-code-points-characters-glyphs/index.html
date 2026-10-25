@@ -1,0 +1,98 @@
+<!doctype html><html lang="en-US"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Unicode Code Points, Characters, Grapheme Clusters, and Glyphs: A Technical Model | Letras Diferentes Research Library</title><meta name="description" content="Distinguish abstract characters, Unicode code points, code units, grapheme clusters, and rendered glyphs with reproducible Unicode and JavaScript examples."><meta name="robots" content="index,follow"><link rel="canonical" href="https://letrasdiferentess.github.io/us/unicode-code-points-characters-glyphs/"><meta property="og:type" content="article"><meta property="og:title" content="Unicode Code Points, Characters, Grapheme Clusters, and Glyphs: A Technical Model"><meta property="og:description" content="Distinguish abstract characters, Unicode code points, code units, grapheme clusters, and rendered glyphs with reproducible Unicode and JavaScript examples."><meta property="og:url" content="https://letrasdiferentess.github.io/us/unicode-code-points-characters-glyphs/"><link rel="stylesheet" href="/us/library/article.css"><script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","@id":"https://letrasdiferentess.github.io/us/unicode-code-points-characters-glyphs/#article","headline":"Unicode Code Points, Characters, Grapheme Clusters, and Glyphs: A Technical Model","description":"Distinguish abstract characters, Unicode code points, code units, grapheme clusters, and rendered glyphs with reproducible Unicode and JavaScript examples.","inLanguage":"en-US","datePublished":"2026-10-25","dateModified":"2026-10-25","author":{"@type":"Organization","name":"Letras Diferentes"},"publisher":{"@type":"Organization","name":"Letras Diferentes","url":"https://letrasdiferentess.github.io/"},"mainEntityOfPage":"https://letrasdiferentess.github.io/us/unicode-code-points-characters-glyphs/","isPartOf":{"@type":"WebPage","@id":"https://letrasdiferentess.github.io/us/library/"}}</script></head><body><a class="skip" href="#main">Skip to article</a><header class="sitehead"><div class="shell"><a class="brand" href="/us/">Letras <span>Diferentes</span></a><nav aria-label="Site"><a href="/us/">Fancy Text Tool</a><a href="/us/library/">Research Library</a></nav></div></header><div class="shell"><nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/us/">Home</a><span aria-hidden="true">/</span><a href="/us/library/">Research Library</a><span aria-hidden="true">/</span>Unicode Character Model &amp; Properties</nav><div class="headercopy"><span class="eyebrow">Unicode research · Character model</span><h1>Unicode Code Points, Characters, Grapheme Clusters, and Glyphs: A Technical Model</h1><p class="dek">Distinguish abstract characters, Unicode code points, code units, grapheme clusters, and rendered glyphs with reproducible Unicode and JavaScript examples.</p><div class="meta"><span>Technical reference</span><span>Unicode baseline: 18.0.0</span><time datetime="2026-10-25">Updated 25 October 2026</time></div></div><div class="layout"><main id="main" class="article"><article>
+<h2 id="definitions">Five different layers of digital text</h2>
+<p>When an application says “one character,” it may be counting bytes, UTF-16 code units, Unicode code points, grapheme clusters, or visible glyphs. Those are not interchangeable units. Unicode supplies a character repertoire and a standard encoding model; a text renderer then maps stored content to visible shapes. Reliable text software explicitly names the unit it operates on.</p>
+<div class="table-scroll"><table><thead><tr><th>Concept</th><th>What it represents</th><th>Practical consequence</th></tr></thead><tbody>
+<tr><td><strong>Abstract character</strong></td><td>A unit of textual information, such as LATIN CAPITAL LETTER A, independent of its font.</td><td>Identity is not its appearance or keyboard key.</td></tr>
+<tr><td><strong>Code point</strong></td><td>An integer in the Unicode codespace, written U+0000 through U+10FFFF.</td><td>A code point may be assigned to a character, reserved, a surrogate, private-use or a noncharacter.</td></tr>
+<tr><td><strong>Code unit</strong></td><td>A storage unit in an encoding form: 8 bits for UTF-8, 16 bits for UTF-16, or 32 bits for UTF-32.</td><td>A code point can require multiple code units.</td></tr>
+<tr><td><strong>Extended grapheme cluster</strong></td><td>A default Unicode approximation of a user-perceived character, determined by UAX #29 boundary rules.</td><td>One cluster can contain several code points; preferred for many UI selection/counting tasks.</td></tr>
+<tr><td><strong>Glyph</strong></td><td>A shape or glyph ID chosen by a font and shaping process for rendering.</td><td>One glyph can correspond to several characters, or one character to multiple glyphs.</td></tr>
+</tbody></table></div>
+<p>It is important not to flatten the distinctions further. A code point is a numeric position in a 1,114,112-position codespace, not necessarily a valid scalar value or an assigned abstract character. Likewise, a glyph is not a Unicode property: its identity depends on the selected font, script shaping rules, variation settings and context. Unicode <em>does not</em> prescribe a particular visual drawing for each code point.</p>
+<div class="note"><strong>Terminology rule:</strong> When documenting APIs or database constraints, say “UTF-8 bytes,” “UTF-16 code units,” “Unicode scalar values,” or “extended grapheme clusters.” Avoid the ambiguous word “characters” where a numeric limit matters.</div>
+
+<h2 id="examples">Worked examples: identical appearance, different data</h2>
+<h3>A letter with an accent: two ways to encode é</h3>
+<p>The displayed letter <strong>é</strong> can be represented by the single precomposed code point <code>U+00E9</code> (LATIN SMALL LETTER E WITH ACUTE) or by <code>U+0065 U+0301</code> (LATIN SMALL LETTER E followed by COMBINING ACUTE ACCENT). The latter is two code points but typically one extended grapheme cluster. They are <em>canonically equivalent</em> under Unicode normalization, yet their raw byte sequences differ. Exact byte matching without normalization can therefore reject text a reader perceives as identical.</p>
+<pre><code>const precomposed = "\u00E9";       // U+00E9
+const decomposed = "e\u0301";      // U+0065 U+0301
+console.log(precomposed === decomposed);      // false
+console.log(precomposed.normalize("NFD")
+         === decomposed.normalize("NFD"));    // true
+console.log([...decomposed].length);          // 2 code points</code></pre>
+<p>Canonical equivalence is stronger than mere visual resemblance. The Latin <code>A</code> and Cyrillic <code>А</code> may look alike in some fonts but are not canonically equivalent. Conversely, a font can render two canonically equivalent strings differently due to imperfect shaping or glyph coverage.</p>
+
+<h3>A ligature: one glyph, multiple characters</h3>
+<p>With a suitable OpenType font and ligature feature, the two code points <code>U+0066 U+0069</code> (“fi”) may be drawn as a single ligature glyph. The underlying text remains two code points. This is different from the compatibility character <code>U+FB01</code> LATIN SMALL LIGATURE FI, whose NFKC mapping is “fi”. Glyph-counting is therefore not a dependable way to measure string length, selection boundaries, or storage.</p>
+
+<h3>An emoji sequence: multiple code points, one cluster</h3>
+<p>The woman technologist sequence <code>U+1F469 U+200D U+1F4BB</code> joins WOMAN, ZERO WIDTH JOINER, and PERSONAL COMPUTER. In emoji-aware presentation it is usually displayed as one composite symbol. It contains <strong>three code points</strong> and <strong>five UTF-16 code units</strong> but is one extended grapheme cluster under the recommended segmentation algorithm. If a platform lacks sequence support, its fallback may display two pictographs and/or a visible separator without changing the stored code points.</p>
+<p>Flag sequences provide another example: a common national flag is encoded using two regional indicator code points, each supplementary, typically forming a single extended grapheme cluster. Glyph composition is not a reliable proxy for stored length.</p>
+
+<h2 id="operations">Counting, slicing, searching, and cursor behavior</h2>
+<p>Choose the unit according to the operation, rather than choosing a single “Unicode-aware string length” for everything:</p>
+<ul>
+<li><strong>Storage quotas and transport:</strong> Count bytes in the actual encoding (for example, UTF-8). A character count does not bound the number of bytes.</li>
+<li><strong>JavaScript string offsets:</strong> Built-in <code>length</code>, indexing, and <code>slice</code> use UTF-16 code units. Offsets may split a surrogate pair or a grapheme sequence.</li>
+<li><strong>Code-point iteration:</strong> <code>for…of</code>, <code>Array.from()</code>, and <code>codePointAt()</code> support code-point-aware work, but do not by themselves segment grapheme clusters.</li>
+<li><strong>User-facing cursor movement or length limits:</strong> Extended grapheme clusters, plus language- and editor-specific behavior, are often more appropriate. Some script-specific editing conventions require tailored boundaries.</li>
+<li><strong>Searching and equality:</strong> Raw code-point equality, canonical equivalence, compatibility equivalence and locale-aware collation answer different questions. Explicitly select the required semantics.</li>
+</ul>
+<p>The default extended grapheme cluster algorithm is maintained in Unicode Standard Annex #29. It is a deterministic segmentation boundary algorithm, not a universal statement that users always perceive exactly the same number of “characters.” Different editing systems can tailor behavior, and the output of a character counter can vary with the Unicode data version available in its runtime.</p>
+
+<h2 id="rendering">Why fonts and shaping engines change the visible result</h2>
+<p>A typical text pipeline is: decode bytes into code points; segment and reorder where required by layout; choose fonts with suitable glyph coverage; shape character runs into positioned glyphs; and rasterize those glyphs. In complex scripts, substitutions and positioning depend on nearby characters. Combining marks may be placed above, below or around a base; Arabic joining and Indic syllable shaping can replace simple one-to-one glyph mappings.</p>
+<p>Font fallback can split a sequence across fonts that do not share suitable mark anchors or glyph metrics. This is one reason copyable styled Unicode text may appear differently in mobile apps, browsers, spreadsheets and messaging clients even though the underlying code points are unchanged. A missing-glyph box (“tofu”) indicates rendering support is missing, not necessarily corrupt or invalid Unicode data.</p>
+<p>Glyph names, font character maps (<code>cmap</code>), glyph IDs, and Unicode code-point values occupy different namespaces. Searching for a glyph ID in the Unicode Character Database is a category mistake: a font designer can encode multiple alternatives for the same character, and a ligature glyph can cover a sequence of characters.</p>
+
+<h2 id="implementation">Implementation example: three kinds of string length</h2>
+<p>The following example measures UTF-8 bytes, UTF-16 code units, Unicode code points, and extended grapheme clusters in JavaScript. It uses standard browser/modern Node interfaces; <code>Intl.Segmenter</code> availability and segmentation data are runtime-dependent.</p>
+<pre><code>function measureText(text) {
+  const graphemes = new Intl.Segmenter("en", {
+    granularity: "grapheme"
+  });
+  return {
+    utf8Bytes: new TextEncoder().encode(text).length,
+    utf16Units: text.length,
+    codePoints: [...text].length,
+    graphemes: [...graphemes.segment(text)].length
+  };
+}
+console.log(measureText("e\u0301"));
+// { utf8Bytes: 3, utf16Units: 2,
+//   codePoints: 2, graphemes: 1 }
+
+console.log(measureText("\u{1F469}\u200D\u{1F4BB}"));
+// { utf8Bytes: 11, utf16Units: 5,
+//   codePoints: 3, graphemes: 1 }</code></pre>
+<p>Do not use the simple count as a byte limit for an upload, or treat the grapheme count as a cap on allocation: UAX #29 explicitly notes that an extended grapheme cluster has no fixed size bound. For security-sensitive applications, cap both encoded bytes and application-appropriate grapheme counts.</p>
+
+<h2 id="edge-cases">Edge cases and common engineering errors</h2>
+<ul>
+<li><strong>Combining marks alone:</strong> A leading combining mark may form a degenerate grapheme cluster rather than attach to a preceding base character that does not exist. A renderer may show a dotted-circle placeholder.</li>
+<li><strong>Variation selectors:</strong> These modify presentation in supported contexts and are code points that may not produce independent visible glyphs.</li>
+<li><strong>Invisible formatting characters:</strong> Some controls affect join behavior or direction without contributing a visible shape. “No visible glyph” does not mean “safe to strip.”</li>
+<li><strong>Ill-formed UTF-16:</strong> An unpaired surrogate is not a Unicode scalar value. JavaScript string storage can contain it, but a strict UTF encoder cannot reproduce it as a legal Unicode scalar value.</li>
+<li><strong>Version dependence:</strong> Unicode updates can add assignments and adjust segmentation rules, so fixed runtime behavior should not be assumed across browser and server versions.</li>
+<li><strong>Security:</strong> Spoofing defenses require confusable, script and identifier policies. Neither glyph similarity nor normalization alone can prove two identifiers are the same.</li>
+</ul>
+
+<h2 id="tests">Reproducible test vectors</h2>
+<div class="table-scroll"><table><thead><tr><th>Text</th><th>UTF-8 bytes</th><th>UTF-16 units</th><th>Code points</th><th>Extended grapheme clusters</th></tr></thead><tbody>
+<tr><td><code>A</code></td><td>1</td><td>1</td><td>1</td><td>1</td></tr>
+<tr><td><code>e + U+0301</code></td><td>3</td><td>2</td><td>2</td><td>1</td></tr>
+<tr><td><code>U+1F600</code> (grinning face)</td><td>4</td><td>2</td><td>1</td><td>1</td></tr>
+<tr><td><code>U+1F469 U+200D U+1F4BB</code></td><td>11</td><td>5</td><td>3</td><td>1</td></tr>
+<tr><td><code>U+1F1FA U+1F1F8</code> (US flag sequence)</td><td>8</td><td>4</td><td>2</td><td>1</td></tr>
+</tbody></table></div>
+<p class="small">The grapheme-cluster counts use the recommended extended rules of UAX #29 (Unicode 18.0). They are independent of whether the current font displays an integrated pictograph.</p>
+
+<h2 id="references">Standards and primary references</h2>
+<ol class="references">
+<li><a href="https://www.unicode.org/versions/Unicode18.0.0/" rel="nofollow">The Unicode Standard, Version 18.0.0</a>, chapters on character encoding, code points and character properties.</li>
+<li><a href="https://www.unicode.org/reports/tr29/" rel="nofollow">UAX #29 — Unicode Text Segmentation</a>, default extended grapheme clusters and boundary rules.</li>
+<li><a href="https://www.unicode.org/reports/tr44/" rel="nofollow">UAX #44 — Unicode Character Database</a>, formal properties of code points.</li>
+<li><a href="https://www.unicode.org/reports/tr15/" rel="nofollow">UAX #15 — Unicode Normalization Forms</a>, canonical equivalence and normalization.</li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Segmenter" rel="nofollow">MDN — Intl.Segmenter</a>, the JavaScript segmentation interface.</li>
+</ol>
+<hr><section class="related" aria-labelledby="related-title"><h2 id="related-title">Related technical references</h2><ul><li><a href="https://letrasdiferentess.github.io/us/unicode-scalar-values-surrogates/">Unicode Scalar Values and UTF-16 Surrogates</a></li><li><a href="https://letrasdiferentess.github.io/us/unicode-general-categories/">Unicode General Categories and Character Properties</a></li><li><a href="https://letrasdiferentess.github.io/us/combining-marks-diacritics/">Combining Marks and Diacritics</a></li></ul></section><p class="small">This reference explains public Unicode specifications independently; it is not a publication or endorsement of the Unicode Consortium. Rendering and runtime behavior should be verified against the software versions in use.</p></article></main><aside class="toc" aria-label="On this page"><h2>On this page</h2><a href="#definitions">Five different layers of digital text</a><a href="#examples">Worked examples: identical appearance, different data</a><a href="#operations">Counting, slicing, searching, and cursor behavior</a><a href="#rendering">Why fonts and shaping engines change the visible result</a><a href="#implementation">Implementation example: three kinds of string length</a><a href="#edge-cases">Edge cases and common engineering errors</a><a href="#tests">Reproducible test vectors</a><a href="#references">Standards and primary references</a></aside></div></div><footer class="footer"><div class="shell"><span>© 2026 Letras Diferentes · Unicode Research Library</span><a href="/us/library/#unicode-characters">Explore Unicode Character Model &amp; Properties</a></div></footer></body></html>
