@@ -40,6 +40,21 @@ jobs:
           export CHROME_PATH="$(command -v google-chrome || node --input-type=module -e "import { chromium } from 'playwright'; console.log(chromium.executablePath())")"
           npx --yes lighthouse@12.8.2 http://127.0.0.1:8080/us/ --quiet --chrome-flags="--headless --no-sandbox --disable-dev-shm-usage" --output=json --output-path=artifacts/us-lighthouse-mobile.json --only-categories=performance,seo,accessibility
           node --input-type=module -e "import fs from 'node:fs'; const r=JSON.parse(fs.readFileSync('artifacts/us-lighthouse-mobile.json'));console.log('US_LIGHTHOUSE',JSON.stringify({scores:Object.fromEntries(Object.entries(r.categories).map(([k,v])=>[k,v.score])),metrics:Object.fromEntries(['largest-contentful-paint','first-contentful-paint','total-blocking-time','cumulative-layout-shift','speed-index'].map(k=>[k,r.audits[k]?.displayValue])),seoIssues:Object.values(r.audits).filter(a=>a.score===0&&r.categories.seo.auditRefs.some(z=>z.id===a.id)).map(a=>({id:a.id,title:a.title}))},null,2));"
+      - name: Lighthouse root causes
+        if: always()
+        continue-on-error: true
+        run: |
+          if [ -f artifacts/us-lighthouse-mobile.json ]; then
+            node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          const r=JSON.parse(fs.readFileSync('artifacts/us-lighthouse-mobile.json'));
+          for(const [k,a] of Object.entries(r.audits)){
+            if(!/shift|lcp|blocking|unused-javascript|render-blocking|network-requests|mainthread|font-display/.test(k))continue;
+            const items=(a.details?.items||[]).slice(0,6).map(x=>({node:x.node?.snippet||x.node?.selector||null,impact:x.impact??x.wastedMs??null,bytes:x.totalBytes??x.transferSize??null,url:x.url||null,duration:x.duration??null}));
+            console.log('US_CAUSE',JSON.stringify({id:k,title:a.title,score:a.score,value:a.displayValue,items}).slice(0,4000));
+          }
+          NODE
+          fi
       - name: Upload audit outputs
         if: always()
         uses: actions/upload-artifact@v4
