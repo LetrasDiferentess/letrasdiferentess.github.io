@@ -15,6 +15,8 @@ Nguồn chuẩn duy nhất: data/unicode-library-96.lock.json. Danh sách 96 URL
 - Các bài ở trạng thái PLANNED là bản quy hoạch, tuyệt đối không chèn liên kết click được dẫn đến 404. Có thể nhắc chủ đề bằng văn bản thường.
 - Khi xuất bản bài: tạo index.html ở đúng đường dẫn đã khóa, đổi trạng thái sang PUBLISHED, thêm liên kết HTML tại đúng chuyên mục ở trang thư viện và xác minh triển khai.
 - Liên kết nội bộ bình thường không gắn rel=nofollow.
+- **Quy tắc mới từ chủ website (Batch 2, 25/10/2026):** Nếu nội dung bài nghiên cứu có mối liên hệ hữu ích, thực chất với ứng dụng Fancy Text, chủ động chèn một liên kết nội bộ ngữ cảnh, không mang tính quảng cáo, tới chính xác https://letrasdiferentess.github.io/us/. Ví dụ: nghiên cứu Unicode styled text, glyph/normalization, lỗi hiển thị, copy/paste. Không bắt buộc mọi bài có liên kết tool; không nhồi anchor, không tạo URL tool khác, không thêm tracking, không gắn nofollow nội bộ. Nội dung kỹ thuật phải đầy đủ độc lập kể cả khi không nhấp tool.
+
 
 ## 2. Không gắn theo dõi GPT và tham số tracking
 

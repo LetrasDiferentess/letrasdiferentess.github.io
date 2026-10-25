@@ -1,0 +1,102 @@
+<!doctype html><html lang="en-US"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Unicode Default-Ignorable Code Points: Invisible Data, Rendering and Security | Letras Diferentes Research Library</title><meta name="description" content="Technical guide to Default_Ignorable_Code_Point, joiners, variation selectors, word joiner, soft hyphen, filtering traps, rendering fallback and safe Unicode handling."><meta name="robots" content="index,follow"><link rel="canonical" href="https://letrasdiferentess.github.io/us/default-ignorable-code-points/"><meta property="og:type" content="article"><meta property="og:title" content="Unicode Default-Ignorable Code Points: Invisible Data, Rendering and Security"><meta property="og:description" content="Technical guide to Default_Ignorable_Code_Point, joiners, variation selectors, word joiner, soft hyphen, filtering traps, rendering fallback and safe Unicode handling."><meta property="og:url" content="https://letrasdiferentess.github.io/us/default-ignorable-code-points/"><link rel="stylesheet" href="/us/library/article.css"><script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","@id":"https://letrasdiferentess.github.io/us/default-ignorable-code-points/#article","headline":"Unicode Default-Ignorable Code Points: Invisible Data, Rendering and Security","description":"Technical guide to Default_Ignorable_Code_Point, joiners, variation selectors, word joiner, soft hyphen, filtering traps, rendering fallback and safe Unicode handling.","inLanguage":"en-US","datePublished":"2026-10-25","dateModified":"2026-10-25","author":{"@type":"Organization","name":"Letras Diferentes"},"publisher":{"@type":"Organization","name":"Letras Diferentes","url":"https://letrasdiferentess.github.io/"},"mainEntityOfPage":"https://letrasdiferentess.github.io/us/default-ignorable-code-points/","isPartOf":{"@type":"WebPage","@id":"https://letrasdiferentess.github.io/us/library/"}}</script></head><body><a class="skip" href="#main">Skip to article</a><header class="sitehead"><div class="shell"><a class="brand" href="/us/">Letras <span>Diferentes</span></a><nav aria-label="Site"><a href="/us/">Fancy Text Tool</a><a href="/us/library/">Research Library</a></nav></div></header><div class="shell"><nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/us/">Home</a><span aria-hidden="true">/</span><a href="/us/library/">Research Library</a><span aria-hidden="true">/</span>Unicode Character Model &amp; Properties</nav><div class="headercopy"><span class="eyebrow">Unicode research · Invisible data</span><h1>Unicode Default-Ignorable Code Points: Invisible Data, Rendering and Security</h1><p class="dek">Technical guide to Default_Ignorable_Code_Point, joiners, variation selectors, word joiner, soft hyphen, filtering traps, rendering fallback and safe Unicode handling.</p><div class="meta"><span>Technical reference</span><span>Unicode baseline: 18.0.0</span><time datetime="2026-10-25">Updated 25 October 2026</time></div></div><div class="layout"><main id="main" class="article"><article>
+<h2 id="definition">The precise meaning of default ignorable</h2>
+<p>The Unicode <strong>Default_Ignorable_Code_Point</strong> property (often abbreviated <code>DI</code>) identifies code points that should ordinarily be ignored <em>for display in fallback rendering</em> if their intended behavior is not supported. It is a derived Boolean property recorded in the Unicode Character Database. The name can be dangerously misleading: <strong>default ignorable does not mean semantically disposable, universally invisible, or safe to strip from storage</strong>.</p>
+<p>Unicode's rendering guidance distinguishes between the <em>intended effect</em> of a formatting or variation character and how an implementation should behave when it cannot support that effect. A font without support for a variation sequence should not normally show a standalone square box for its variation selector. Likewise, a zero-width joiner may be invisible as an isolated glyph but can alter the shape or composition of neighboring characters when the font and shaping system understand the sequence.</p>
+<p>The authoritative DI set is derived for each Unicode release in <code>DerivedCoreProperties.txt</code> and described in the core standard and UAX #44. An implementation should not hardcode an informal list of “invisible Unicode characters” from a blog post or assume that every <code>Cf</code> format character is covered and all other categories are excluded.</p>
+<div class="note"><strong>Key distinction:</strong> A DI character normally lacks a visible fallback glyph; the code point is still present in the logical string. Comparison, indexing, grapheme segmentation and secure input processing may all be affected by its presence.</div>
+
+<h2 id="families">Important character families and their behaviors</h2>
+<div class="table-scroll"><table><thead><tr><th>Example</th><th>Typical function</th><th>Why removal can be destructive</th></tr></thead><tbody>
+<tr><td><code>U+200D</code> ZERO WIDTH JOINER (ZWJ)</td><td>Influences joining, ligatures or standardized emoji ZWJ sequences</td><td>Can split an intended joined pictograph or alter script shaping</td></tr>
+<tr><td><code>U+200C</code> ZERO WIDTH NON-JOINER (ZWNJ)</td><td>Suppresses joining behavior in supported scripts</td><td>Can change word spelling/appearance, especially in joining scripts</td></tr>
+<tr><td><code>U+FE0E</code> VARIATION SELECTOR-15</td><td>Requests text-style presentation in eligible standardized sequences</td><td>Can alter text versus emoji presentation</td></tr>
+<tr><td><code>U+FE0F</code> VARIATION SELECTOR-16</td><td>Requests emoji-style presentation in eligible standardized sequences</td><td>Can change emoji display behavior</td></tr>
+<tr><td><code>U+2060</code> WORD JOINER</td><td>Prevents a line-break opportunity between adjacent characters in relevant contexts</td><td>Stripping can change wrapping</td></tr>
+<tr><td><code>U+00AD</code> SOFT HYPHEN</td><td>Marks a possible line-break location with a displayed hyphen under appropriate line-break behavior</td><td>Can change hyphenation opportunities</td></tr>
+<tr><td><code>U+034F</code> COMBINING GRAPHEME JOINER</td><td>Can affect normalization ordering and certain cluster-related behavior</td><td>May alter equivalence or ordering semantics</td></tr>
+<tr><td><code>U+FEFF</code> ZERO WIDTH NO-BREAK SPACE / BOM</td><td>Legacy no-break usage; also byte-order signature in encoded streams</td><td>Meaning depends on input format and position</td></tr>
+<tr><td><code>U+E0100..U+E01EF</code></td><td>Supplementary variation selectors</td><td>Can select registered ideographic or other variants where supported</td></tr>
+</tbody></table></div>
+<p>The DI property also covers certain reserved/unassigned ranges specifically intended for future formatting-style uses. Unicode 18.0's Chapter 5 identifies reserved areas including <code>U+2060..U+206F</code>, <code>U+FFF0..U+FFF8</code> and <code>U+E0000..U+E0FFF</code> for such forward-compatible fallback behavior. Being reserved does not mean that assigning an arbitrary private meaning to one of these positions is safe for interchange.</p>
+<p>Not every property member is best understood as “zero width” in all implementations. Soft hyphen, for example, can produce a visible glyph at a permitted line break. The DI recommendation concerns fallback handling; it is not a promise that rendering output is always empty.</p>
+
+<h2 id="properties">Default_Ignorable versus General_Category and White_Space</h2>
+<p>Unicode properties answer different questions. <code>General_Category=Cf</code> classifies format characters. <code>Default_Ignorable_Code_Point</code> specifies fallback-rendering behavior. <code>White_Space</code> identifies whitespace-related characters for higher-level processing. <code>Variation_Selector</code>, <code>Grapheme_Cluster_Break</code>, and <code>Line_Break</code> describe additional behavior. These sets overlap but are not interchangeable.</p>
+<ul>
+<li>Not all DI code points are in <code>Cf</code>: variation selectors belong to mark categories, and other special values can be unassigned/reserved positions.</li>
+<li>Control characters and surrogate code points are <em>not</em> collectively DI; they need their own decoding and control-handling policies.</li>
+<li>Some characters that appear blank or occupy whitespace are not DI. A visible space (<code>U+0020</code>) is not “default ignorable” merely because it has no ink.</li>
+<li><code>Default_Ignorable_Code_Point</code> is a derived property rather than a font's internal “zero advance” flag. Font metrics cannot reliably determine it.</li>
+</ul>
+<p>For strict Unicode database analysis, read the properties from the same UCD release. Combining property tables from two different releases can misclassify recently added code points and produce inconsistent security or validation rules.</p>
+
+<h2 id="rendering">Rendering fallback and variation behavior</h2>
+<p>Text shaping typically interprets DI characters in the context of adjacent code points. A supported ZWJ sequence can select a composite emoji glyph or different joining form, but if that glyph is unavailable the renderer may fall back to showing components. A variation selector can request a standardized text or emoji variation, but a font may ignore the request and display its default glyph. In those fallback scenarios, the selector or joiner should not itself become a conspicuous missing-glyph box.</p>
+<p>This behavior is not equivalent to saying that the DI code point has “zero width” as a general metric. A code point sequence may influence glyph advances and cluster shaping without introducing a standalone glyph. Font selection, ligature substitution, mark attachment and fallback policy all matter.</p>
+<p><strong>Grapheme segmentation is separate.</strong> A variation selector generally participates in the same extended grapheme cluster as the preceding eligible base. ZWJ sequences may join extended pictographs under UAX #29's GB11 context rule. Deleting a DI code point can therefore alter both the stored sequence and the boundaries of later editing operations.</p>
+
+<h2 id="examples">Invisible sequences that materially change text</h2>
+<h3>Emoji ZWJ changes a sequence</h3>
+<p><code>U+1F469 U+200D U+1F4BB</code> (woman + ZWJ + laptop) is an emoji sequence commonly displayed as one woman technologist pictograph. Removing <code>U+200D</code> leaves the woman and laptop separately encoded; a text system can display them as independent emoji. No letter changed, but meaning and grapheme structure may have changed.</p>
+<h3>Variation selector distinguishes presentation requests</h3>
+<p>Many emoji-capable characters accept explicit text-style or emoji-style variation selectors. Whether the request is honored depends on a defined standardized variation sequence and a supporting font. Appending arbitrary <code>U+FE0F</code> after any character does not automatically create a legitimate emoji variation.</p>
+<h3>Word joiner and discretionary hyphenation</h3>
+<p><code>U+2060 WORD JOINER</code> can inhibit line breaking at a surrounding position. <code>U+00AD SOFT HYPHEN</code> can allow a discretionary break and produce a hyphen when broken. Rendering behavior depends on layout. Stripping both because they are normally invisible changes text-flow instructions in opposite ways.</p>
+<h3>Copyable decorative text</h3>
+<p>A string copied from a <a href="/us/">Fancy Text generator</a> can contain visibly styled Unicode characters, combining marks or emoji-related sequences. A responsible text inspection feature can expose code points and DI positions without automatically deleting them; doing so preserves both the chosen appearance and the ability to diagnose compatibility problems across apps.</p>
+
+<h2 id="code">JavaScript detection, auditing and safe handling</h2>
+<p>Modern JavaScript engines support the binary Unicode property escape <code>\p{Default_Ignorable_Code_Point}</code> in Unicode-mode regular expressions. The returned property data are runtime-dependent. An audit should report code points rather than silently modifying user content.</p>
+<pre><code>const ignorable = /\p{Default_Ignorable_Code_Point}/u;
+const value = "woman:\u{1F469}\u200D\u{1F4BB}";
+const findings = [];
+let offset = 0;
+for (const ch of value) {
+  if (ignorable.test(ch)) {
+    findings.push({
+      codePoint: "U+" + ch.codePointAt(0).toString(16)
+        .toUpperCase().padStart(4, "0"),
+      utf16Offset: offset
+    });
+  }
+  offset += ch.length; // advance by 1 or 2 UTF-16 code units
+}
+console.log(findings);
+// [{ codePoint: "U+200D", utf16Offset: 8 }]</code></pre>
+<p>The example's offset is relative to JavaScript's UTF-16 indexing. The words <code>"woman:"</code> occupy 6 units, WOMAN occupies 2 more, and ZWJ begins at offset 8. To display offsets in a user interface, convert them to grapheme boundaries if appropriate; do not confuse code-unit indices with cursor positions.</p>
+<p>Use <code>Array.from(text)</code> or <code>for…of</code> for code-point iteration in JavaScript. For a precise warning system, maintain a whitelist or risk classification tuned to your field rather than treating every DI member as malicious. For example, an emoji caption field may safely permit joiners and variation selectors, while a machine-generated identifier might apply a stricter profile and a security-sensitive account label might warn about unexpected invisible controls.</p>
+<p>Property escapes do not replace a protocol's formal character profile. When a supported Unicode release changes, diff the detected set as part of regression testing and update your documentation. A regular expression that detects DI characters should never be presented as a complete “remove zero-width attacks” sanitizer.</p>
+
+<h2 id="security">Security, accessibility and text integrity</h2>
+<p>Invisible characters can support deceptive text, but they are also essential in legitimate writing systems, emoji sequences and typography. An attacker might insert format characters into a username, change the apparent grouping of a document, or create text that compares differently while looking similar. Mitigation should be context-sensitive:</p>
+<ul>
+<li><strong>Identifiers:</strong> Apply a specified identifier profile (UTS #39, language-specific syntax, or domain-name IDNA rules as appropriate). Keep track of normalization and case mapping in comparison pipelines.</li>
+<li><strong>User-facing display:</strong> Consider showing a visible warning, revealing code-point names on demand or displaying suspicious control positions in editing tools—without corrupting original data.</li>
+<li><strong>Rich-text import:</strong> Distinguish user data from markup. Escaping HTML and handling text direction safely are separate obligations; they are not guaranteed by removing DI characters.</li>
+<li><strong>Accessibility:</strong> Invisible format controls may affect speech, selection and direction. Replacing them with printable placeholders in normal reading can itself misrepresent the text; offer a diagnostic view separately.</li>
+<li><strong>Audit logs:</strong> Keep a lossless representation (for example, escaped code points) alongside a human-readable display. Truncation should not split surrogate pairs or leave incomplete sequences silently.</li>
+</ul>
+<p>Never assume that removing every default-ignorable code point is an acceptable universal security solution. Unicode's explicit fallback guidance is not a directive to strip code points from stored strings.</p>
+
+<h2 id="testing">Versioned tests and operational checklists</h2>
+<div class="table-scroll"><table><thead><tr><th>Input</th><th>Expected diagnostic</th><th>What to verify</th></tr></thead><tbody>
+<tr><td><code>A</code></td><td>No DI code points</td><td>Basic Latin unaffected</td></tr>
+<tr><td><code>U+200D</code></td><td>DI</td><td>Joiner in emoji and script context</td></tr>
+<tr><td><code>U+FE0F</code></td><td>DI</td><td>Variation selector detected</td></tr>
+<tr><td><code>U+2060</code></td><td>DI</td><td>Line-break behavior not confused with whitespace</td></tr>
+<tr><td><code>U+00AD</code></td><td>DI</td><td>Soft-hyphen behavior preserved at layout</td></tr>
+<tr><td><code>U+0020</code></td><td>Not DI</td><td>Whitespace is not synonymous with DI</td></tr>
+<tr><td><code>U+D800</code></td><td>Not a scalar value</td><td>Reject malformed interchange independently</td></tr>
+</tbody></table></div>
+<p>As part of a release pipeline, test both the DI property table and observable rendering/clipboard behavior on representative systems. A unit test that recognizes <code>U+200D</code> cannot establish that the platform supports all ZWJ ligatures. Likewise, two strings with different DI code points can remain distinguishable at the data layer while displaying identically.</p>
+
+<h2 id="references">Primary specifications and property files</h2>
+<ol class="references">
+<li><a href="https://www.unicode.org/versions/Unicode18.0.0/core-spec/chapter-5/" rel="nofollow">Unicode Standard, Chapter 5 — Implementation Guidelines</a>, default ignorable rendering and data handling.</li>
+<li><a href="https://www.unicode.org/reports/tr44/" rel="nofollow">UAX #44 — Unicode Character Database</a>, definition and derivation of properties.</li>
+<li><a href="https://www.unicode.org/Public/UCD/latest/ucd/DerivedCoreProperties.txt" rel="nofollow">DerivedCoreProperties.txt</a>, Unicode's versioned DI data.</li>
+<li><a href="https://www.unicode.org/reports/tr51/" rel="nofollow">UTS #51 — Unicode Emoji</a>, sequences and presentation selectors.</li>
+<li><a href="https://www.unicode.org/reports/tr39/" rel="nofollow">UTS #39 — Unicode Security Mechanisms</a>, identifier restriction and confusable mechanisms.</li>
+<li><a href="https://www.unicode.org/reports/tr29/" rel="nofollow">UAX #29 — Unicode Text Segmentation</a>, sequence-aware grapheme boundaries.</li>
+</ol>
+<hr><section class="related" aria-labelledby="related-title"><h2 id="related-title">Related technical references</h2><ul><li><a href="/us/grapheme-clusters-user-perceived-characters/">Grapheme Clusters and User-Perceived Characters</a></li><li><a href="/us/combining-marks-diacritics/">Combining Marks and Diacritics</a></li><li><a href="/us/unicode-general-categories/">Unicode General Categories</a></li></ul></section><p class="small">Independent Unicode research. Default-ignorable behavior and application-level security policies must not be conflated; verify the runtime's UCD version.</p></article></main><aside class="toc" aria-label="On this page"><h2>On this page</h2><a href="#definition">The precise meaning of default ignorable</a><a href="#families">Important character families and their behaviors</a><a href="#properties">Default_Ignorable versus General_Category and White_Space</a><a href="#rendering">Rendering fallback and variation behavior</a><a href="#examples">Invisible sequences that materially change text</a><a href="#code">JavaScript detection, auditing and safe handling</a><a href="#security">Security, accessibility and text integrity</a><a href="#testing">Versioned tests and operational checklists</a><a href="#references">Primary specifications and property files</a></aside></div></div><footer class="footer"><div class="shell"><span>© 2026 Letras Diferentes · Unicode Research Library</span><a href="/us/library/#unicode-characters">Unicode Character Model &amp; Properties</a></div></footer></body></html>
