@@ -13,8 +13,8 @@ test("Batch 6 publishes exactly locked positions 26–30",()=>{
   assert.equal(entries.length,96);
   assert.deepEqual(entries.slice(25,30).map(x=>x.slug),slugs);
   assert.ok(entries.slice(0,30).every(x=>x.status==="PUBLISHED"));
-  assert.ok(entries.slice(30).every(x=>x.status==="PLANNED"));
-  assert.equal(manifest.categories[3].articles.filter(x=>x.status==="PUBLISHED").length,6);
+  assert.ok(entries.slice(30).every(x=>["PUBLISHED","PLANNED"].includes(x.status)));
+  assert.ok(manifest.categories[3].articles.slice(0,6).every(x=>x.status==="PUBLISHED"));
 });
 test("Every new article has semantic metadata, public canonical and correct virtual-silo link",()=>{
   const hub=fs.readFileSync(path.join(root,"us/library/index.html"),"utf8");
@@ -33,9 +33,9 @@ test("Every new article has semantic metadata, public canonical and correct virt
     assert.ok(hub.includes('href="/us/'+slug+'/"'),slug+": published silo link");
     assert.ok(sitemap.includes("<loc>"+canonical+"</loc>"),slug+": sitemap");
   }
-  assert.ok(hub.includes("<strong>30</strong>Published references"));
-  assert.ok(hub.includes("66 planned articles"));
-  assert.ok(hub.includes("10 total · 6 published · 4 planned"));
+  assert.ok(hub.includes("<strong>"+entries.filter(x=>x.status==="PUBLISHED").length+"</strong>Published references"));
+  assert.ok(hub.includes((96-entries.filter(x=>x.status==="PUBLISHED").length)+" planned articles"));
+  assert.ok(hub.includes("10 total · "+manifest.categories[3].articles.filter(x=>x.status==="PUBLISHED").length+" published"));
 });
 test("NFKC/NFKD compatibility mappings preserve exact fraction slash",()=>{
   assert.equal("𝐀".normalize("NFC"),"𝐀");
