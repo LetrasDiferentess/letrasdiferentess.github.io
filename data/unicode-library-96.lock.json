@@ -218,27 +218,27 @@
         {
           "slug": "unicode-word-boundary-rules",
           "url": "https://letrasdiferentess.github.io/us/unicode-word-boundary-rules/",
-          "status": "PLANNED"
+          "status": "PUBLISHED"
         },
         {
           "slug": "unicode-sentence-boundary-rules",
           "url": "https://letrasdiferentess.github.io/us/unicode-sentence-boundary-rules/",
-          "status": "PLANNED"
+          "status": "PUBLISHED"
         },
         {
           "slug": "unicode-property-escapes-regex",
           "url": "https://letrasdiferentess.github.io/us/unicode-property-escapes-regex/",
-          "status": "PLANNED"
+          "status": "PUBLISHED"
         },
         {
           "slug": "unicode-aware-regex-case-matching",
           "url": "https://letrasdiferentess.github.io/us/unicode-aware-regex-case-matching/",
-          "status": "PLANNED"
+          "status": "PUBLISHED"
         },
         {
           "slug": "cursor-movement-complex-text",
           "url": "https://letrasdiferentess.github.io/us/cursor-movement-complex-text/",
-          "status": "PLANNED"
+          "status": "PUBLISHED"
         },
         {
           "slug": "deleting-grapheme-clusters",
