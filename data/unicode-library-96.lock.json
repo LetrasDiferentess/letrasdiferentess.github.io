@@ -161,27 +161,27 @@
         {
           "slug": "unicode-normalization-nfkc-nfkd",
           "url": "https://letrasdiferentess.github.io/us/unicode-normalization-nfkc-nfkd/",
-          "status": "PLANNED"
+          "status": "PUBLISHED"
         },
         {
           "slug": "canonical-combining-class-reordering",
           "url": "https://letrasdiferentess.github.io/us/canonical-combining-class-reordering/",
-          "status": "PLANNED"
+          "status": "PUBLISHED"
         },
         {
           "slug": "normalization-styled-unicode-text",
           "url": "https://letrasdiferentess.github.io/us/normalization-styled-unicode-text/",
-          "status": "PLANNED"
+          "status": "PUBLISHED"
         },
         {
           "slug": "unicode-case-folding",
           "url": "https://letrasdiferentess.github.io/us/unicode-case-folding/",
-          "status": "PLANNED"
+          "status": "PUBLISHED"
         },
         {
           "slug": "locale-sensitive-case-mapping",
           "url": "https://letrasdiferentess.github.io/us/locale-sensitive-case-mapping/",
-          "status": "PLANNED"
+          "status": "PUBLISHED"
         },
         {
           "slug": "unicode-collation-algorithm",
