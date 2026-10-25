@@ -2008,9 +2008,9 @@ window.FSDMarketFonts={version:VERSION,market:MARKET,detectMarket,apply,coverage
 })();
 </script>
 
-<script src="/assets/font-converter.js"></script>
+<script defer src="/assets/font-converter.js"></script>
 
-<script src="/assets/generator-engine.js"></script>
+<script defer src="/assets/generator-engine.js"></script>
 
 
 <div id="bio-icon-picker" style="position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:999999;display:none;align-items:center;justify-content:center;padding:16px">
@@ -2488,7 +2488,7 @@ document.addEventListener('keydown',function(e){if(e.key==='Escape')closeBioFont
 </script>
 
 <!-- FILE IMPORT ENGINES: self-contained DOCX + PDF text-layer -->
-<script src="/assets/jszip-3.10.1.js"></script>
+<script defer src="/assets/jszip-3.10.1.js"></script>
 <script id="tw-file-parsers">// FILE IMPORT HELPERS: DOCX + PDF text layer (self-contained, no OCR)
 async function twReadDocxText(file){
   if(typeof JSZip==='undefined') throw new Error('O mecanismo DOCX não está disponível');
@@ -3007,7 +3007,7 @@ async function twReadPdfTextLayer(file){
 </script>
 
 <!-- TEXT WRITER TAB 1 - isolated JavaScript -->
-<script src="/assets/text-writer.js"></script>
+<script defer src="/assets/text-writer.js"></script>
 <script id="tw-integrated-lock-js">
 // FINAL LOCK - 300 FONTS THẬT + SOCIAL NATIVE - 2026-09-30 03:51 - b9acbb072cefa47e
 (function(){
@@ -3116,7 +3116,7 @@ async function twReadPdfTextLayer(file){
 
 
 
-<script src="/assets/aesthetic-engine.js"></script>
+<script defer src="/assets/aesthetic-engine.js"></script>
 
 <script>window.FSD_WRITER_RAW_SOURCE_FIX='1.0.0';window.FSD_BIO_RAW_SOURCE_FIX='1.0.0';</script>
 <script id="us-root-host-form-safety">
