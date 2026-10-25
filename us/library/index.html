@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Unicode Text Processing &amp; Interoperability | Research Library</title>
+<meta name="description" content="Explore twelve technical research areas covering Unicode character models, styled text, encodings, normalization, font rendering, accessibility and cross-platform text interoperability.">
+<link rel="canonical" href="https://letrasdiferentess.github.io/us/library/">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#f5f6f3">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Unicode Text Processing & Interoperability — Research Library">
+<meta property="og:description" content="A structured technical reference collection in development: twelve research areas, one interoperable text knowledge hub.">
+<meta property="og:url" content="https://letrasdiferentess.github.io/us/library/">
+<style>
+:root{--ink:#15211e;--ink2:#34433d;--muted:#69756d;--paper:#f5f6f3;--white:#fff;--line:#dfe4dd;--yellow:#f8d957;--green:#173c32;--tint:#eef3ec;--shadow:0 7px 30px rgba(20,33,27,.045)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:24px}
+body{margin:0;background:var(--paper);font:15px/1.6 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased}
+a{color:inherit}
+button,input{font:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid #327665;outline-offset:3px}
+.skip{position:absolute;top:-100px;left:10px;background:#fff;padding:10px;z-index:20}.skip:focus{top:10px}
+.masthead{height:72px;background:#fff;border-bottom:1px solid var(--line)}
+.shell{width:min(1240px,calc(100% - 48px));margin:0 auto}
+.topbar{height:100%;display:flex;justify-content:space-between;align-items:center;gap:16px}
+.brand{display:inline-flex;align-items:center;gap:11px;text-decoration:none;font-size:16px;font-weight:780;letter-spacing:-.025em}
+.brand-symbol{width:35px;height:35px;border-radius:10px;display:grid;place-items:center;font-weight:900;font-size:19px;color:#0a1712;background:var(--yellow)}
+.brand-sub{font-size:11px;line-height:1.1;color:#5b6a62;font-weight:500;letter-spacing:0;display:block}
+.header-links{display:flex;align-items:center;gap:21px;font-size:13px;font-weight:680}
+.header-links a{text-decoration:none}.header-links a:hover{text-decoration:underline}
+.tool-link{padding:10px 16px;background:var(--green);color:#fff;border-radius:999px}
+.tool-link:hover{text-decoration:none!important;background:#255a4b}
+.hero{position:relative;overflow:hidden;border:1px solid #dce4dc;background:linear-gradient(115deg,#fff 0%,#fff 51%,#edf1e8 100%);border-radius:22px;padding:48px 50px 39px;margin-top:29px;box-shadow:var(--shadow)}
+.hero:after{content:"";position:absolute;right:-120px;bottom:-225px;width:470px;height:470px;border:1px solid #dce4db;border-radius:50%;box-shadow:0 0 0 55px #e8ede536,0 0 0 113px #e6ebe532;pointer-events:none}
+.eyebrow{display:flex;align-items:center;gap:10px;font-size:11px;font-weight:850;letter-spacing:.135em;text-transform:uppercase;color:#3c6d59}
+.eyebrow:before{content:"";width:24px;height:3px;background:#d5b839;border-radius:4px}
+h1{font-size:clamp(30px,4.1vw,53px);line-height:1.11;max-width:800px;letter-spacing:-.053em;margin:19px 0 18px;font-weight:820}
+.hero-intro{font-size:16px;color:var(--ink2);max-width:710px;line-height:1.75;margin:0 0 28px}
+.stats{display:flex;gap:12px;flex-wrap:wrap;position:relative;z-index:1}
+.stat{background:#fffdf9cc;border:1px solid #e0e4db;border-radius:11px;display:flex;align-items:baseline;gap:10px;padding:11px 15px}
+.stat strong{font-size:24px;line-height:1.2;letter-spacing:-.04em}
+.stat span{font-size:12px;font-weight:650;color:var(--muted)}
+.stat-status{background:#f9f5df}
+.stat-status strong{font-size:13px;letter-spacing:0}
+.breadcrumb{font-size:12px;color:var(--muted);display:flex;gap:9px;margin:24px 0 0;align-items:center}
+.breadcrumb a{text-decoration:none}.breadcrumb a:hover{text-decoration:underline}
+.section-header{display:flex;align-items:end;justify-content:space-between;gap:18px;margin:36px 0 20px}
+.section-header h2{font-size:clamp(21px,2.5vw,29px);letter-spacing:-.045em;line-height:1.25;margin:0}
+.section-header p{color:var(--muted);margin:7px 0 0;max-width:640px;font-size:13px}
+.corpus{display:grid;grid-template-columns:minmax(215px,268px) minmax(0,1fr);gap:22px;align-items:start}
+.index-panel{background:#fff;border:1px solid var(--line);border-radius:15px;padding:20px 10px 12px;position:sticky;top:18px;box-shadow:var(--shadow)}
+.index-top{padding:0 11px 15px}
+.overline{font-size:10px;font-weight:850;letter-spacing:.14em;color:#64756a;text-transform:uppercase}
+.index-heading{font-size:16px;letter-spacing:-.02em;font-weight:780;margin:5px 0 4px}
+.index-caption{font-size:12px;line-height:1.5;color:var(--muted);margin:0}
+.index-links{display:flex;flex-direction:column;gap:2px}
+.topic-nav-link{padding:9px 11px;border-radius:8px;display:flex;align-items:center;gap:10px;color:#334a3f;text-decoration:none;font-size:12px;font-weight:620;min-height:41px}
+.topic-nav-link:hover,.topic-nav-link:focus-visible{background:#eef4ed}
+.nav-number{font-size:10px;color:#87998c;font-variant-numeric:tabular-nums;font-weight:780;min-width:17px}
+.nav-arrow{margin-left:auto;color:#9cad9e;font-size:13px}
+.content-side{min-width:0}
+.search-panel{background:#fff;border:1px solid var(--line);border-radius:15px;padding:19px 20px;margin-bottom:17px;box-shadow:var(--shadow)}
+.search-top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:10px}
+.search-top label{font-size:13px;font-weight:790}
+.search-top span{font-size:11px;color:var(--muted)}
+.search-field{position:relative}
+.search-field svg{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:#647d6d}
+#topic-search{appearance:none;width:100%;height:47px;border-radius:10px;border:1px solid #d9e2d8;background:#fafbf9;padding:0 86px 0 44px;font-size:14px;color:#163127;outline:none}
+#topic-search:focus{border-color:#45866e;box-shadow:0 0 0 3px #45866e20}
+#clear-search{position:absolute;right:7px;top:7px;height:33px;border:0;background:#e8eee7;border-radius:7px;font-size:12px;font-weight:700;color:#42584d;padding:0 11px;display:none}
+.search-panel.has-query #clear-search{display:block}
+.result-count{font-size:12px;color:var(--muted);margin:11px 1px 0}
+.cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.topic-card[hidden],.topic-nav-link[hidden]{display:none!important}.topic-card{background:#fff;border:1px solid var(--line);border-radius:15px;overflow:hidden;box-shadow:var(--shadow);scroll-margin-top:18px;display:flex;flex-direction:column;min-height:368px;transition:border-color .15s ease}
+.topic-card:target{border-color:#35765f;box-shadow:0 0 0 3px #35765f20}
+.topic-card:hover{border-color:#b7c9b9}
+.card-top{padding:19px 20px 0;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.card-number{font-size:26px;letter-spacing:-.05em;color:#b1c0b5;font-weight:740;line-height:1}
+.card-count{font-size:10px;font-weight:760;background:#f3f5f1;border:1px solid #e3eae0;color:#687b6b;border-radius:999px;padding:5px 9px;white-space:nowrap}
+.card-body{padding:13px 20px 18px;flex:1}
+.card-kind{text-transform:uppercase;letter-spacing:.12em;font-size:10px;font-weight:810;color:#56806b;margin:0 0 8px}
+.topic-card h3{font-size:19px;letter-spacing:-.035em;line-height:1.32;margin:0 0 10px;font-weight:790}
+.topic-card h3 a{text-decoration:none}
+.topic-card h3 a:hover{text-decoration:underline;text-underline-offset:3px}
+.heading-anchor{color:#8dac9b;font-size:15px;opacity:0}.topic-card h3 a:hover .heading-anchor,.topic-card h3 a:focus-visible .heading-anchor{opacity:1}
+.card-description{font-size:13px;color:#56665d;line-height:1.65;margin:0 0 18px}
+.scope-label{margin:0 0 9px;text-transform:uppercase;font-size:10px;letter-spacing:.095em;font-weight:810;color:#8a968e}
+.tags{list-style:none;margin:0;padding:0;display:flex;gap:6px;flex-wrap:wrap}
+.tags li{font-size:11px;color:#385748;background:#eff5ee;border:1px solid #e2ece0;padding:5px 8px;border-radius:6px;line-height:1.3}
+.card-question{background:#f8faf6;border-top:1px solid #e9ede7;padding:13px 19px 14px;display:flex;align-items:flex-start;gap:10px}
+.question-icon{font-size:19px;color:#658978;line-height:1.3}
+.question-label{font-size:10px;font-weight:800;letter-spacing:.035em;color:#79867c}
+.card-question p{font-size:12px;line-height:1.5;color:#2f483b;margin:3px 0 0;font-weight:650}
+.empty-state{display:none;background:#fff;border:1px dashed #a9bcb0;border-radius:13px;padding:28px 20px;text-align:center;margin-top:16px}
+.empty-state p{margin:5px 0 0;color:var(--muted);font-size:13px}
+.notice{background:#eaf1e9;border:1px solid #d5e2d5;border-radius:13px;padding:21px 24px;display:flex;align-items:flex-start;gap:15px;margin:30px 0 0}
+.notice-symbol{width:36px;height:36px;flex:0 0 36px;display:grid;place-items:center;background:#dceadb;border-radius:11px;color:#285b43;font-size:19px}
+.notice h2{font-size:16px;margin:0 0 5px;letter-spacing:-.02em}
+.notice p{font-size:13px;line-height:1.7;color:#4c5f52;margin:0;max-width:930px}
+.principles{margin:37px 0 52px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.principle{border-top:2px solid #bccbbd;padding-top:14px}
+.principle strong{font-size:13px;display:block;margin-bottom:5px}
+.principle p{font-size:12px;color:var(--muted);line-height:1.65;margin:0}
+.footer{background:#142820;color:#dce7dc}
+.footer-inner{padding:29px 0;display:flex;align-items:center;justify-content:space-between;gap:18px}
+.footer strong{display:block;font-size:13px;color:#fff}
+.footer p{font-size:12px;color:#b7cbbf;margin:3px 0 0}
+.footer a{font-size:13px;color:#eff7ec;text-underline-offset:3px}
+@media(max-width:1030px){.corpus{grid-template-columns:218px minmax(0,1fr)}.cards{grid-template-columns:1fr}.topic-card{min-height:0}}
+@media(max-width:700px){.shell{width:min(100% - 28px,1240px)}.masthead{height:64px}.brand{font-size:14px}.brand-symbol{width:31px;height:31px;font-size:17px}.brand-sub{font-size:10px}.header-links{gap:10px}.header-links .secondary-link{display:none}.tool-link{padding:8px 10px;font-size:11px}.hero{margin-top:16px;padding:31px 22px 26px;border-radius:15px}.hero:after{display:none}.hero-intro{font-size:14px}.stat{padding:9px 11px}.stat strong{font-size:20px}.stat-status strong{font-size:12px}.stat span{font-size:11px}.breadcrumb{margin-top:18px}.section-header{margin:30px 0 15px}.corpus{display:block}.index-panel{position:static;padding:14px;margin-bottom:16px}.index-top{padding:0 4px 10px}.index-links{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px}.topic-nav-link{font-size:11px;padding:8px;min-height:39px}.nav-arrow{display:none}.cards{grid-template-columns:1fr;gap:12px}.topic-card{min-height:0}.card-top{padding:17px 17px 0}.card-body{padding:12px 17px 16px}.card-question{padding:11px 16px 14px}.search-panel{padding:15px}.notice{padding:17px;margin-top:23px}.principles{grid-template-columns:1fr;margin:29px 0 40px;gap:16px}.footer-inner{align-items:flex-start;flex-direction:column}}
+@media(max-width:380px){.index-links{grid-template-columns:1fr}.topic-nav-link{min-height:34px}.header-links a{font-size:10px}h1{font-size:30px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="masthead">
+ <div class="shell topbar">
+  <a class="brand" href="/us/" aria-label="Letras Diferentes: Fancy Text Generator home"><span class="brand-symbol">L<span aria-hidden="true">✳</span></span><span>Letras Diferentes<span class="brand-sub">Research Library</span></span></a>
+  <nav class="header-links" aria-label="Site navigation"><a class="secondary-link" href="/us/">Fancy Text Generator</a><a class="tool-link" href="/us/">Open the tool ↗</a></nav>
+ </div>
+</header>
+<main id="main" class="shell">
+ <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/us/">Home</a><span aria-hidden="true">/</span><span aria-current="page">Research Library</span></nav>
+ <section class="hero" aria-labelledby="page-title">
+  <div class="eyebrow">Technical Knowledge Library</div>
+  <h1 id="page-title">Unicode Text Processing <span style="color:#367055">&amp;</span> Interoperability</h1>
+  <p class="hero-intro">A focused reference collection exploring how digital text is represented, transformed, copied, rendered and understood across systems. Built around practical problems, specifications and reproducible behavior.</p>
+  <div class="stats" aria-label="Collection scope">
+   <div class="stat"><strong>12</strong><span>research areas</span></div>
+   <div class="stat"><strong>96</strong><span>references planned</span></div>
+   <div class="stat stat-status"><strong>Editorial framework</strong><span>Articles in preparation</span></div>
+  </div>
+ </section>
+ <div class="section-header">
+  <div><h2 id="areas-heading">Explore research areas</h2><p>The twelve groups below form a virtual silo. Each topic has a shareable anchor on this page; individual technical documents will have their own flat URLs under /us/.</p></div>
+ </div>
+ <div class="corpus" aria-labelledby="areas-heading">
+  <aside class="index-panel" aria-label="Research area index">
+   <div class="index-top"><div class="overline">Directory</div><div class="index-heading">Browse by discipline</div><p class="index-caption">Jump straight to a subject area.</p></div>
+   <nav class="index-links" aria-label="Jump to research area"><a class="topic-nav-link" data-index-link href="#unicode-character-model"><span class="nav-number">01</span><span>Character model</span><span class="nav-arrow" aria-hidden="true">↗</span></a>
+<a class="topic-nav-link" data-index-link href="#styled-text-special-characters"><span class="nav-number">02</span><span>Styled text</span><span class="nav-arrow" aria-hidden="true">↗</span></a>
+<a class="topic-nav-link" data-index-link href="#character-encoding"><span class="nav-number">03</span><span>Character encoding</span><span class="nav-arrow" aria-hidden="true">↗</span></a>
+<a class="topic-nav-link" data-index-link href="#normalization-casing-search"><span class="nav-number">04</span><span>Normalization &amp; search</span><span class="nav-arrow" aria-hidden="true">↗</span></a>
+<a class="topic-nav-link" data-index-link href="#segmentation-regex-cursors"><span class="nav-number">05</span><span>Segmentation &amp; regex</span><span class="nav-arrow" aria-hidden="true">↗</span></a>
+<a class="topic-nav-link" data-index-link href="#fonts-shaping-rendering"><span class="nav-number">06</span><span>Fonts &amp; rendering</span><span class="nav-arrow" aria-hidden="true">↗</span></a>
+<a class="topic-nav-link" data-index-link href="#clipboard-editors-markup"><span class="nav-number">07</span><span>Clipboard &amp; editors</span><span class="nav-arrow" aria-hidden="true">↗</span></a>
+<a class="topic-nav-link" data-index-link href="#multilingual-input"><span class="nav-number">08</span><span>Multilingual input</span><span class="nav-arrow" aria-hidden="true">↗</span></a>
+<a class="topic-nav-link" data-index-link href="#emoji-symbol-sequences"><span class="nav-number">09</span><span>Emoji &amp; symbols</span><span class="nav-arrow" aria-hidden="true">↗</span></a>
+<a class="topic-nav-link" data-index-link href="#identifiers-confusables-security"><span class="nav-number">10</span><span>Unicode security</span><span class="nav-arrow" aria-hidden="true">↗</span></a>
+<a class="topic-nav-link" data-index-link href="#text-accessibility"><span class="nav-number">11</span><span>Accessibility</span><span class="nav-arrow" aria-hidden="true">↗</span></a>
+<a class="topic-nav-link" data-index-link href="#text-apis-implementation"><span class="nav-number">12</span><span>Text APIs</span><span class="nav-arrow" aria-hidden="true">↗</span></a></nav>
+  </aside>
+  <div class="content-side">
+   <div class="search-panel" id="search-panel" role="search">
+    <div class="search-top"><label for="topic-search">Find a topic</label><span>Title, concept or technical question</span></div>
+    <div class="search-field">
+     <svg width="19" height="19" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
+     <input id="topic-search" type="search" autocomplete="off" placeholder="Try: normalization, emoji, font fallback…" aria-controls="topic-cards" aria-describedby="search-count">
+     <button type="button" id="clear-search" aria-label="Clear topic search">Clear</button>
+    </div>
+    <p class="result-count" id="search-count" role="status" aria-live="polite">Showing all 12 research areas</p>
+   </div>
+   <div id="topic-cards" class="cards"><section class="topic-card" id="unicode-character-model" aria-labelledby="heading-unicode-character-model" data-topic="unicode character model &amp; properties character model understand the units and properties that give unicode text its meaning before any application displays it. code points &amp; scalar values general categories combining marks grapheme clusters why can one visible character contain multiple code points?">
+ <div class="card-top"><div class="card-number">01</div><span class="card-count">8 planned references</span></div>
+ <div class="card-body">
+  <p class="card-kind">Foundations</p>
+  <h3 id="heading-unicode-character-model"><a href="#unicode-character-model" aria-label="Link to Unicode Character Model &amp; Properties">Unicode Character Model &amp; Properties <span aria-hidden="true" class="heading-anchor">#</span></a></h3>
+  <p class="card-description">Understand the units and properties that give Unicode text its meaning before any application displays it.</p>
+  <p class="scope-label">Coverage</p>
+  <ul class="tags"><li>Code points &amp; scalar values</li><li>General categories</li><li>Combining marks</li><li>Grapheme clusters</li></ul>
+ </div>
+ <div class="card-question"><span class="question-icon" aria-hidden="true">↳</span><div><span class="question-label">Example research question</span><p>Why can one visible character contain multiple code points?</p></div></div>
+</section>
+<section class="topic-card" id="styled-text-special-characters" aria-labelledby="heading-styled-text-special-characters" data-topic="styled text &amp; special characters styled text examine mathematical alphanumeric symbols, decorative characters and the limits of styled text across systems. mathematical alphanumerics compatibility characters copy &amp; paste behavior unicode vs fonts why is styled unicode text not the same as changing a font?">
+ <div class="card-top"><div class="card-number">02</div><span class="card-count">8 planned references</span></div>
+ <div class="card-body">
+  <p class="card-kind">Character behavior</p>
+  <h3 id="heading-styled-text-special-characters"><a href="#styled-text-special-characters" aria-label="Link to Styled Text &amp; Special Characters">Styled Text &amp; Special Characters <span aria-hidden="true" class="heading-anchor">#</span></a></h3>
+  <p class="card-description">Examine mathematical alphanumeric symbols, decorative characters and the limits of styled text across systems.</p>
+  <p class="scope-label">Coverage</p>
+  <ul class="tags"><li>Mathematical alphanumerics</li><li>Compatibility characters</li><li>Copy &amp; paste behavior</li><li>Unicode vs fonts</li></ul>
+ </div>
+ <div class="card-question"><span class="question-icon" aria-hidden="true">↳</span><div><span class="question-label">Example research question</span><p>Why is styled Unicode text not the same as changing a font?</p></div></div>
+</section>
+<section class="topic-card" id="character-encoding" aria-labelledby="heading-character-encoding" data-topic="character encoding &amp; data interchange character encoding trace the path from unicode characters to bytes, files, apis and exchanged data. utf-8 &amp; utf-16 byte order marks malformed sequences round-trip conversion where does text become corrupted between input and storage?">
+ <div class="card-top"><div class="card-number">03</div><span class="card-count">8 planned references</span></div>
+ <div class="card-body">
+  <p class="card-kind">Data exchange</p>
+  <h3 id="heading-character-encoding"><a href="#character-encoding" aria-label="Link to Character Encoding &amp; Data Interchange">Character Encoding &amp; Data Interchange <span aria-hidden="true" class="heading-anchor">#</span></a></h3>
+  <p class="card-description">Trace the path from Unicode characters to bytes, files, APIs and exchanged data.</p>
+  <p class="scope-label">Coverage</p>
+  <ul class="tags"><li>UTF-8 &amp; UTF-16</li><li>Byte order marks</li><li>Malformed sequences</li><li>Round-trip conversion</li></ul>
+ </div>
+ <div class="card-question"><span class="question-icon" aria-hidden="true">↳</span><div><span class="question-label">Example research question</span><p>Where does text become corrupted between input and storage?</p></div></div>
+</section>
+<section class="topic-card" id="normalization-casing-search" aria-labelledby="heading-normalization-casing-search" data-topic="normalization, casing, collation &amp; search normalization &amp; search study equivalent sequences, case mappings and comparisons that behave differently across languages. nfc / nfd / nfkc / nfkd case folding locale collation string matching why can two visually identical strings compare as unequal?">
+ <div class="card-top"><div class="card-number">04</div><span class="card-count">10 planned references</span></div>
+ <div class="card-body">
+  <p class="card-kind">Text identity</p>
+  <h3 id="heading-normalization-casing-search"><a href="#normalization-casing-search" aria-label="Link to Normalization, Casing, Collation &amp; Search">Normalization, Casing, Collation &amp; Search <span aria-hidden="true" class="heading-anchor">#</span></a></h3>
+  <p class="card-description">Study equivalent sequences, case mappings and comparisons that behave differently across languages.</p>
+  <p class="scope-label">Coverage</p>
+  <ul class="tags"><li>NFC / NFD / NFKC / NFKD</li><li>Case folding</li><li>Locale collation</li><li>String matching</li></ul>
+ </div>
+ <div class="card-question"><span class="question-icon" aria-hidden="true">↳</span><div><span class="question-label">Example research question</span><p>Why can two visually identical strings compare as unequal?</p></div></div>
+</section>
+<section class="topic-card" id="segmentation-regex-cursors" aria-labelledby="heading-segmentation-regex-cursors" data-topic="text segmentation, regex &amp; cursor behavior segmentation &amp; regex connect text boundaries to regular expressions, selection logic, deletion and caret movement. grapheme boundaries word segmentation unicode regex cursor operations why does backspace sometimes remove only part of a character?">
+ <div class="card-top"><div class="card-number">05</div><span class="card-count">8 planned references</span></div>
+ <div class="card-body">
+  <p class="card-kind">Interaction</p>
+  <h3 id="heading-segmentation-regex-cursors"><a href="#segmentation-regex-cursors" aria-label="Link to Text Segmentation, Regex &amp; Cursor Behavior">Text Segmentation, Regex &amp; Cursor Behavior <span aria-hidden="true" class="heading-anchor">#</span></a></h3>
+  <p class="card-description">Connect text boundaries to regular expressions, selection logic, deletion and caret movement.</p>
+  <p class="scope-label">Coverage</p>
+  <ul class="tags"><li>Grapheme boundaries</li><li>Word segmentation</li><li>Unicode regex</li><li>Cursor operations</li></ul>
+ </div>
+ <div class="card-question"><span class="question-icon" aria-hidden="true">↳</span><div><span class="question-label">Example research question</span><p>Why does Backspace sometimes remove only part of a character?</p></div></div>
+</section>
+<section class="topic-card" id="fonts-shaping-rendering" aria-labelledby="heading-fonts-shaping-rendering" data-topic="fonts, shaping &amp; text rendering fonts &amp; rendering investigate how character data becomes visible glyphs on browsers, operating systems and apps. font fallback glyph coverage script shaping rendering engines why do some symbols appear as empty squares on one device?">
+ <div class="card-top"><div class="card-number">06</div><span class="card-count">10 planned references</span></div>
+ <div class="card-body">
+  <p class="card-kind">Rendering</p>
+  <h3 id="heading-fonts-shaping-rendering"><a href="#fonts-shaping-rendering" aria-label="Link to Fonts, Shaping &amp; Text Rendering">Fonts, Shaping &amp; Text Rendering <span aria-hidden="true" class="heading-anchor">#</span></a></h3>
+  <p class="card-description">Investigate how character data becomes visible glyphs on browsers, operating systems and apps.</p>
+  <p class="scope-label">Coverage</p>
+  <ul class="tags"><li>Font fallback</li><li>Glyph coverage</li><li>Script shaping</li><li>Rendering engines</li></ul>
+ </div>
+ <div class="card-question"><span class="question-icon" aria-hidden="true">↳</span><div><span class="question-label">Example research question</span><p>Why do some symbols appear as empty squares on one device?</p></div></div>
+</section>
+<section class="topic-card" id="clipboard-editors-markup" aria-labelledby="heading-clipboard-editors-markup" data-topic="clipboard, editors &amp; markup clipboard &amp; editors look at how formatted and plain text survive copying, editing, serialization and markup transformations. clipboard mime types rich vs plain text editor interoperability html text handling why does text change after copying between applications?">
+ <div class="card-top"><div class="card-number">07</div><span class="card-count">9 planned references</span></div>
+ <div class="card-body">
+  <p class="card-kind">Interoperability</p>
+  <h3 id="heading-clipboard-editors-markup"><a href="#clipboard-editors-markup" aria-label="Link to Clipboard, Editors &amp; Markup">Clipboard, Editors &amp; Markup <span aria-hidden="true" class="heading-anchor">#</span></a></h3>
+  <p class="card-description">Look at how formatted and plain text survive copying, editing, serialization and markup transformations.</p>
+  <p class="scope-label">Coverage</p>
+  <ul class="tags"><li>Clipboard MIME types</li><li>Rich vs plain text</li><li>Editor interoperability</li><li>HTML text handling</li></ul>
+ </div>
+ <div class="card-question"><span class="question-icon" aria-hidden="true">↳</span><div><span class="question-label">Example research question</span><p>Why does text change after copying between applications?</p></div></div>
+</section>
+<section class="topic-card" id="multilingual-input" aria-labelledby="heading-multilingual-input" data-topic="multilingual text &amp; input systems multilingual input explore multilingual scripts and composition behavior in real-world input methods and applications. ime composition bidirectional text diacritics script-specific behavior how can input methods affect what an editor receives?">
+ <div class="card-top"><div class="card-number">08</div><span class="card-count">9 planned references</span></div>
+ <div class="card-body">
+  <p class="card-kind">Multilingual systems</p>
+  <h3 id="heading-multilingual-input"><a href="#multilingual-input" aria-label="Link to Multilingual Text &amp; Input Systems">Multilingual Text &amp; Input Systems <span aria-hidden="true" class="heading-anchor">#</span></a></h3>
+  <p class="card-description">Explore multilingual scripts and composition behavior in real-world input methods and applications.</p>
+  <p class="scope-label">Coverage</p>
+  <ul class="tags"><li>IME composition</li><li>Bidirectional text</li><li>Diacritics</li><li>Script-specific behavior</li></ul>
+ </div>
+ <div class="card-question"><span class="question-icon" aria-hidden="true">↳</span><div><span class="question-label">Example research question</span><p>How can input methods affect what an editor receives?</p></div></div>
+</section>
+<section class="topic-card" id="emoji-symbol-sequences" aria-labelledby="heading-emoji-symbol-sequences" data-topic="emoji &amp; symbol sequences emoji &amp; symbols explore variation selectors and multi-code-point sequences that change the appearance of emoji and symbols. zwj sequences variation selectors skin tone modifiers emoji segmentation why does an emoji display differently across platforms?">
+ <div class="card-top"><div class="card-number">09</div><span class="card-count">6 planned references</span></div>
+ <div class="card-body">
+  <p class="card-kind">Visual sequences</p>
+  <h3 id="heading-emoji-symbol-sequences"><a href="#emoji-symbol-sequences" aria-label="Link to Emoji &amp; Symbol Sequences">Emoji &amp; Symbol Sequences <span aria-hidden="true" class="heading-anchor">#</span></a></h3>
+  <p class="card-description">Explore variation selectors and multi-code-point sequences that change the appearance of emoji and symbols.</p>
+  <p class="scope-label">Coverage</p>
+  <ul class="tags"><li>ZWJ sequences</li><li>Variation selectors</li><li>Skin tone modifiers</li><li>Emoji segmentation</li></ul>
+ </div>
+ <div class="card-question"><span class="question-icon" aria-hidden="true">↳</span><div><span class="question-label">Example research question</span><p>Why does an emoji display differently across platforms?</p></div></div>
+</section>
+<section class="topic-card" id="identifiers-confusables-security" aria-labelledby="heading-identifiers-confusables-security" data-topic="identifiers, confusables &amp; security unicode security study text identity and deceptive similarities in usernames, identifiers and security-sensitive strings. confusable characters mixed-script strings identifier profiles spoofing risks how can two different identifiers look almost identical?">
+ <div class="card-top"><div class="card-number">10</div><span class="card-count">7 planned references</span></div>
+ <div class="card-body">
+  <p class="card-kind">Security</p>
+  <h3 id="heading-identifiers-confusables-security"><a href="#identifiers-confusables-security" aria-label="Link to Identifiers, Confusables &amp; Security">Identifiers, Confusables &amp; Security <span aria-hidden="true" class="heading-anchor">#</span></a></h3>
+  <p class="card-description">Study text identity and deceptive similarities in usernames, identifiers and security-sensitive strings.</p>
+  <p class="scope-label">Coverage</p>
+  <ul class="tags"><li>Confusable characters</li><li>Mixed-script strings</li><li>Identifier profiles</li><li>Spoofing risks</li></ul>
+ </div>
+ <div class="card-question"><span class="question-icon" aria-hidden="true">↳</span><div><span class="question-label">Example research question</span><p>How can two different identifiers look almost identical?</p></div></div>
+</section>
+<section class="topic-card" id="text-accessibility" aria-labelledby="heading-text-accessibility" data-topic="text accessibility accessibility consider how assistive technologies interpret symbols, decorated text and unicode sequences. screen readers semantic clarity accessible names copyable alternatives when does decorative unicode text become difficult to access?">
+ <div class="card-top"><div class="card-number">11</div><span class="card-count">5 planned references</span></div>
+ <div class="card-body">
+  <p class="card-kind">Accessibility</p>
+  <h3 id="heading-text-accessibility"><a href="#text-accessibility" aria-label="Link to Text Accessibility">Text Accessibility <span aria-hidden="true" class="heading-anchor">#</span></a></h3>
+  <p class="card-description">Consider how assistive technologies interpret symbols, decorated text and Unicode sequences.</p>
+  <p class="scope-label">Coverage</p>
+  <ul class="tags"><li>Screen readers</li><li>Semantic clarity</li><li>Accessible names</li><li>Copyable alternatives</li></ul>
+ </div>
+ <div class="card-question"><span class="question-icon" aria-hidden="true">↳</span><div><span class="question-label">Example research question</span><p>When does decorative Unicode text become difficult to access?</p></div></div>
+</section>
+<section class="topic-card" id="text-apis-implementation" aria-labelledby="heading-text-apis-implementation" data-topic="text apis &amp; implementation patterns text apis turn unicode principles into testable implementation choices across programming languages and platforms. javascript strings unicode-safe apis boundary testing cross-platform patterns which string operations must account for grapheme clusters?">
+ <div class="card-top"><div class="card-number">12</div><span class="card-count">8 planned references</span></div>
+ <div class="card-body">
+  <p class="card-kind">Implementation</p>
+  <h3 id="heading-text-apis-implementation"><a href="#text-apis-implementation" aria-label="Link to Text APIs &amp; Implementation Patterns">Text APIs &amp; Implementation Patterns <span aria-hidden="true" class="heading-anchor">#</span></a></h3>
+  <p class="card-description">Turn Unicode principles into testable implementation choices across programming languages and platforms.</p>
+  <p class="scope-label">Coverage</p>
+  <ul class="tags"><li>JavaScript strings</li><li>Unicode-safe APIs</li><li>Boundary testing</li><li>Cross-platform patterns</li></ul>
+ </div>
+ <div class="card-question"><span class="question-icon" aria-hidden="true">↳</span><div><span class="question-label">Example research question</span><p>Which string operations must account for grapheme clusters?</p></div></div>
+</section></div>
+   <div class="empty-state" id="no-results" role="status"><strong>No matching research areas</strong><p>Try a broader term such as “text”, “font”, “encoding” or “Unicode”.</p></div>
+  </div>
+ </div>
+ <section class="notice" aria-label="Publication status">
+  <div class="notice-symbol" aria-hidden="true">i</div>
+  <div><h2>About this collection</h2><p>These twelve subject areas define the editorial architecture for 96 planned technical documents. The articles are not yet published, so this directory describes their intended coverage rather than presenting unfinished pages as available references. As documents are reviewed and released, they will be connected here through meaningful relationships, not duplicated category URLs.</p></div>
+ </section>
+ <section class="principles" aria-label="Editorial approach">
+  <div class="principle"><strong>Standards-led</strong><p>Research grounded in primary technical sources such as Unicode specifications, W3C guidance, ICU and official implementation documentation.</p></div>
+  <div class="principle"><strong>Reproducible</strong><p>Where applicable, examples should make behavior and edge cases testable rather than merely describing them.</p></div>
+  <div class="principle"><strong>Useful beyond this website</strong><p>Designed to support clear technical discussions and honest citations when a community's policies permit them.</p></div>
+ </section>
+</main>
+<footer class="footer"><div class="shell footer-inner"><div><strong>Letras Diferentes · Research Library</strong><p>Unicode Text Processing &amp; Interoperability</p></div><a href="/us/">Return to Fancy Text Generator ↗</a></div></footer>
+<script>
+(function(){
+"use strict";
+const input=document.getElementById("topic-search");
+const clear=document.getElementById("clear-search");
+const panel=document.getElementById("search-panel");
+const cards=Array.from(document.querySelectorAll(".topic-card"));
+const nav=Array.from(document.querySelectorAll("[data-index-link]"));
+const count=document.getElementById("search-count");
+const empty=document.getElementById("no-results");
+function normalize(value){return String(value||"").normalize("NFKD").replace(/[\u0300-\u036f]/g,"").toLowerCase().trim();}
+function update(){
+ const q=normalize(input.value);
+ let visible=0;
+ cards.forEach(function(card){const match=!q||normalize(card.dataset.topic).includes(q);card.hidden=!match;if(match)visible++;});
+ nav.forEach(function(link){const card=document.getElementById(link.getAttribute("href").slice(1));link.hidden=!!card.hidden;});
+ panel.classList.toggle("has-query",!!input.value);
+ count.textContent=q?"Showing "+visible+" of 12 research areas":"Showing all 12 research areas";
+ empty.style.display=visible?"none":"block";
+}
+input.addEventListener("input",update);
+clear.addEventListener("click",function(){input.value="";update();input.focus();});
+document.addEventListener("keydown",function(e){const tag=document.activeElement&&document.activeElement.tagName;if(e.key==="/"&&!e.ctrlKey&&!e.metaKey&&!e.altKey&&tag!=="INPUT"&&tag!=="TEXTAREA"){e.preventDefault();input.focus();}});
+update();
+})();
+</script>
+</body>
+</html>
