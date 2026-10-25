@@ -1,0 +1,100 @@
+<!doctype html><html lang="en-US"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Unicode Versioning and Character Stability: What Can and Cannot Change | Letras Diferentes Research Library</title><meta name="description" content="Understand Unicode 18.0 versioning, immutable code point assignments, name and normalization stability, evolving properties, library mismatches and reproducible regression tests."><meta name="robots" content="index,follow"><link rel="canonical" href="https://letrasdiferentess.github.io/us/unicode-versioning-character-stability/"><meta property="og:type" content="article"><meta property="og:title" content="Unicode Versioning and Character Stability: What Can and Cannot Change"><meta property="og:description" content="Understand Unicode 18.0 versioning, immutable code point assignments, name and normalization stability, evolving properties, library mismatches and reproducible regression tests."><meta property="og:url" content="https://letrasdiferentess.github.io/us/unicode-versioning-character-stability/"><link rel="stylesheet" href="/us/library/article.css"><script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","@id":"https://letrasdiferentess.github.io/us/unicode-versioning-character-stability/#article","headline":"Unicode Versioning and Character Stability: What Can and Cannot Change","description":"Understand Unicode 18.0 versioning, immutable code point assignments, name and normalization stability, evolving properties, library mismatches and reproducible regression tests.","inLanguage":"en-US","datePublished":"2026-10-25","dateModified":"2026-10-25","author":{"@type":"Organization","name":"Letras Diferentes"},"publisher":{"@type":"Organization","name":"Letras Diferentes","url":"https://letrasdiferentess.github.io/"},"mainEntityOfPage":"https://letrasdiferentess.github.io/us/unicode-versioning-character-stability/","isPartOf":{"@type":"WebPage","@id":"https://letrasdiferentess.github.io/us/library/"}}</script></head><body><a class="skip" href="#main">Skip to article</a><header class="sitehead"><div class="shell"><nav aria-label="Site"><a class="brand" href="/us/">Letras <span>Diferentes</span></a> <a href="/us/">Fancy Text Tool</a> <a href="/us/library/">Research Library</a></nav></div></header><div class="shell"><nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/us/">Home</a><span aria-hidden="true">/</span><a href="/us/library/">Research Library</a><span aria-hidden="true">/</span>Unicode Character Model &amp; Properties</nav><div class="headercopy"><span class="eyebrow">Unicode research · Versioning</span><h1>Unicode Versioning and Character Stability: What Can and Cannot Change</h1><p class="dek">Understand Unicode 18.0 versioning, immutable code point assignments, name and normalization stability, evolving properties, library mismatches and reproducible regression tests.</p><div class="meta"><span>Technical reference</span><span>Unicode baseline: 18.0.0</span><time datetime="2026-10-25">Updated 25 October 2026</time></div></div><div class="layout"><main id="main" class="article"><article>
+<h2 id="release-model">How Unicode releases evolve</h2>
+<p>Unicode is an expanding standard, not a frozen list of characters. Each release can assign additional code points, add scripts and emoji, update character-property data, revise segmentation guidance and publish corrections or clarifications. A system that handles UTF-8 correctly can still display unexpected tofu boxes, segment grapheme clusters differently, or produce different search results after its Unicode data are updated. Those outcomes reflect several independent software layers rather than instability in the numeric identity of characters.</p>
+<p>As of October 2026, the current major release is <strong>Unicode 18.0.0</strong>, published 16 September 2026. It added 13,007 encoded characters, bringing the total to 172,808, including characters for newly encoded scripts. The release's core standard, annexes, the Unicode Character Database (UCD) and synchronized Unicode technical standards form the versioned baseline. A downstream browser or library may still use an older version, even if its operating system is current.</p>
+<p>A version number such as <code>18.0.0</code> identifies the standard and associated data; it is not automatically the same as an ICU version number, a CLDR version, a browser release, a font revision, or an emoji font's repertoire. Many practical incompatibilities come from <em>version skew</em> between these components.</p>
+
+<h2 id="stable">Guarantees: identity, positions, names and normalization</h2>
+<p>The Unicode Consortium publishes explicit <strong>Character Encoding Stability Policies</strong>, which protect encoded text as new repertoire is added. These policies matter because storage systems and protocols must continue to interpret existing code points consistently across decades.</p>
+<div class="table-scroll"><table><thead><tr><th>Policy</th><th>Meaning</th><th>Boundary of the guarantee</th></tr></thead><tbody>
+<tr><td><strong>Encoding stability</strong></td><td>Once a character has been encoded, it is not moved, removed or reassigned to a different character.</td><td>A code point can later be <em>deprecated</em> without being deleted.</td></tr>
+<tr><td><strong>Name stability</strong></td><td>The formal Unicode Name of a previously encoded, non-reserved code point stays stable.</td><td>Name aliases and annotations may supplement historical names or correct their interpretation.</td></tr>
+<tr><td><strong>Formal name-alias stability</strong></td><td>Once an established formal alias is assigned, it will not be changed or removed.</td><td>Not every informal colloquial name is a formal alias.</td></tr>
+<tr><td><strong>Normalization stability</strong></td><td>For strings using characters already assigned in the compared releases, normalization results remain stable under the stated policy.</td><td>Newly assigned characters unknown to older software are outside that premise.</td></tr>
+<tr><td><strong>Decomposition and combining-class stability</strong></td><td>A character's decomposition mapping and canonical combining class do not change after assignment under the relevant policy.</td><td>These guarantees do not freeze all properties or all rendering behavior.</td></tr>
+<tr><td><strong>Identity stability</strong></td><td>Property updates must not change a character's fundamental identity.</td><td>The Consortium may refine other properties where needed.</td></tr>
+</tbody></table></div>
+<p>These rules distinguish <em>numeric stability</em> from <em>display stability</em>. The fact that <code>U+1F600</code> is always GRINNING FACE does not require every font to draw the same mouth, eye shapes or colorful rendering. Nor does it guarantee every OS can display that code point when it was newly introduced.</p>
+<p>Strong normalization stability, applicable since Unicode 4.1, includes the condition that the input string's characters were assigned in both compared versions. Do not generalize it to arbitrary strings containing unassigned code points from the older implementation: the older implementation might leave a future combining character untouched because it does not know its new properties.</p>
+
+<h2 id="changes">What can still change between Unicode versions</h2>
+<p>Some properties are deliberately allowed to evolve within specified policy constraints. Updates can change category assignments for previously unassigned code points, add or refine script associations, adjust derived properties, revise rules for grapheme/word/sentence segmentation, and add emoji sequences or rendering recommendations. New code points can affect how neighboring code points are grouped or how a text run is processed.</p>
+<ul>
+<li><strong>Previously unassigned code points:</strong> Once Unicode assigns them, their <code>General_Category</code> moves away from <code>Cn</code> to the assigned class, and their other properties become specified.</li>
+<li><strong>Segmentation:</strong> UAX #29 rules and data can be updated. Old and new environments can disagree about a grapheme boundary without disagreeing about the encoded text.</li>
+<li><strong>Identifier restrictions:</strong> Security profiles and confusable data evolve; an application that validates identifiers must document and test its chosen version.</li>
+<li><strong>Collation:</strong> Ordering strings is not the same as ordering code points. UTS #10, locale data and tailoring can change without renumbering characters.</li>
+<li><strong>Emoji support:</strong> An OS's pictographic repertoire depends on fonts and shaping technology as well as Unicode/emoji property data.</li>
+<li><strong>Case and script processing:</strong> Rules and mappings are versioned; stable character identity does not imply all locale-sensitive mappings are permanently invariant.</li>
+</ul>
+<p>Rendering differences are sometimes caused by fonts rather than Unicode rules. Updating a browser's font fallback list can change appearance while the selected UCD version remains identical. Conversely, ICU can update UAX #29 segmentation data while the fonts remain unchanged.</p>
+
+<h2 id="ucd">Versioned UCD data, runtime support and fallback</h2>
+<p>The UCD is a collection of versioned text files that include <code>UnicodeData.txt</code>, <code>DerivedCoreProperties.txt</code>, <code>Scripts.txt</code>, <code>ScriptExtensions.txt</code>, property aliases, normalization data and segmentation property tables. A robust implementation reads a self-consistent <em>release set</em>. Mixing a current <code>Scripts.txt</code> with an obsolete <code>PropertyValueAliases.txt</code> can fail to interpret newly added script identifiers; pairing mismatched derived properties and break rules may create a segmentation bug.</p>
+<p>For reproducible processing, store or log both the application/library version and the Unicode data version. Python exposes the bundled release through <code>unicodedata.unidata_version</code>. ICU exposes its own library and Unicode data versions through its APIs. Browser JavaScript generally does not offer a single standard API returning the UCD version of the entire engine; recording the browser/engine version and comparing observed behavior against versioned test vectors is useful.</p>
+<p>When encountering a future scalar value that is unknown to your current UCD, an interchange encoder should still be able to preserve a well-formed UTF-8/UTF-16 sequence. Rendering may fall back to a missing-glyph box, and property lookup may report an unassigned/default value. It is usually safer to preserve unknown scalar values rather than replace them merely because the local character database is old.</p>
+
+<h2 id="examples">Worked examples of cross-version behavior</h2>
+<h3>Stable assigned code point, unstable glyph appearance</h3>
+<p>The numeric scalar <code>U+1F600</code> stays U+1F600 in all future releases. A monochrome font, a colored emoji font and a missing-font fallback can represent it with different glyphs or no supported glyph. A UTF-8 byte comparison can stay identical while screenshots differ.</p>
+<h3>Older runtime sees a newly assigned character as unassigned</h3>
+<p>Suppose Unicode version V+1 adds a character at a code point that was unassigned in version V. Both runtimes may decode its UTF-8 bytes as a valid scalar, but version V's character database can still classify it as <code>Cn</code>. A validator that rejects all <code>Cn</code> values will reject newer but legitimate text. A font that lacks the glyph will similarly display a fallback shape. This behavior does not mean the encoding is malformed.</p>
+<h3>Normalization guarantee with an important condition</h3>
+<p>For the precomposed <code>U+00E9</code> and the decomposed sequence <code>U+0065 U+0301</code>, NFC/NFD equivalence is covered by normalization stability in versions that already assign those characters. If the text instead contains a new combining character not assigned in an older version, the older normalization implementation might not achieve the newer version's normalized form. This condition matters for cross-system equality tests and cached normalized keys.</p>
+<h3>Legacy names may appear odd</h3>
+<p>Unicode keeps established formal character names stable even when community terminology changes or a historical name is imperfect. Developers should not silently rename code points in a character table; use official NameAliases or documentation notes for improved discoverability.</p>
+
+<h2 id="engineering">Implementation architecture and compatibility strategy</h2>
+<p>Separate character storage, data-property lookup, higher-level algorithms and rendering. Storage and transport should validate well-formed encoding rather than require that every scalar value be assigned in the runtime's current database. A property-based algorithm should state which UCD release it uses. Rendering should degrade gracefully when fonts lack a newly assigned character while keeping the original logical string available for copy/paste.</p>
+<p>Useful practices include pinning the Unicode version of data-generation jobs, accepting well-formed unknown scalar values at the interchange layer, recording transformations in search/index pipelines, and maintaining compatibility tests for clients with known older releases. A migration can update a search index's derived keys without rewriting original user text. If identifiers depend on Unicode profiles, version updates should be reviewed as policy changes rather than assumed harmless dependency upgrades.</p>
+<p>For web apps, distinguish a new Unicode code point from a newly available CSS font or OS emoji glyph. The former is part of the data standard; the latter is a device capability. There is no reliable general assertion that “my app supports Unicode 18” based solely on being able to decode UTF-8.</p>
+
+<h2 id="testing">Practical tests in Python and JavaScript</h2>
+<pre><code># Python: record UCD version and validate old assignments
+import sys
+import unicodedata as ud
+
+print("Python:", sys.version)
+print("Bundled Unicode:", ud.unidata_version)
+assert ud.name("\U0001F600") == "GRINNING FACE"
+assert ud.normalize("NFC", "e\u0301") == "\u00E9"
+
+def classify(ch):
+    return (f"U+{ord(ch):04X}",
+            ud.category(ch),
+            ud.name(ch, "UNASSIGNED/UNNAMED"))
+print(classify("\u0378")) # Cn in current UCD (not a
+                           # promise about all future releases)</code></pre>
+<p>A more comprehensive test suite should parse version-specific files such as <code>NormalizationTest.txt</code>, <code>GraphemeBreakTest.txt</code> and UCD property ranges. The test fixture must be paired with the implementation's advertised release: do not blame a Unicode 15 library for failing conformance vectors that require Unicode 18 assignments.</p>
+<pre><code>// JavaScript: assert data-level invariants
+const cp = "\u{1F600}";
+console.assert(cp.codePointAt(0) === 0x1F600);
+console.assert([...cp].length === 1); // 1 scalar value
+console.assert(cp.length === 2);      // 2 UTF-16 units
+console.assert(new TextEncoder().encode(cp).length === 4);
+console.assert("e\u0301".normalize("NFC") === "\u00E9");
+
+// Runtime-specific behavior (emoji presentation/segmentation)
+// belongs in separate, version-tagged compatibility tests.</code></pre>
+<p>Persist a manifest containing Unicode release, test dataset checksums, ICU/runtime version, normalization form and expected property/boundary counts. This permits reproducible regression comparisons and makes upgrades auditable rather than guesswork.</p>
+
+<h2 id="failure-modes">Common migration and security failures</h2>
+<ul>
+<li><strong>“Unicode is backward-incompatible because new emoji look different.”</strong> Visual changes are not code point renumbering; diagnose font and layout components separately.</li>
+<li><strong>“Reject all unknown code points as invalid UTF-8.”</strong> Encoding validity and character assignment are distinct.</li>
+<li><strong>“Unicode version alone specifies what is on screen.”</strong> Font repertoire, platform shaping, locale and CSS all influence rendering.</li>
+<li><strong>“Normalization results never depend on version.”</strong> Strong stability has assigned-character conditions; new characters unknown to old versions deserve explicit tests.</li>
+<li><strong>“Property tables are interchangeable across releases.”</strong> Mixing versions risks inconsistent lookup and boundary algorithms.</li>
+<li><strong>“Updating ICU cannot affect existing data.”</strong> Derived search keys, segmentation outputs and identifier filters may change even when stored bytes do not.</li>
+</ul>
+
+<h2 id="references">Official release and stability references</h2>
+<ol class="references">
+<li><a href="https://www.unicode.org/releases/" rel="nofollow">Unicode Consortium — Recent Releases</a>, release dates and current specifications.</li>
+<li><a href="https://www.unicode.org/policies/stability_policy.html" rel="nofollow">Unicode Character Encoding Stability Policies</a>, formal guarantees and their applicability.</li>
+<li><a href="https://www.unicode.org/versions/Unicode18.0.0/" rel="nofollow">Unicode Standard 18.0.0</a>, core specification and release details.</li>
+<li><a href="https://www.unicode.org/reports/tr44/" rel="nofollow">UAX #44 — Unicode Character Database</a>, properties, filenames and defaults.</li>
+<li><a href="https://www.unicode.org/reports/tr15/" rel="nofollow">UAX #15 — Unicode Normalization Forms</a>, canonical stability and conformance.</li>
+<li><a href="https://www.unicode.org/reports/tr29/" rel="nofollow">UAX #29 — Unicode Text Segmentation</a>, versioned boundaries.</li>
+</ol>
+<hr><section class="related" aria-labelledby="related-title"><h2 id="related-title">Related technical references</h2><ul><li><a href="/us/unicode-scalar-values-surrogates/">Unicode Scalar Values and Surrogates</a></li><li><a href="/us/unicode-general-categories/">Unicode General Categories and UCD Properties</a></li><li><a href="/us/grapheme-clusters-user-perceived-characters/">Grapheme Clusters and Segmentation</a></li></ul></section><p class="small">Independent technical review of published Unicode stability policies; verify the precise data-version support of any runtime used in production.</p></article></main><aside class="toc" aria-label="On this page"><h2>On this page</h2><a href="#release-model">How Unicode releases evolve</a><a href="#stable">Guarantees: identity, positions, names and normalization</a><a href="#changes">What can still change between Unicode versions</a><a href="#ucd">Versioned UCD data, runtime support and fallback</a><a href="#examples">Worked examples of cross-version behavior</a><a href="#engineering">Implementation architecture and compatibility strategy</a><a href="#testing">Practical tests in Python and JavaScript</a><a href="#failure-modes">Common migration and security failures</a><a href="#references">Official release and stability references</a></aside></div></div><footer class="footer"><div class="shell"><span>© 2026 Letras Diferentes · Unicode Research Library</span><a href="/us/library/#unicode-characters">Unicode Character Model &amp; Properties</a></div></footer></body></html>
