@@ -186,22 +186,22 @@
         {
           "slug": "unicode-collation-algorithm",
           "url": "https://letrasdiferentess.github.io/us/unicode-collation-algorithm/",
-          "status": "PLANNED"
+          "status": "PUBLISHED"
         },
         {
           "slug": "accent-insensitive-text-search",
           "url": "https://letrasdiferentess.github.io/us/accent-insensitive-text-search/",
-          "status": "PLANNED"
+          "status": "PUBLISHED"
         },
         {
           "slug": "canonical-equivalence-text-matching",
           "url": "https://letrasdiferentess.github.io/us/canonical-equivalence-text-matching/",
-          "status": "PLANNED"
+          "status": "PUBLISHED"
         },
         {
           "slug": "unicode-normalization-data-consistency",
           "url": "https://letrasdiferentess.github.io/us/unicode-normalization-data-consistency/",
-          "status": "PLANNED"
+          "status": "PUBLISHED"
         }
       ]
     },
@@ -213,7 +213,7 @@
         {
           "slug": "extended-grapheme-cluster-boundaries",
           "url": "https://letrasdiferentess.github.io/us/extended-grapheme-cluster-boundaries/",
-          "status": "PLANNED"
+          "status": "PUBLISHED"
         },
         {
           "slug": "unicode-word-boundary-rules",
