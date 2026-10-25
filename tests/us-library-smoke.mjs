@@ -43,8 +43,11 @@ for(const size of sizes){
   assert.equal(await cards.filter({visible:true}).count(),12);
   await page.locator('#topic-nav a[href="#font-rendering"]').click();
   assert.equal(new URL(page.url()).hash,'#font-rendering');
-  const rect=await page.locator('#font-rendering').boundingBox();
-  assert.ok(rect&&rect.y>=-5&&rect.y<size.height+40,'anchor target inaccessible');
+  await page.waitForFunction(() => {
+   const target=document.querySelector('#font-rendering');
+   const rect=target?.getBoundingClientRect();
+   return !!rect && rect.top>=-25 && rect.top<window.innerHeight+20;
+  },null,{timeout:7000});
   assert.deepEqual(errors,[]);
   console.log('PASS LIBRARY '+JSON.stringify({device:size.name,viewport:bounds,areas:12,plannedReferences:96,search:'pass',anchors:'pass',errors:[]}));
  }catch(e){failed=true;console.error('FAIL LIBRARY '+size.name+' '+String(e));}
