@@ -1,0 +1,104 @@
+<!doctype html><html lang="en-US"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Unicode Fullwidth, Halfwidth and Small-Form Variants: East Asian Text Interoperability | Letras Diferentes Research Library</title><meta name="description" content="A detailed engineering reference to U+FF00 compatibility forms, East_Asian_Width, halfwidth Katakana, U+FE50 small variants, NFKC folding and fixed-cell rendering."><meta name="robots" content="index,follow"><link rel="canonical" href="https://letrasdiferentess.github.io/us/fullwidth-small-form-variants/"><meta property="og:type" content="article"><meta property="og:title" content="Unicode Fullwidth, Halfwidth and Small-Form Variants: East Asian Text Interoperability"><meta property="og:description" content="A detailed engineering reference to U+FF00 compatibility forms, East_Asian_Width, halfwidth Katakana, U+FE50 small variants, NFKC folding and fixed-cell rendering."><meta property="og:url" content="https://letrasdiferentess.github.io/us/fullwidth-small-form-variants/"><link rel="stylesheet" href="/us/library/article.css"><script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","@id":"https://letrasdiferentess.github.io/us/fullwidth-small-form-variants/#article","headline":"Unicode Fullwidth, Halfwidth and Small-Form Variants: East Asian Text Interoperability","description":"A detailed engineering reference to U+FF00 compatibility forms, East_Asian_Width, halfwidth Katakana, U+FE50 small variants, NFKC folding and fixed-cell rendering.","inLanguage":"en-US","datePublished":"2026-10-25","dateModified":"2026-10-25","author":{"@type":"Organization","name":"Letras Diferentes"},"publisher":{"@type":"Organization","name":"Letras Diferentes","url":"https://letrasdiferentess.github.io/"},"mainEntityOfPage":"https://letrasdiferentess.github.io/us/fullwidth-small-form-variants/","isPartOf":{"@type":"WebPage","@id":"https://letrasdiferentess.github.io/us/library/"}}</script></head><body><a class="skip" href="#main">Skip to article</a><header class="sitehead"><div class="shell"><a class="brand" href="/us/">Letras <span>Diferentes</span></a><nav aria-label="Site"><a href="/us/">Fancy Text Tool</a><a href="/us/library/">Research Library</a></nav></div></header><div class="shell"><nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/us/">Home</a><span aria-hidden="true">/</span><a href="/us/library/">Research Library</a><span aria-hidden="true">/</span>Styled Text &amp; Special Characters</nav><div class="headercopy"><span class="eyebrow">Unicode research · Width and small forms</span><h1>Unicode Fullwidth, Halfwidth and Small-Form Variants: East Asian Text Interoperability</h1><p class="dek">A detailed engineering reference to U+FF00 compatibility forms, East_Asian_Width, halfwidth Katakana, U+FE50 small variants, NFKC folding and fixed-cell rendering.</p><div class="meta"><span>Technical reference</span><span>Unicode baseline: 18.0.0</span><time datetime="2026-10-25">Updated 25 October 2026</time></div></div><div class="layout"><main id="main" class="article"><article>
+<h2 id="history">Why Unicode has width-specific compatibility characters</h2>
+<p>East Asian computer systems historically used fixed-cell typography in which many CJK characters occupied a full cell while Latin letters and punctuation could occupy narrower cells. To interchange text from those legacy character sets without discarding width choices, Unicode encodes specific <em>fullwidth</em> and <em>halfwidth</em> compatibility forms. Their encoded identities differ from the ordinary characters to which they correspond, even when the distinction is mostly typographic.</p>
+<p>For example, <code>A</code> is LATIN CAPITAL LETTER A (<code>U+0041</code>) while <code>Ａ</code> is FULLWIDTH LATIN CAPITAL LETTER A (<code>U+FF21</code>). Likewise, the halfwidth Katakana <code>ｶ</code> (<code>U+FF76</code>) and regular Katakana <code>カ</code> (<code>U+30AB</code>) are different Unicode scalars with a compatibility relationship.</p>
+<p>Unicode's <strong>East_Asian_Width</strong> property helps applications that need East Asian legacy encoding interoperability, character-cell approximations or width-sensitive text processing. The property does <em>not</em> prescribe actual glyph pixel width, and Unicode UAX #11 explicitly cautions that modern terminals need additional tailoring. Developers should distinguish a code point's compatibility width status, the chosen font's advance and the number of columns a particular terminal chooses to assign.</p>
+<div class="note"><strong>Terminology:</strong> “Fullwidth” and “halfwidth” are defined concepts in the compatibility and legacy layout model. A font glyph can still have different visual metrics. Do not infer that a fullwidth code point always occupies exactly two columns in every UI.</div>
+
+<h2 id="repertoire">Fullwidth ASCII forms, halfwidth Katakana and small forms</h2>
+<p>The main <strong>Halfwidth and Fullwidth Forms</strong> block spans <code>U+FF00..U+FFEF</code>. Its fullwidth ASCII-compatible graphic characters run from <code>U+FF01</code> FULLWIDTH EXCLAMATION MARK to <code>U+FF5E</code> FULLWIDTH TILDE. Most correspond exactly to ASCII <code>U+0021..U+007E</code> by adding <code>0xFEE0</code> to the code-point value. This relationship is valid only over the documented ASCII graphic range and does not apply to arbitrary Unicode punctuation or space.</p>
+<p>The matching fullwidth space is <code>U+3000 IDEOGRAPHIC SPACE</code>, outside U+FF00; its NFKC decomposition maps to ordinary <code>U+0020 SPACE</code>. Halfwidth Japanese punctuation and Katakana forms occupy <code>U+FF61..U+FF9F</code>. The suffix <code>U+FF9E HALFWIDTH KATAKANA VOICED SOUND MARK</code> has a compatibility relationship to a combining dakuten rather than merely becoming an independent ordinary spacing glyph.</p>
+<p>Unicode also has a <strong>Small Form Variants</strong> block <code>U+FE50..U+FE6F</code> with small punctuation and symbols historically used in East Asian layouts. The visually reduced SMALL COMMA (<code>U+FE50</code>) and SMALL COMMERCIAL AT (<code>U+FE6B</code>) are not new abstract punctuation meanings; they carry width/presentation distinctions for compatibility. Separately, vertical presentation forms in <code>U+FE10..U+FE1F</code> and <code>U+FE30..U+FE4F</code> support legacy orientation conventions. Modern layout may instead use semantic text plus CSS vertical-writing properties.</p>
+<div class="table-scroll"><table><thead><tr><th>Source</th><th>Unicode identity</th><th>NFKC result</th></tr></thead><tbody>
+<tr><td><code>Ａ</code></td><td><code>U+FF21</code> FULLWIDTH LATIN CAPITAL LETTER A</td><td><code>A</code> U+0041</td></tr>
+<tr><td><code>！</code></td><td><code>U+FF01</code> FULLWIDTH EXCLAMATION MARK</td><td><code>!</code> U+0021</td></tr>
+<tr><td><code>～</code></td><td><code>U+FF5E</code> FULLWIDTH TILDE</td><td><code>~</code> U+007E</td></tr>
+<tr><td>Ideographic space</td><td><code>U+3000</code></td><td><code>U+0020</code> SPACE</td></tr>
+<tr><td><code>ｶ</code></td><td><code>U+FF76</code> HALFWIDTH KATAKANA LETTER KA</td><td><code>カ</code> U+30AB</td></tr>
+<tr><td><code>ｶﾞ</code></td><td><code>U+FF76 U+FF9E</code> sequence</td><td><code>ガ</code> U+30AC</td></tr>
+<tr><td><code>﹐</code></td><td><code>U+FE50</code> SMALL COMMA</td><td><code>,</code> U+002C</td></tr>
+<tr><td><code>﹫</code></td><td><code>U+FE6B</code> SMALL COMMERCIAL AT</td><td><code>@</code> U+0040</td></tr>
+</tbody></table></div>
+
+<h2 id="width-property">The six East_Asian_Width property values</h2>
+<p>Unicode Standard Annex #11 defines a property with six values that help determine width behavior under relevant contexts:</p>
+<div class="table-scroll"><table><thead><tr><th>Value</th><th>Short</th><th>Meaning</th></tr></thead><tbody>
+<tr><td>Fullwidth</td><td><code>F</code></td><td>Explicit fullwidth compatibility forms</td></tr>
+<tr><td>Halfwidth</td><td><code>H</code></td><td>Explicit halfwidth compatibility forms</td></tr>
+<tr><td>Wide</td><td><code>W</code></td><td>Implicitly wide characters, such as many East Asian ideographs</td></tr>
+<tr><td>Narrow</td><td><code>Na</code></td><td>Implicitly narrow characters including many ordinary Latin forms</td></tr>
+<tr><td>Ambiguous</td><td><code>A</code></td><td>May be wide or narrow depending on East Asian context and tailoring</td></tr>
+<tr><td>Neutral</td><td><code>N</code></td><td>Not classified as East Asian wide/narrow for that purpose</td></tr>
+</tbody></table></div>
+<p>The property is <em>not</em> simply “wide if code point is in CJK blocks.” Many symbols and punctuation marks have ambiguous width. Fonts may use proportional layout. Unicode specifically recommends treating ambiguous-width characters as narrow by default where the relevant East Asian legacy context cannot be established.</p>
+<p>Characters in the Small Form Variants block can have a UAX #11 width designation that does not intuitively match the English word “small” in their names. As a concrete example, <code>U+FE50 SMALL COMMA</code> has East_Asian_Width=Wide (<code>W</code>) in the property data. Its name and compatibility mapping describe a historical presentation form rather than a guarantee of a half-cell terminal advance.</p>
+
+<h2 id="normalization">NFKC width folding and its limitations</h2>
+<p>Unicode NFKC performs compatibility decomposition and canonical recomposition. It generally maps fullwidth ASCII variants back to ASCII, halfwidth Katakana to their ordinary Katakana counterparts and small punctuation to corresponding base forms. This process <strong>is not the same as simply changing the font width</strong>: the resulting string has different code points and may contain a different number of code points.</p>
+<pre><code>const input = "ＡＢＣ１２３";
+console.log(input.normalize("NFKC")); // "ABC123"
+console.log("ｶﾞ".normalize("NFKC"));    // "ガ"
+console.log("\u3000".normalize("NFKC")); // " "
+console.log("\uFE50".normalize("NFKC")); // ","
+
+const original = "ｶﾞ";                 // two code points
+const normalized = original.normalize("NFKC");
+console.log([...original].length);     // 2
+console.log([...normalized].length);   // 1</code></pre>
+<p>Because NFKC can affect many other compatibility characters—including mathematical styled letters, superscripts and circled digits—it is too broad when your application intends <em>only</em> a width conversion. A width-specific converter should use explicitly defined mapping rules or a trusted library with documented semantics, possibly limited by code-point ranges and chosen locale. Keep the original text when appearance or mathematical meaning matters.</p>
+<p><strong>NFC alone does not ordinarily collapse width variants.</strong> Canonical equivalence and compatibility equivalence are distinct. If a database key is intended to ignore width, that choice must be implemented and documented explicitly rather than assumed from UTF-8 encoding.</p>
+
+<h2 id="algorithms">Safe fullwidth conversion and normalization tests</h2>
+<p>The ASCII fullwidth formula is useful precisely because its domain is small and well-defined. Do not apply it to combining marks, CJK characters, supplementary mathematical alphabets or arbitrary punctuation. For spaces, handle U+0020 separately if a feature explicitly requests a fullwidth space.</p>
+<pre><code>function fullwidthAscii(text, widenSpace = false) {
+  return [...text].map(ch =&gt; {
+    const cp = ch.codePointAt(0);
+    if (cp &gt;= 0x21 &amp;&amp; cp &lt;= 0x7E)
+      return String.fromCodePoint(cp + 0xFEE0);
+    if (widenSpace &amp;&amp; cp === 0x20) return "\u3000";
+    return ch;
+  }).join("");
+}
+console.log(fullwidthAscii("Hi! 25"));
+// "Ｈｉ！ ２５" (ASCII space stays ordinary)
+console.log(fullwidthAscii("A B", true));
+// "Ａ　Ｂ" (ideographic space inserted deliberately)
+console.log(fullwidthAscii("ABC").normalize("NFKC"));
+// "ABC"</code></pre>
+<p>A production converter should validate round trips for its supported subset and disclose that other symbols remain unchanged. Distinguish fullwidth ASCII mapping from halfwidth Japanese kana conversion; the latter involves sequences and combining voicing marks that require normalization/shaping awareness. A naive one-code-point-to-one-code-point substitution can fail to combine <code>ｶﾞ</code> correctly.</p>
+<p>Users trying a <a href="/us/">Fancy Text tool</a> with fullwidth Unicode characters should understand that these are encoded compatibility forms, not a universal way to force double-width rendering on all devices. The content can often be copied, but recipient fonts and platform input policies still affect how it appears.</p>
+
+<h2 id="terminal">Layout, terminal cells and vertical text</h2>
+<p>In traditional fixed-cell East Asian typography, an implicit wide character often occupies a whole em and a narrow character a half em. Terminal emulators frequently model this as two columns and one column. Unicode UAX #11 explicitly warns that the East_Asian_Width property alone is <em>not</em> a turnkey solution for modern terminal layout: grapheme clusters, emoji sequences, variation selectors, combining marks and font fallback complicate actual cell width.</p>
+<p>For example, a combining accent has no independent advance in the usual sense, even if its property value might suggest a broad East Asian classification. A joined emoji can occupy two terminal cells, several cells, or a fallback sequence depending on terminal policy. Use a terminal-appropriate measured-width API and match its Unicode version when aligning tables; counting Unicode scalar values is insufficient.</p>
+<p>Modern vertical writing systems have specialized CSS features such as <code>writing-mode: vertical-rl</code> and <code>text-orientation</code>, which operate on logical text and fonts. Encoding legacy vertical presentation forms merely to rotate punctuation can cause copy/paste and normalization problems when the output moves into ordinary horizontal text.</p>
+
+<h2 id="interchange">Copy-paste, search, usernames and legacy encodings</h2>
+<p>Compatibility forms can survive a plain-text copy because they are Unicode characters. But exact matching distinguishes <code>Ａ</code> from <code>A</code> unless the application explicitly normalizes or collation rules treat them as equivalent. A user handle, filename or database unique key could therefore compare differently across systems with different width-folding policies.</p>
+<p>Width compatibility matters in Japanese search, where legacy data may mix halfwidth and ordinary Katakana, and in East Asian content imported from spreadsheets or messaging systems. A search system may derive a width-folded index while preserving original presentation in the stored text. This is distinct from full-language collation, accent handling and confusable detection.</p>
+<p>Some visual lookalikes have multiple encoding histories (for example, wave dash versus fullwidth tilde). Do not implement width mapping by visual appearance alone: use exact Unicode names, compatibility mappings and documented legacy conversion tables appropriate to the origin encoding. Faulty transcoding between Shift JIS-related encodings and Unicode can create subtle punctuation mismatches.</p>
+<p>Security-related identifier profiles may restrict compatibility forms or apply NFKC. Applying normalization after access-control checks can introduce collisions; define the canonical comparison format and check for uniqueness using the same strategy everywhere.</p>
+
+<h2 id="verification">Versioned tests and failure modes</h2>
+<div class="table-scroll"><table><thead><tr><th>Test</th><th>Expected result</th></tr></thead><tbody>
+<tr><td><code>U+0041 + 0xFEE0</code></td><td><code>U+FF21</code> (fullwidth A)</td></tr>
+<tr><td><code>U+0021 + 0xFEE0</code></td><td><code>U+FF01</code> (fullwidth !)</td></tr>
+<tr><td><code>U+0020 + 0xFEE0</code></td><td><em>Do not apply formula</em>; space uses U+3000 instead</td></tr>
+<tr><td>NFKC of <code>U+FF21</code></td><td><code>U+0041</code></td></tr>
+<tr><td>NFKC of <code>U+FF76 U+FF9E</code></td><td><code>U+30AC</code> (ガ)</td></tr>
+<tr><td>NFKC of <code>U+FE50</code></td><td><code>U+002C</code> comma</td></tr>
+<tr><td>NFC of <code>U+FF21</code></td><td>Remain U+FF21</td></tr>
+<tr><td>East_Asian_Width of U+FE50</td><td>W, despite the SMALL name</td></tr>
+</tbody></table></div>
+<p>A robust QA suite should use versioned <code>EastAsianWidth.txt</code>, <code>UnicodeData.txt</code> and <code>NormalizationTest.txt</code>, plus actual terminal/app screenshots and copy/paste comparisons. The property test verifies data classification; visual tests verify specific renderers. Neither layer subsumes the other.</p>
+
+<h2 id="sources">Unicode East Asian Width and normalization references</h2>
+<ol class="references">
+<li><a href="https://www.unicode.org/reports/tr11/" rel="nofollow">Unicode Standard Annex #11 — East Asian Width</a>, six property values and tailoring caveats.</li>
+<li><a href="https://www.unicode.org/versions/Unicode18.0.0/core-spec/chapter-22/" rel="nofollow">Unicode Standard Chapter 22 — Compatibility and width forms</a>.</li>
+<li><a href="https://www.unicode.org/charts/PDF/UFF00.pdf" rel="nofollow">Unicode Chart — Halfwidth and Fullwidth Forms</a>.</li>
+<li><a href="https://www.unicode.org/charts/PDF/UFE50.pdf" rel="nofollow">Unicode Chart — Small Form Variants</a>.</li>
+<li><a href="https://www.unicode.org/reports/tr15/" rel="nofollow">UAX #15 — Unicode Normalization Forms</a>, compatibility decomposition and recomposition.</li>
+<li><a href="https://www.unicode.org/Public/UCD/latest/ucd/EastAsianWidth.txt" rel="nofollow">EastAsianWidth.txt</a>, Unicode property data.</li>
+<li><a href="https://www.w3.org/TR/css-writing-modes-4/" rel="nofollow">W3C CSS Writing Modes Level 4</a>, vertical text layout.</li>
+</ol><hr><section class="related" aria-labelledby="related-title"><h2 id="related-title">Related technical references</h2><ul><li><a href="/us/styled-unicode-text-vs-fonts/">Styled Unicode Text versus Fonts</a></li><li><a href="/us/circled-enclosed-alphanumerics/">Circled and Enclosed Alphanumerics</a></li><li><a href="/us/unicode-scalar-values-surrogates/">Unicode Scalar Values and Encoding Forms</a></li></ul></section><p class="small">Independent Unicode technical reference. Width categories do not guarantee a fixed number of terminal cells or specific glyph metrics.</p></article></main><aside class="toc" aria-label="On this page"><h2>On this page</h2><a href="#history">Why Unicode has width-specific compatibility characters</a><a href="#repertoire">Fullwidth ASCII forms, halfwidth Katakana and small forms</a><a href="#width-property">The six East_Asian_Width property values</a><a href="#normalization">NFKC width folding and its limitations</a><a href="#algorithms">Safe fullwidth conversion and normalization tests</a><a href="#terminal">Layout, terminal cells and vertical text</a><a href="#interchange">Copy-paste, search, usernames and legacy encodings</a><a href="#verification">Versioned tests and failure modes</a><a href="#sources">Unicode East Asian Width and normalization references</a></aside></div></div><footer class="footer"><div class="shell"><span>© 2026 Letras Diferentes · Unicode Research Library</span><a href="/us/library/#styled-text">Styled Text &amp; Special Characters</a></div></footer></body></html>
