@@ -1,0 +1,100 @@
+<!doctype html><html lang="en-US"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Bold, Italic and Script Unicode Letters: Exact Mathematical Alphabets, Mapping and Exceptions | Letras Diferentes Research Library</title><meta name="description" content="An engineering guide to mathematical bold, italic, bold italic, script and bold script letters: Unicode mappings, legacy holes, normalization, rendering and safe conversion."><meta name="robots" content="index,follow"><link rel="canonical" href="https://letrasdiferentess.github.io/us/bold-italic-script-unicode-letters/"><meta property="og:type" content="article"><meta property="og:title" content="Bold, Italic and Script Unicode Letters: Exact Mathematical Alphabets, Mapping and Exceptions"><meta property="og:description" content="An engineering guide to mathematical bold, italic, bold italic, script and bold script letters: Unicode mappings, legacy holes, normalization, rendering and safe conversion."><meta property="og:url" content="https://letrasdiferentess.github.io/us/bold-italic-script-unicode-letters/"><link rel="stylesheet" href="/us/library/article.css"><script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","@id":"https://letrasdiferentess.github.io/us/bold-italic-script-unicode-letters/#article","headline":"Bold, Italic and Script Unicode Letters: Exact Mathematical Alphabets, Mapping and Exceptions","description":"An engineering guide to mathematical bold, italic, bold italic, script and bold script letters: Unicode mappings, legacy holes, normalization, rendering and safe conversion.","inLanguage":"en-US","datePublished":"2026-10-25","dateModified":"2026-10-25","author":{"@type":"Organization","name":"Letras Diferentes"},"publisher":{"@type":"Organization","name":"Letras Diferentes","url":"https://letrasdiferentess.github.io/"},"mainEntityOfPage":"https://letrasdiferentess.github.io/us/bold-italic-script-unicode-letters/","isPartOf":{"@type":"WebPage","@id":"https://letrasdiferentess.github.io/us/library/"}}</script></head><body><a class="skip" href="#main">Skip to article</a><header class="sitehead"><div class="shell"><a class="brand" href="/us/">Letras <span>Diferentes</span></a><nav aria-label="Site"><a href="/us/">Fancy Text Tool</a><a href="/us/library/">Research Library</a></nav></div></header><div class="shell"><nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/us/">Home</a><span aria-hidden="true">/</span><a href="/us/library/">Research Library</a><span aria-hidden="true">/</span>Styled Text &amp; Special Characters</nav><div class="headercopy"><span class="eyebrow">Unicode research · Mathematical lettering</span><h1>Bold, Italic and Script Unicode Letters: Exact Mathematical Alphabets, Mapping and Exceptions</h1><p class="dek">An engineering guide to mathematical bold, italic, bold italic, script and bold script letters: Unicode mappings, legacy holes, normalization, rendering and safe conversion.</p><div class="meta"><span>Technical reference</span><span>Unicode baseline: 18.0.0</span><time datetime="2026-10-25">Updated 25 October 2026</time></div></div><div class="layout"><main id="main" class="article"><article>
+<h2 id="models">Styled Unicode is encoded data, not a typeface</h2>
+<p>A heading made bold with CSS and a heading composed of mathematical bold Unicode letters are different kinds of text. CSS can draw the ordinary LATIN CAPITAL LETTER A (<code>U+0041</code>) in a heavy font while the encoded content stays U+0041. Replacing it with MATHEMATICAL BOLD CAPITAL A (<code>U+1D400</code>) changes the stored character. The latter is a distinct scalar value, typically four UTF-8 bytes and two UTF-16 code units, not a font instruction attached to U+0041.</p>
+<p>The Unicode Standard encodes mathematical alphanumeric alphabets because different letter styles can distinguish mathematical variables after formatting is lost. It does <em>not</em> recommend replacing ordinary prose with mathematical letters merely to achieve typography. Nevertheless, such symbols are widely reused to create copyable styled text for plain-text fields; an implementation needs to be precise about their mathematical origin and practical tradeoffs.</p>
+<p>This page covers bold, italic, bold italic, script and bold script letters, with special attention to why some alphabets are contiguous while others contain preexisting BMP symbols. Fraktur and double-struck have related but different historical exceptions and are documented separately in our <a href="/us/double-struck-fraktur-characters/">double-struck and Fraktur reference</a>.</p>
+<div class="note"><strong>Rule of thumb:</strong> use semantic HTML and CSS when you control presentation; use distinct mathematical Unicode characters only when the encoded character identity is truly required, or when knowingly testing copyable styled-text compatibility.</div>
+
+<h2 id="sets">The five mathematical letter styles and code-point ranges</h2>
+<p>Unicode's Mathematical Alphanumeric Symbols block occupies <code>U+1D400..U+1D7FF</code>, but its subdivisions are not all equally regular. In each style, the Latin uppercase and lowercase letters may be separate subranges. Greek styles and digit styles have additional coverage, and many gaps are intentional.</p>
+<div class="table-scroll"><table><thead><tr><th>Representation of A</th><th>Code point</th><th>Formal name and character role</th></tr></thead><tbody>
+<tr><td><code>A</code></td><td><code>U+0041</code></td><td>LATIN CAPITAL LETTER A, ordinary text</td></tr>
+<tr><td><code>𝐀</code></td><td><code>U+1D400</code></td><td>MATHEMATICAL BOLD CAPITAL A</td></tr>
+<tr><td><code>𝐚</code></td><td><code>U+1D41A</code></td><td>MATHEMATICAL BOLD SMALL A</td></tr>
+<tr><td><code>𝐴</code></td><td><code>U+1D434</code></td><td>MATHEMATICAL ITALIC CAPITAL A</td></tr>
+<tr><td><code>𝑨</code></td><td><code>U+1D468</code></td><td>MATHEMATICAL BOLD ITALIC CAPITAL A</td></tr>
+<tr><td><code>𝒜</code></td><td><code>U+1D49C</code></td><td>MATHEMATICAL SCRIPT CAPITAL A</td></tr>
+<tr><td><code>𝓐</code></td><td><code>U+1D4D0</code></td><td>MATHEMATICAL BOLD SCRIPT CAPITAL A</td></tr>
+</tbody></table></div>
+<p>The basic bold Latin uppercase range <code>U+1D400..U+1D419</code> and lowercase range <code>U+1D41A..U+1D433</code> are contiguous. Mathematical italic Latin uppercase begins at <code>U+1D434</code>, bold italic uppercase at <code>U+1D468</code>, script uppercase at <code>U+1D49C</code>, and bold script uppercase at <code>U+1D4D0</code>. The start code points are useful, but a blanket offset applied across every style is not safe.</p>
+<p>Bold and italic letters are a different code-point sequence from ordinary alphabetic letters even if a browser draws them similarly. They are not obtained by setting the Unicode properties <code>Uppercase</code> or <code>Lowercase</code>, and ordinary JavaScript case-mapping functions do not constitute a complete mathematical style converter. Letter styles in a document are chosen by mapping character identities, not by changing the font's <code>font-style</code> alone.</p>
+
+<h2 id="exceptions">Script alphabet gaps and historical BMP characters</h2>
+<p>The mathematical script alphabet includes a notable set of <em>holes</em> because some script-shaped letters had already been encoded in the Basic Multilingual Plane's Letterlike Symbols block. To preserve character identity and avoid duplicate symbols, Unicode left the corresponding supplementary positions unassigned. For example, the alphabet's script B is <code>U+212C ℬ SCRIPT CAPITAL B</code>, whereas script A is <code>U+1D49C 𝒜</code>. A naive mapping that increments the script A code point to obtain script B would incorrectly target a gap.</p>
+<p>Some existing letterlike symbols also have an historical or mathematical identity that differs from their apparent name. The Weierstrass elliptic function symbol <code>U+2118 ℘</code>, for example, is not an ordinary mathematical script capital P: its legacy name is misleading. A converter that maps capital P to that symbol because its Unicode name begins with SCRIPT would be incorrect. The correct script P has its own code point within the mathematical script alphabet where assigned; a generated mapping should be checked against the actual Unicode character name and decompositions.</p>
+<p>Unicode identifies a set of 24 older Letterlike Symbols integrated into the larger mathematical alphabets, spread across script, Fraktur and double-struck styles and related variants. Not every alphabet has the same holes, and some symbols have distinct names despite visual similarity. Keep mapping tables for each style rather than sharing one generic offset strategy.</p>
+<h3>Why normalization exposes those historical decisions</h3>
+<p>Although <code>U+212C ℬ</code> lives outside the supplementary mathematical block, its NFKC compatibility decomposition is the ordinary Latin letter <code>B</code>, just like the decompositions of many plane-1 script symbols to their base alphabet. This is a useful verification clue but not a complete mapping definition: identical NFKC results can correspond to several distinct mathematical styles.</p>
+
+<h2 id="algorithms">A safe converter and inverse lookup</h2>
+<p>For a narrow, documented style where the 26 uppercase symbols are contiguous, an offset calculation can be appropriate. For script, Fraktur and double-struck, prefer an explicit, version-checked table covering all intended letters and exceptions. Always iterate by Unicode code points using <code>for...of</code>, not individual UTF-16 code units, to avoid breaking supplementary characters.</p>
+<pre><code>// This helper intentionally supports only the verified
+// mathematical bold uppercase Latin run (A–Z).
+function toMathBoldCaps(input) {
+  return [...input].map(ch =&gt; {
+    const point = ch.codePointAt(0);
+    return point &gt;= 0x41 &amp;&amp; point &lt;= 0x5A
+      ? String.fromCodePoint(0x1D400 + point - 0x41)
+      : ch;
+  }).join("");
+}
+console.log(toMathBoldCaps("ABC 7"));
+// 𝐀𝐁𝐂 7; digit is intentionally unchanged
+
+const scriptA = String.fromCodePoint(0x1D49C);
+const scriptB = "\u212C";
+console.log(scriptA, scriptB); // 𝒜 ℬ
+console.log(scriptB.normalize("NFKC")); // "B"</code></pre>
+<p>To build a full alphabet, parse versioned <code>UnicodeData.txt</code> or a manually verified table; find characters with exact mathematical names and style labels, then cross-check intended Latin/Greek mappings. The algorithm should account for BMP exceptions and known unassigned holes. Do not assume every name containing BOLD or SCRIPT is a substitute for an ordinary Latin letter; mathematical Greek variants and specialized symbols have additional semantic roles.</p>
+<p>An inverse transformation is inherently lossy if it folds multiple styles to one base letter. A function that returns <code>"A"</code> for both mathematical bold A and script A cannot reconstruct which style was originally chosen. Store the original source or carry the selected style identifier separately if a reversible editing experience is required.</p>
+<p>For a public <a href="/us/">Fancy Text generator</a>, an honest behavior is to leave unsupported code points unchanged and disclose partial coverage rather than invent a visually similar character that does not correspond to the correct letter. This is especially important for non-Latin text, accented Latin letters, digits and special punctuation.</p>
+
+<h2 id="normalization">What NFC and NFKC actually do</h2>
+<p><strong>NFC and NFD</strong> implement canonical equivalence; they generally preserve mathematical letter style. <strong>NFKC and NFKD</strong> apply compatibility mappings and collapse most mathematical styled letters to their underlying Latin or Greek equivalents. This is intentional: two mathematically distinct variables may share a compatibility decomposition but remain separate encoded characters.</p>
+<pre><code>const normal = "A";
+const bold = "\u{1D400}";
+const italic = "\u{1D434}";
+const script = "\u{1D49C}";
+
+for (const sample of [bold, italic, script]) {
+  console.log(
+    sample === normal,                    // false
+    sample.normalize("NFC") === sample,  // true
+    sample.normalize("NFKC") === normal  // true
+  );
+}</code></pre>
+<p>Compatibility normalization is useful for certain search keys, text diagnostics and identifier restrictions; it is unsuitable as a blind write-time transformation for mathematical notation or copyable decorative output because it discards style distinctions. Keep normalized comparison keys separate from faithful display data whenever those distinctions matter.</p>
+<p>Some Unicode formatting symbols, combining marks and unsupported characters do not have such simple NFKC-to-base-letter mappings. Therefore, the slogan “NFKC removes all fancy fonts” is inaccurate: there is no universal Unicode category named “fancy fonts,” and decorative output can combine several encoding techniques.</p>
+
+<h2 id="rendering">Glyph coverage, text shaping and accessibility</h2>
+<p>A mathematical letter is still a code point requiring font coverage. A font can support ordinary italic Latin letters while missing <code>U+1D434</code>. Even if both are available, their metrics and outlines can differ, and the renderer may choose a fallback math font. A stylized string may appear consistently within a single browser but differently after copy/paste into a mobile social app.</p>
+<p>Screen readers may announce Unicode names or mathematical style qualifiers, while other assistive software may flatten letters or read them unpredictably. The pronunciation can be appropriate in a technical mathematical expression but exhausting in a decorative paragraph. Use plain language and real HTML formatting for essential instructions, navigation, form labels, and other accessibility-critical text.</p>
+<p>The simple notion that bold always denotes a vector or script always denotes a set is not part of Unicode's character model. Those conventions depend on surrounding mathematical notation; the encoded alphabet preserves distinctions, but semantic interpretation belongs to the document's technical domain.</p>
+
+<h2 id="product">Copy-paste behavior and realistic compatibility limits</h2>
+<p>When a user copies mathematical bold text, the clipboard usually carries the actual supplementary code points. The destination can normalize, filter or lack font coverage. Plain ASCII <code>A</code> is one UTF-8 byte, while <code>U+1D400</code> is four UTF-8 bytes; both can be one extended grapheme cluster. Some platform limits are counted in bytes, others in UTF-16 units or grapheme clusters, so the apparent number of characters is not sufficient to predict acceptance.</p>
+<p>If a transformed string appears in a username, a search index might compare it as distinct from the original, treat it as compatibility-equivalent, or disallow it according to a local identifier profile. Neither Unicode validity nor identical visual appearance guarantees universal interoperability. For trust-sensitive identifiers, compare the threat model against UTS #39 confusable detection and the application's specific acceptance rules.</p>
+<p>When building variants of a word, test a literal copy/paste round trip into the intended target app and inspect code points on both sides. Visual screenshots alone cannot show whether a receiving platform preserved a mathematical script symbol or normalized it to an ordinary letter.</p>
+
+<h2 id="validation">Tests and diagnostic vectors</h2>
+<div class="table-scroll"><table><thead><tr><th>Input / condition</th><th>Expected</th><th>Failure caught</th></tr></thead><tbody>
+<tr><td><code>U+0041</code> to mathematical bold uppercase</td><td><code>U+1D400</code></td><td>Incorrect alphabet offset</td></tr>
+<tr><td><code>U+0041</code> to mathematical italic uppercase</td><td><code>U+1D434</code></td><td>Confusing italic and bold italic</td></tr>
+<tr><td><code>U+0041</code> to mathematical script uppercase</td><td><code>U+1D49C</code></td><td>Mixing script and bold script</td></tr>
+<tr><td>Mathematical script capital B</td><td><code>U+212C</code></td><td>Assuming contiguous script characters</td></tr>
+<tr><td>NFC of <code>U+1D400</code></td><td>Same code point</td><td>Incorrect canonical folding</td></tr>
+<tr><td>NFKC of <code>U+1D400</code></td><td><code>U+0041</code></td><td>Misunderstood compatibility fold</td></tr>
+<tr><td>UTF-16 length of <code>U+1D400</code></td><td>2 code units</td><td>Surrogate pair split</td></tr>
+<tr><td>Unmapped accented letter</td><td>Preserve or explicitly reject</td><td>Invented glyph substitution</td></tr>
+</tbody></table></div>
+<p>A thorough test suite enumerates the supported Latin and Greek repertoire from the UCD, validates character names and compatibility decompositions, and verifies that every generated scalar is assigned. Pin the UCD version. For rendering, add browser and mobile font-coverage checks as a separate test layer; data-level conformance cannot guarantee glyph availability.</p>
+
+<h2 id="sources">Standards and primary datasets</h2>
+<ol class="references">
+<li><a href="https://www.unicode.org/versions/Unicode18.0.0/core-spec/chapter-22/" rel="nofollow">The Unicode Standard, Chapter 22 — Mathematical Alphanumeric Symbols</a>, intended uses and legacy exceptions.</li>
+<li><a href="https://www.unicode.org/charts/PDF/U1D400.pdf" rel="nofollow">Unicode Code Chart U+1D400..U+1D7FF</a>, assigned mathematical symbols.</li>
+<li><a href="https://www.unicode.org/charts/PDF/U2100.pdf" rel="nofollow">Unicode Code Chart U+2100..U+214F</a>, BMP Letterlike Symbols.</li>
+<li><a href="https://www.unicode.org/reports/tr15/" rel="nofollow">UAX #15 — Unicode Normalization Forms</a>, compatibility equivalence and stability.</li>
+<li><a href="https://www.unicode.org/reports/tr44/" rel="nofollow">UAX #44 — Unicode Character Database</a>, data property definitions and names.</li>
+<li><a href="https://www.unicode.org/reports/tr39/" rel="nofollow">UTS #39 — Unicode Security Mechanisms</a>, identifier and confusable considerations.</li>
+</ol><hr><section class="related" aria-labelledby="related-title"><h2 id="related-title">Related technical references</h2><ul><li><a href="/us/mathematical-alphanumeric-symbols/">Mathematical Alphanumeric Symbols</a></li><li><a href="/us/styled-unicode-text-vs-fonts/">Styled Unicode versus Font Styling</a></li><li><a href="/us/double-struck-fraktur-characters/">Double-Struck and Fraktur Characters</a></li></ul></section><p class="small">Independent reference on the Unicode mathematical character model; glyph designs and fallback vary by device and math font.</p></article></main><aside class="toc" aria-label="On this page"><h2>On this page</h2><a href="#models">Styled Unicode is encoded data, not a typeface</a><a href="#sets">The five mathematical letter styles and code-point ranges</a><a href="#exceptions">Script alphabet gaps and historical BMP characters</a><a href="#algorithms">A safe converter and inverse lookup</a><a href="#normalization">What NFC and NFKC actually do</a><a href="#rendering">Glyph coverage, text shaping and accessibility</a><a href="#product">Copy-paste behavior and realistic compatibility limits</a><a href="#validation">Tests and diagnostic vectors</a><a href="#sources">Standards and primary datasets</a></aside></div></div><footer class="footer"><div class="shell"><span>© 2026 Letras Diferentes · Unicode Research Library</span><a href="/us/library/#styled-text">Styled Text &amp; Special Characters</a></div></footer></body></html>
