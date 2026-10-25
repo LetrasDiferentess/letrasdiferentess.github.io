@@ -570,14 +570,14 @@ window.usPrioritizeFonts = function(list){
 <div class="tw-compact-root" id="tw-root">
 <div class="tw-card tw-main-card">
 <div class="tw-editor-wrap">
-<textarea id="tw-editor" placeholder="Digite ou cole seu texto aqui..."></textarea>
+<textarea id="tw-editor" placeholder="Type or paste your text here..."></textarea>
 </div>
 
-<div class="tw-composer-toolbar" aria-label="Editor de letras bonitas">
+<div class="tw-composer-toolbar" aria-label="Stylish Text Editor">
 <button type="button" class="tw-btn tw-btn-yellow tw-btn-small" id="tw-btn-fonts">🎨 Text Styles</button>
 <button type="button" class="tw-btn tw-btn-ghost tw-btn-small" id="tw-btn-symbols">♡ Symbols</button>
-<button class="tw-btn tw-btn-ghost tw-btn-small tw-icon-action" id="tw-btn-undo" type="button" aria-label="Desfazer" title="Desfazer">↶</button>
-<button class="tw-btn tw-btn-ghost tw-btn-small tw-icon-action" id="tw-btn-redo" type="button" aria-label="Refazer" title="Refazer">↷</button>
+<button class="tw-btn tw-btn-ghost tw-btn-small tw-icon-action" id="tw-btn-undo" type="button" aria-label="Undo" title="Undo">↶</button>
+<button class="tw-btn tw-btn-ghost tw-btn-small tw-icon-action" id="tw-btn-redo" type="button" aria-label="Redo" title="Redo">↷</button>
 <button class="tw-btn tw-btn-ghost tw-btn-small tw-icon-action" id="tw-btn-more" type="button" aria-expanded="false" aria-controls="tw-more-panel" aria-label="More" title="More">•••</button>
 </div>
 <div class="tw-composer-meta">
@@ -810,7 +810,7 @@ window.usPrioritizeFonts = function(list){
 <div id="view-quick" class="lf-view active"><span id="gerador" class="seo-tool-anchor" aria-hidden="true"></span>
 <div class="lf-card">
 <span class="lf-label">FANCY TEXT GENERATOR</span>
-<div class="lf-row" style="align-items:end"><div style="flex:1 1 280px"><input id="quick-input" class="lf-input" value="Brasil" placeholder="Digite seu texto aqui..."></div><button type="button" id="quick-copy" class="lf-btn lf-btn-white">📋 Copy</button></div>
+<div class="lf-row" style="align-items:end"><div style="flex:1 1 280px"><input id="quick-input" class="lf-input" value="Fancy Text" placeholder="Type your text here..."></div><button type="button" id="quick-copy" class="lf-btn lf-btn-white">📋 Copy</button></div>
 
 <div id="fsd-quick-font-count" style="margin-top:8px;font-size:11px;color:rgba(255,255,255,0.5)">316 styles • type to preview</div>
 </div>
@@ -1628,12 +1628,12 @@ function insertBio(txt){
 }
 function setBioTemplate(type){
   const templates={
-    creator:"Alex • Criador\n✧ Viagens • Fotografia\n📩 Contato por DM",
-    business:"💼 Marca própria\n📍 Brasil • Loja online\n👇 Veja o link abaixo",
-    travel:"✈️ Apaixonado por viagens\n🌎 Registrando momentos\n📸 Viagens e fotografia",
-    aesthetic:"♡ suave • estética • inspiração\n✧ música • noite\n☾ sonhando",
-    fitness:"💪 Fitness • Foco\n🏋️ Um pouco melhor a cada dia\n🔥 Continue firme",
-    gaming:"🎮 Gamer • Streamer\n🏆 Ranqueado\n👇 Entre para o squad"
+    creator:"Alex • Creator\n✧ Travel • Photography\n📩 DM for inquiries",
+    business:"💼 Small business owner\n📍 United States • Online shop\n👇 Shop below",
+    travel:"✈️ Travel enthusiast\n🌎 Exploring new places\n📸 Adventures and photos",
+    aesthetic:"♡ Soft aesthetics • inspiration\n✧ Music • late nights\n☾ Daydreaming",
+    fitness:"💪 Fitness • Progress\n🏋️ Getting better every day\n🔥 Stay consistent",
+    gaming:"🎮 Gamer • Streamer\n🏆 Ranked player\n👇 Join the squad"
   };
   const el=document.getElementById('bio-input');
   el.value=templates[type]||templates.creator;
