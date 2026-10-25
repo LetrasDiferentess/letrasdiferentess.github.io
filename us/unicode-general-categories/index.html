@@ -1,0 +1,123 @@
+<!doctype html><html lang="en-US"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Unicode General Categories: The 30 Atomic Classes and Their Limits | Letras Diferentes Research Library</title><meta name="description" content="A detailed reference for Unicode General_Category values, property data files, JavaScript and Python tests, identifier filtering, and frequently misunderstood edge cases."><meta name="robots" content="index,follow"><link rel="canonical" href="https://letrasdiferentess.github.io/us/unicode-general-categories/"><meta property="og:type" content="article"><meta property="og:title" content="Unicode General Categories: The 30 Atomic Classes and Their Limits"><meta property="og:description" content="A detailed reference for Unicode General_Category values, property data files, JavaScript and Python tests, identifier filtering, and frequently misunderstood edge cases."><meta property="og:url" content="https://letrasdiferentess.github.io/us/unicode-general-categories/"><link rel="stylesheet" href="/us/library/article.css"><script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","@id":"https://letrasdiferentess.github.io/us/unicode-general-categories/#article","headline":"Unicode General Categories: The 30 Atomic Classes and Their Limits","description":"A detailed reference for Unicode General_Category values, property data files, JavaScript and Python tests, identifier filtering, and frequently misunderstood edge cases.","inLanguage":"en-US","datePublished":"2026-10-25","dateModified":"2026-10-25","author":{"@type":"Organization","name":"Letras Diferentes"},"publisher":{"@type":"Organization","name":"Letras Diferentes","url":"https://letrasdiferentess.github.io/"},"mainEntityOfPage":"https://letrasdiferentess.github.io/us/unicode-general-categories/","isPartOf":{"@type":"WebPage","@id":"https://letrasdiferentess.github.io/us/library/"}}</script></head><body><a class="skip" href="#main">Skip to article</a><header class="sitehead"><div class="shell"><a class="brand" href="/us/">Letras <span>Diferentes</span></a><nav aria-label="Site"><a href="/us/">Fancy Text Tool</a><a href="/us/library/">Research Library</a></nav></div></header><div class="shell"><nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/us/">Home</a><span aria-hidden="true">/</span><a href="/us/library/">Research Library</a><span aria-hidden="true">/</span>Unicode Character Model &amp; Properties</nav><div class="headercopy"><span class="eyebrow">Unicode research · Character properties</span><h1>Unicode General Categories: The 30 Atomic Classes and Their Limits</h1><p class="dek">A detailed reference for Unicode General_Category values, property data files, JavaScript and Python tests, identifier filtering, and frequently misunderstood edge cases.</p><div class="meta"><span>Technical reference</span><span>Unicode baseline: 18.0.0</span><time datetime="2026-10-25">Updated 25 October 2026</time></div></div><div class="layout"><main id="main" class="article"><article>
+<h2 id="model">What the General_Category property does</h2>
+<p><strong>General_Category</strong> (<code>gc</code>) is a Unicode Character Database (UCD) property that assigns each code point a broad, first-order class: letter, mark, number, punctuation, symbol, separator, or other. It is useful for tokenization, text editors, search filters, syntax tools, and diagnostics, but it does not determine every linguistic or security behavior of a character.</p>
+<p>Every Unicode code point has a General_Category value, including unassigned positions. The property is a <em>single-valued enumeration</em>: an atomic value such as <code>Lu</code> or <code>Mn</code> is assigned to a code point. Aggregate values such as <code>L</code> or <code>LC</code> denote sets of those atomic values. In UnicodeData.txt, the General_Category field records atomic categories for explicitly listed code points; unassigned entries with the default category <code>Cn</code> are not individually recorded there.</p>
+<div class="note"><strong>Version baseline:</strong> This guide references Unicode 18.0.0. A given runtime may bundle an earlier UCD. Always pair observed property behavior with the runtime’s actual Unicode data version.</div>
+
+<h2 id="table">Complete map of Unicode general categories</h2>
+<p>The seven major groups are <code>L</code> (Letter), <code>M</code> (Mark), <code>N</code> (Number), <code>P</code> (Punctuation), <code>S</code> (Symbol), <code>Z</code> (Separator), and <code>C</code> (Other). Their 30 atomic subcategories are listed below.</p>
+<div class="table-scroll"><table><thead><tr><th>Group</th><th>Category</th><th>Meaning and example</th></tr></thead><tbody>
+<tr><td>Letter</td><td><code>Lu</code></td><td>Uppercase letter — <code>A</code></td></tr>
+<tr><td>Letter</td><td><code>Ll</code></td><td>Lowercase letter — <code>a</code></td></tr>
+<tr><td>Letter</td><td><code>Lt</code></td><td>Titlecase letter — <code>ǅ</code></td></tr>
+<tr><td>Letter</td><td><code>Lm</code></td><td>Modifier letter — <code>ʰ</code></td></tr>
+<tr><td>Letter</td><td><code>Lo</code></td><td>Other letter — <code>中</code></td></tr>
+<tr><td>Mark</td><td><code>Mn</code></td><td>Nonspacing mark — <code>U+0301</code> COMBINING ACUTE ACCENT</td></tr>
+<tr><td>Mark</td><td><code>Mc</code></td><td>Spacing combining mark — <code>U+093E</code> DEVANAGARI VOWEL SIGN AA</td></tr>
+<tr><td>Mark</td><td><code>Me</code></td><td>Enclosing mark — <code>U+20DD</code> COMBINING ENCLOSING CIRCLE</td></tr>
+<tr><td>Number</td><td><code>Nd</code></td><td>Decimal digit — <code>4</code>, or digits from other decimal systems</td></tr>
+<tr><td>Number</td><td><code>Nl</code></td><td>Letter number — <code>Ⅻ</code></td></tr>
+<tr><td>Number</td><td><code>No</code></td><td>Other number — <code>½</code></td></tr>
+<tr><td>Punctuation</td><td><code>Pc</code></td><td>Connector punctuation — underscore <code>_</code></td></tr>
+<tr><td>Punctuation</td><td><code>Pd</code></td><td>Dash punctuation — <code>–</code></td></tr>
+<tr><td>Punctuation</td><td><code>Ps</code></td><td>Opening punctuation — <code>(</code></td></tr>
+<tr><td>Punctuation</td><td><code>Pe</code></td><td>Closing punctuation — <code>)</code></td></tr>
+<tr><td>Punctuation</td><td><code>Pi</code></td><td>Initial quotation punctuation — <code>«</code></td></tr>
+<tr><td>Punctuation</td><td><code>Pf</code></td><td>Final quotation punctuation — <code>»</code></td></tr>
+<tr><td>Punctuation</td><td><code>Po</code></td><td>Other punctuation — <code>!</code></td></tr>
+<tr><td>Symbol</td><td><code>Sm</code></td><td>Mathematical symbol — <code>+</code></td></tr>
+<tr><td>Symbol</td><td><code>Sc</code></td><td>Currency symbol — <code>€</code></td></tr>
+<tr><td>Symbol</td><td><code>Sk</code></td><td>Modifier symbol — <code>^</code></td></tr>
+<tr><td>Symbol</td><td><code>So</code></td><td>Other symbol — <code>☂</code></td></tr>
+<tr><td>Separator</td><td><code>Zs</code></td><td>Space separator — <code>U+0020</code> SPACE</td></tr>
+<tr><td>Separator</td><td><code>Zl</code></td><td>Line separator — <code>U+2028</code></td></tr>
+<tr><td>Separator</td><td><code>Zp</code></td><td>Paragraph separator — <code>U+2029</code></td></tr>
+<tr><td>Other</td><td><code>Cc</code></td><td>Control — <code>U+000A</code> LINE FEED</td></tr>
+<tr><td>Other</td><td><code>Cf</code></td><td>Format — <code>U+200D</code> ZERO WIDTH JOINER</td></tr>
+<tr><td>Other</td><td><code>Cs</code></td><td>Surrogate code point — <code>U+D800</code></td></tr>
+<tr><td>Other</td><td><code>Co</code></td><td>Private use — <code>U+E000</code></td></tr>
+<tr><td>Other</td><td><code>Cn</code></td><td>Unassigned or noncharacter — <code>U+0378</code>, <code>U+FFFF</code></td></tr>
+</tbody></table></div>
+<p>The convenience aggregates <code>L</code>, <code>M</code>, <code>N</code>, <code>P</code>, <code>S</code>, <code>Z</code>, and <code>C</code> each match the union of their listed subcategories. <code>LC</code> (also called <code>L&amp;</code> in some data-file commentary) means <code>Lu | Ll | Lt</code>. It is <em>not</em> an additional atomic General_Category value stored in UnicodeData.txt.</p>
+
+<h2 id="classification">Assigned, unassigned, private-use, and special code points</h2>
+<p>Several categories encode allocation or control roles rather than visible shapes. The category <code>Cn</code> does not mean “invalid Unicode”: an unassigned code point can be a valid scalar value, and a noncharacter remains legally representable in Unicode encoding forms. Category <code>Cs</code> is different: surrogate code points are not scalar values. Category <code>Co</code> covers private-use positions whose meaning requires an external agreement. Category <code>Cc</code> includes control characters whose handling is heavily context-dependent.</p>
+<p>Even among printable data, category names are approximations. A character in <code>Lo</code> may have alphabetic behavior; a letterlike symbol in a <code>So</code> or <code>Sm</code> class can have additional derived properties that a general-category-only classifier misses. Numeric interpretation also differs: decimal digits (<code>Nd</code>) are a subset of all numerically valued code points (<code>Nd</code>, <code>Nl</code>, <code>No</code>), and a numeric value can be noninteger.</p>
+<p>The standard explicitly notes that General_Category reflects a code point’s usual classification, not every possible use. Characters classified as letters can sometimes be used as numbers in orthographic or mathematical contexts, and digits can participate in writing-system conventions beyond plain decimal input.</p>
+
+<h2 id="properties">General Category versus other Unicode properties</h2>
+<ul>
+<li><strong>Alphabetic</strong> is not simply <code>General_Category=L</code>. Some combining marks and letter-number characters participate in alphabetic text; check the derived <code>Alphabetic</code> property when that is the requested behavior.</li>
+<li><strong>White_Space</strong> is not identical to <code>Z</code>. For example, tab and line feed are controls (<code>Cc</code>), yet whitespace-processing algorithms may recognize them.</li>
+<li><strong>Default_Ignorable_Code_Point</strong> is not identical to <code>Cf</code>. Variation selectors and other characters with different General_Category values can be default ignorable.</li>
+<li><strong>Grapheme_Cluster_Break</strong> is not the same as <code>M</code>. Grapheme segmentation accounts for spacing marks, joiners, regional indicators and context-sensitive rules.</li>
+<li><strong>Script</strong> and <strong>Script_Extensions</strong> identify script associations, not whether the code point is categorized as a letter.</li>
+<li><strong>Combining_Character_Class</strong> is a canonical ordering property. A mark with class zero may still be categorized <code>Mn</code>, <code>Mc</code>, or <code>Me</code>.</li>
+</ul>
+<p>Real text pipelines normally combine properties. For example, a word tokenizer uses boundary properties rather than grouping letters alone; a font fallback mechanism uses script, variation, shaping and glyph-coverage information; an identifier security policy needs confusable and context checks in addition to broad letter classes.</p>
+
+<h2 id="regex">Unicode property-aware regular expressions</h2>
+<p>Modern JavaScript supports Unicode property escapes with the <code>u</code> (or supported <code>v</code>) flag. These examples match categories across scripts rather than ASCII-only ranges. JavaScript property escape syntax requires specifying a property name or a supported category alias; use explicit names for readability.</p>
+<pre><code>const categoryLetter = /^\p{General_Category=Letter}+$/u;
+const withMarks = /^[\p{Letter}\p{Mark}]+$/u;
+const decimalDigits = /^\p{Decimal_Number}+$/u;
+
+console.log(categoryLetter.test("Abc"));    // true
+console.log(categoryLetter.test("e\u0301")); // false: U+0301 is Mn
+console.log(withMarks.test("e\u0301"));      // true
+console.log(decimalDigits.test("123"));     // true
+console.log(decimalDigits.test("½"));       // false: ½ is No
+
+const categories = {
+  letter: /\p{L}/u,
+  mark: /\p{M}/u,
+  number: /\p{N}/u,
+  punctuation: /\p{P}/u,
+  symbol: /\p{S}/u,
+  separator: /\p{Z}/u,
+  other: /\p{C}/u
+};</code></pre>
+<p>The regex <code>\p{L}</code> includes all major letter subtypes; it is broader than ASCII <code>[A-Za-z]</code>, but still excludes combining marks. The expression <code>[\p{L}\p{M}]+</code> can accept many letter-and-mark sequences that are ill-formed for a particular language or identifier policy. Category filtering is not a complete validator.</p>
+<p>Without a Unicode-aware flag, JavaScript regexes can operate in ways that split supplementary characters into UTF-16 code units. This can change quantifier behavior and matches; use the appropriate Unicode mode and test supplementary input.</p>
+
+<h2 id="python">Python implementation and normalization tests</h2>
+<p>Python’s standard-library <code>unicodedata.category()</code> returns an atomic two-letter category. Property values reflect the Unicode Character Database version bundled with that Python release, exposed through <code>unicodedata.unidata_version</code>. That bundled version need not be Unicode 18.0.</p>
+<pre><code>import unicodedata as ud
+
+samples = ["A", "a", "1", "½", "_", "€", "\u0301", "\u200d"]
+for ch in samples:
+    print(f"U+{ord(ch):04X}", ud.category(ch), ud.name(ch, "?"))
+
+# Verify that a combining mark is not itself a Letter.
+assert ud.category("\u0301") == "Mn"
+assert ud.category("_") == "Pc"
+assert ud.category("\u200d") == "Cf"
+
+print("UCD version:", ud.unidata_version)</code></pre>
+<p>Normalize deliberately when equivalent text should share the same storage representation. Normalization can alter the sequence of code points without changing canonical meaning, but it does not generally change the fundamental General_Category assigned to a <em>particular</em> code point. After normalization, the sequence can contain different code points with their own categories.</p>
+
+<h2 id="validation">Designing safe validation and search rules</h2>
+<p>For input validation, begin by defining the application’s actual unit and threat model: user-visible name, formal identifier, filename, account handle, search query, or formatted document. Then decide whether to accept combining sequences, script-mixed content, invisible formatting characters, emoji, directional controls, or private-use characters. Do not solve those questions by blanket-rejecting <code>C</code> or allowing only <code>L</code>.</p>
+<p>A user-facing search index may normalize for comparison, but its stored display value should preserve the original spelling and meaningful diacritics. A programming-language identifier should instead follow that language’s formal identifier profile. A filename sanitizer needs operating-system constraints and path separator handling in addition to Unicode properties.</p>
+<div class="note warn"><strong>Security caution:</strong> A regex allowing only <code>\p{L}\p{M}\p{N}</code> is not an anti-spoofing strategy. Mixed-script confusables, normalization behavior, and bidirectional controls require additional policies. Conversely, stripping all format controls and marks can break legitimate languages and emoji sequences.</div>
+
+<h2 id="pitfalls">Common misclassification traps</h2>
+<ul>
+<li><strong>“Z means all whitespace.”</strong> False: tab (<code>Cc</code>) and various whitespace controls are outside the Z categories.</li>
+<li><strong>“Mn means all diacritics.”</strong> False: some visible diacritics are independent characters or belong to other categories; many Mn marks are not accents.</li>
+<li><strong>“Every assigned code point produces one visible glyph.”</strong> False: variation selectors, joiners, combining marks and many controls alter text without a standalone visible glyph.</li>
+<li><strong>“Cn proves a UTF decoding error.”</strong> False: a code point can be valid but unassigned or a noncharacter.</li>
+<li><strong>“Numbers are just Nd.”</strong> False: <code>Nl</code> and <code>No</code> contain other numeric characters with different semantics.</li>
+<li><strong>“These classes never change.”</strong> Assignments and some property data can change between Unicode releases. Version-lock datasets for reproducible tests.</li>
+</ul>
+
+<h2 id="references">Standards and property datasets</h2>
+<ol class="references">
+<li><a href="https://www.unicode.org/reports/tr44/" rel="nofollow">UAX #44 — Unicode Character Database</a>, especially Section 5.7.1 and the complete alias table.</li>
+<li><a href="https://www.unicode.org/versions/Unicode18.0.0/" rel="nofollow">Unicode Standard 18.0.0</a>, character properties.</li>
+<li><a href="https://www.unicode.org/Public/UCD/latest/ucd/UnicodeData.txt" rel="nofollow">UnicodeData.txt</a>, primary assigned character property data.</li>
+<li><a href="https://www.unicode.org/Public/UCD/latest/ucd/PropertyValueAliases.txt" rel="nofollow">PropertyValueAliases.txt</a>, long and short property value names.</li>
+<li><a href="https://www.unicode.org/reports/tr29/" rel="nofollow">UAX #29 — Unicode Text Segmentation</a>, boundary properties distinct from General_Category.</li>
+<li><a href="https://docs.python.org/3/library/unicodedata.html" rel="nofollow">Python standard library — unicodedata</a>, runtime property queries.</li>
+</ol>
+<hr><section class="related" aria-labelledby="related-title"><h2 id="related-title">Related technical references</h2><ul><li><a href="https://letrasdiferentess.github.io/us/unicode-script-properties/">Unicode Script and Script_Extensions</a></li><li><a href="https://letrasdiferentess.github.io/us/combining-marks-diacritics/">Combining Marks, Diacritics and Canonical Ordering</a></li><li><a href="https://letrasdiferentess.github.io/us/unicode-code-points-characters-glyphs/">Code Points, Graphemes and Glyphs</a></li></ul></section><p class="small">Independent explanatory reference based on published Unicode specification data; terminology and categorizations must be interpreted in the context of the applicable Unicode version.</p></article></main><aside class="toc" aria-label="On this page"><h2>On this page</h2><a href="#model">What the General_Category property does</a><a href="#table">Complete map of Unicode general categories</a><a href="#classification">Assigned, unassigned, private-use, and special code points</a><a href="#properties">General Category versus other Unicode properties</a><a href="#regex">Unicode property-aware regular expressions</a><a href="#python">Python implementation and normalization tests</a><a href="#validation">Designing safe validation and search rules</a><a href="#pitfalls">Common misclassification traps</a><a href="#references">Standards and property datasets</a></aside></div></div><footer class="footer"><div class="shell"><span>© 2026 Letras Diferentes · Unicode Research Library</span><a href="/us/library/#unicode-characters">Explore Unicode Character Model &amp; Properties</a></div></footer></body></html>

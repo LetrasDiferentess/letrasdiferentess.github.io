@@ -6,7 +6,7 @@ import { auditLink, validateManifest, validateRepository } from './check-unicode
 const manifest = JSON.parse(fs.readFileSync('data/unicode-library-96.lock.json', 'utf8'));
 const entries = validateManifest(manifest);
 const first = entries[0].url;
-const second = entries[1].url;
+const second = entries.find(x => x.status === 'PLANNED').url;
 const common = {
   siteOrigin: manifest.siteOrigin,
   libraryHub: manifest.libraryHub,
@@ -19,7 +19,7 @@ const common = {
 test('canonical registry contains exactly 96 URLs with expected categories', () => {
   assert.equal(entries.length, 96);
   assert.equal(new Set(entries.map(x => x.url)).size, 96);
-  assert.equal(entries.every(x => x.status === 'PLANNED'), true);
+  assert.equal(entries.every(x => ['PLANNED', 'PUBLISHED'].includes(x.status)), true);
 });
 
 test('valid internal URLs and category anchors are accepted', () => {

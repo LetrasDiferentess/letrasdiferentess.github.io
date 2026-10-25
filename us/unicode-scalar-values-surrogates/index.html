@@ -1,0 +1,116 @@
+<!doctype html><html lang="en-US"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Unicode Scalar Values, Surrogates, and the Exact UTF-16 Encoding Model | Letras Diferentes Research Library</title><meta name="description" content="A rigorous guide to the Unicode codespace, scalar values, UTF-16 surrogate pairs, malformed strings, noncharacters, and safe JavaScript handling."><meta name="robots" content="index,follow"><link rel="canonical" href="https://letrasdiferentess.github.io/us/unicode-scalar-values-surrogates/"><meta property="og:type" content="article"><meta property="og:title" content="Unicode Scalar Values, Surrogates, and the Exact UTF-16 Encoding Model"><meta property="og:description" content="A rigorous guide to the Unicode codespace, scalar values, UTF-16 surrogate pairs, malformed strings, noncharacters, and safe JavaScript handling."><meta property="og:url" content="https://letrasdiferentess.github.io/us/unicode-scalar-values-surrogates/"><link rel="stylesheet" href="/us/library/article.css"><script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","@id":"https://letrasdiferentess.github.io/us/unicode-scalar-values-surrogates/#article","headline":"Unicode Scalar Values, Surrogates, and the Exact UTF-16 Encoding Model","description":"A rigorous guide to the Unicode codespace, scalar values, UTF-16 surrogate pairs, malformed strings, noncharacters, and safe JavaScript handling.","inLanguage":"en-US","datePublished":"2026-10-25","dateModified":"2026-10-25","author":{"@type":"Organization","name":"Letras Diferentes"},"publisher":{"@type":"Organization","name":"Letras Diferentes","url":"https://letrasdiferentess.github.io/"},"mainEntityOfPage":"https://letrasdiferentess.github.io/us/unicode-scalar-values-surrogates/","isPartOf":{"@type":"WebPage","@id":"https://letrasdiferentess.github.io/us/library/"}}</script></head><body><a class="skip" href="#main">Skip to article</a><header class="sitehead"><div class="shell"><a class="brand" href="/us/">Letras <span>Diferentes</span></a><nav aria-label="Site"><a href="/us/">Fancy Text Tool</a><a href="/us/library/">Research Library</a></nav></div></header><div class="shell"><nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/us/">Home</a><span aria-hidden="true">/</span><a href="/us/library/">Research Library</a><span aria-hidden="true">/</span>Unicode Character Model &amp; Properties</nav><div class="headercopy"><span class="eyebrow">Unicode research · Character model</span><h1>Unicode Scalar Values, Surrogates, and the Exact UTF-16 Encoding Model</h1><p class="dek">A rigorous guide to the Unicode codespace, scalar values, UTF-16 surrogate pairs, malformed strings, noncharacters, and safe JavaScript handling.</p><div class="meta"><span>Technical reference</span><span>Unicode baseline: 18.0.0</span><time datetime="2026-10-25">Updated 25 October 2026</time></div></div><div class="layout"><main id="main" class="article"><article>
+<h2 id="codespace">Codespace, code points, and scalar values</h2>
+<p>Unicode defines a codespace from <code>U+0000</code> to <code>U+10FFFF</code>, divided into <strong>17 planes</strong> numbered 0 to 16. A <em>code point</em> is a position in that codespace, including positions that have not been assigned to characters. A <em>Unicode scalar value</em> is a code point <strong>excluding</strong> the surrogate range <code>U+D800</code> through <code>U+DFFF</code>. This distinction is fundamental for interpreting UTF-8, UTF-16, and UTF-32 data.</p>
+<div class="table-scroll"><table><thead><tr><th>Set</th><th>Inclusive range</th><th>Interpretation</th></tr></thead><tbody>
+<tr><td>Unicode codespace</td><td><code>0000..10FFFF</code></td><td>1,114,112 code-point positions across 17 planes</td></tr>
+<tr><td>Basic Multilingual Plane (BMP)</td><td><code>0000..FFFF</code></td><td>Plane 0, containing ordinary Latin text, many widely used scripts, and the surrogate block</td></tr>
+<tr><td>High surrogates</td><td><code>D800..DBFF</code></td><td>1,024 reserved code-point positions for the first code unit of a UTF-16 pair</td></tr>
+<tr><td>Low surrogates</td><td><code>DC00..DFFF</code></td><td>1,024 reserved code-point positions for the second code unit of a UTF-16 pair</td></tr>
+<tr><td>Supplementary planes</td><td><code>10000..10FFFF</code></td><td>Planes 1–16; require surrogate pairs in UTF-16</td></tr>
+<tr><td>Unicode scalar values</td><td><code>0000..D7FF</code> and <code>E000..10FFFF</code></td><td>All code points except the 2,048 surrogate positions</td></tr>
+</tbody></table></div>
+<p>There are <strong>1,112,064 possible scalar values</strong> (1,114,112 code-point positions minus 2,048 surrogates). This does <em>not</em> mean Unicode assigns characters to every scalar value: unassigned positions, private-use values, and noncharacters have different statuses. Conversely, “outside the BMP” does not mean invalid—supplementary scalar values are an ordinary part of Unicode text.</p>
+<p>Do not use the number of assigned characters in a particular Unicode release as the range limit of an encoder. Assigned-character counts change between versions; the codespace and the scalar-value exclusion rule do not.</p>
+
+<h2 id="utf16">UTF-16 encoding: BMP and supplementary characters</h2>
+<p>UTF-16 is an encoding form built from 16-bit <em>code units</em>. A BMP scalar value outside the surrogate range is encoded as one code unit whose numeric value equals the code point. A supplementary scalar value (<code>U+10000..U+10FFFF</code>) is encoded as two code units: first a high surrogate in <code>D800..DBFF</code>, then a low surrogate in <code>DC00..DFFF</code>.</p>
+<p>The supplementary interval contains exactly <code>0x100000</code> possible scalar values, or 1,048,576 positions. The product of 1,024 possible high surrogates and 1,024 possible low surrogates equals that capacity. An isolated surrogate code unit does not designate a character and is not itself a Unicode scalar value.</p>
+<div class="note"><strong>Encoding versus bytes:</strong> UTF-16LE and UTF-16BE determine the byte order used when serializing each 16-bit code unit. A surrogate pair has a defined <em>code-unit order</em> (high then low) regardless of byte endianness. The byte-order mark issue is separate from surrogate ordering.</div>
+
+<h2 id="algorithm">Surrogate pair formulas and a worked example</h2>
+<p>For a supplementary scalar value <code>U</code>, first calculate <code>V = U − 0x10000</code>, where <code>0 ≤ V ≤ 0xFFFFF</code>. Split <code>V</code> into a high ten-bit field and a low ten-bit field:</p>
+<pre><code>high = 0xD800 + (V &gt;&gt; 10)
+low  = 0xDC00 + (V &amp; 0x3FF)
+
+U = 0x10000
+  + ((high - 0xD800) &lt;&lt; 10)
+  +  (low  - 0xDC00)</code></pre>
+<p>For <code>U+1F600</code> GRINNING FACE, <code>V = 0xF600</code>. The high ten bits are <code>0x3D</code> and the low ten bits are <code>0x200</code>; its UTF-16 sequence is <strong><code>D83D DE00</code></strong>. Serialized in UTF-16BE, those units become bytes <code>D8 3D DE 00</code>. In UTF-16LE, each unit’s bytes are reversed: <code>3D D8 00 DE</code>.</p>
+<p>The formula has two validation requirements often skipped in homegrown codecs: <code>U</code> must be between <code>0x10000</code> and <code>0x10FFFF</code> for pair encoding, and both input code units must belong to the appropriate ranges when decoding. Do not silently pair two highs, two lows, or a trailing high surrogate with the next arbitrary BMP code unit.</p>
+
+<h2 id="invalid">Ill-formed sequences, lone surrogates, and error handling</h2>
+<p>A lone high surrogate, a lone low surrogate, or an incorrectly ordered pair is an <strong>ill-formed UTF-16 code-unit sequence</strong>. In a well-formed Unicode interchange encoding, a surrogate code point must not be emitted as a stand-alone encoded character. Different APIs adopt different failure policies: strict rejection, replacement with <code>U+FFFD REPLACEMENT CHARACTER</code>, or preservation in an intermediate language-specific string type.</p>
+<p>JavaScript strings expose UTF-16 code units and can contain lone surrogate code units. That does not make such strings well-formed Unicode text. <code>TextEncoder</code> converts a lone surrogate to the UTF-8 bytes of <code>U+FFFD</code>, whereas <code>encodeURIComponent()</code> throws <code>URIError</code> for an isolated surrogate. Thus, two APIs processing the same JavaScript string can handle malformed input differently.</p>
+<pre><code>const valid = "\uD83D\uDE00";
+console.log(valid.length);                    // 2 UTF-16 units
+console.log(valid.codePointAt(0).toString(16)); // "1f600"
+console.log([...valid].length);               // 1 code point
+
+const lone = "\uD800";                        // unpaired high surrogate
+console.log(lone.length);                     // 1 code unit
+console.log(new TextEncoder().encode(lone));  // EF BF BD (U+FFFD)
+console.log(lone.isWellFormed());             // false (modern JS)</code></pre>
+<p>When a runtime lacks <code>String.prototype.isWellFormed()</code>, validate the code-unit sequence explicitly. For security-sensitive pipelines, decide whether malformed sequences are rejected or replaced and apply that policy at the ingress boundary, not unpredictably in each downstream renderer.</p>
+<p>The notion “Unicode string” varies between programming languages: Python 3 strings are sequences of code points at the language level and can still, through certain APIs, contain surrogate values that fail strict UTF-8 encoding. Java and JavaScript represent ordinary string indices as UTF-16 code units. Rust <code>str</code> requires valid UTF-8 and therefore cannot contain isolated surrogate scalar values. Always document the language runtime and error mode in interoperability tests.</p>
+
+<h2 id="noncharacters">Noncharacters, private use, and unassigned code points</h2>
+<p>A common validator mistake is to label all code points without assigned graphic characters “invalid.” They are not the same category:</p>
+<ul>
+<li><strong>Surrogate code points:</strong> <code>D800..DFFF</code> are excluded from Unicode scalar values and must not be encoded as scalar characters in UTF-8 or UTF-32.</li>
+<li><strong>Noncharacters:</strong> Such as <code>U+FDD0..U+FDEF</code> and the last two code points of each plane (<code>U+FFFE</code>, <code>U+FFFF</code>, <code>U+1FFFE</code>, etc.) are valid scalar values. They are permanently reserved for internal use and never assigned abstract characters. Unicode encoding forms can represent them, and their appearance alone is not proof of ill-formed UTF data.</li>
+<li><strong>Private-use code points:</strong> BMP <code>U+E000..U+F8FF</code> and supplementary private-use areas represent valid scalars whose meaning is assigned by private agreement. Their semantics are not standardized across applications.</li>
+<li><strong>Unassigned/reserved code points:</strong> Valid scalar positions may be assigned in future Unicode versions. An application can choose to limit its accepted repertoire, but that is an application policy, not an encoding constraint.</li>
+</ul>
+<p>Whether to allow noncharacters or private-use scalars in an identifier, protocol field, or document is a separate <em>profile decision</em>. Standards such as UTS #39 define security-related identifier processing; valid UTF-8 by itself is not an authorization or safety guarantee.</p>
+
+<h2 id="implementation">Implementation patterns in JavaScript and Python</h2>
+<p>For code-point iteration in JavaScript, use <code>for…of</code> or spread iteration, not naive index-based iteration. <code>codePointAt(index)</code> consumes the pair only when called at a high-surrogate position; at the following low-surrogate index, it returns that low surrogate’s numeric value. <code>String.fromCodePoint()</code> validates its numeric input, while <code>String.fromCharCode()</code> accepts individual 16-bit code units.</p>
+<pre><code>function scalarValue(cp) {
+  return Number.isInteger(cp) &amp;&amp;
+    cp &gt;= 0 &amp;&amp; cp &lt;= 0x10FFFF &amp;&amp;
+    !(cp &gt;= 0xD800 &amp;&amp; cp &lt;= 0xDFFF);
+}
+
+function utf16UnitsForScalar(cp) {
+  if (!scalarValue(cp)) throw new RangeError("Not a scalar");
+  if (cp &lt;= 0xFFFF) return [cp];
+  const v = cp - 0x10000;
+  return [0xD800 + (v &gt;&gt; 10),
+          0xDC00 + (v &amp; 0x3FF)];
+}
+console.log(utf16UnitsForScalar(0x1F600));
+// [0xD83D, 0xDE00] in hexadecimal</code></pre>
+<p>In Python, <code>ord()</code> returns the code-point number of a one-element string, and <code>chr()</code> produces a string for a code-point position. When emitting UTF-8, the default strict encoder rejects isolated surrogates:</p>
+<pre><code>face = "\U0001F600"
+assert len(face) == 1
+assert ord(face) == 0x1F600
+assert face.encode("utf-8") == bytes.fromhex("F0 9F 98 80")
+
+try:
+    "\ud800".encode("utf-8")
+except UnicodeEncodeError:
+    print("Lone surrogate rejected")</code></pre>
+
+<h2 id="testing">Validation boundaries and test vectors</h2>
+<div class="table-scroll"><table><thead><tr><th>Input</th><th>Scalar?</th><th>UTF-16 representation</th><th>Policy note</th></tr></thead><tbody>
+<tr><td><code>U+0000</code></td><td>Yes</td><td><code>0000</code></td><td>Valid encoding; may be disallowed by a higher-level text protocol</td></tr>
+<tr><td><code>U+D7FF</code></td><td>Yes</td><td><code>D7FF</code></td><td>Last BMP scalar before surrogate range</td></tr>
+<tr><td><code>U+D800</code></td><td>No</td><td>Cannot be encoded as a scalar</td><td>High surrogate only in a pair</td></tr>
+<tr><td><code>U+DFFF</code></td><td>No</td><td>Cannot be encoded as a scalar</td><td>Low surrogate only in a pair</td></tr>
+<tr><td><code>U+E000</code></td><td>Yes</td><td><code>E000</code></td><td>Private-use scalar</td></tr>
+<tr><td><code>U+FFFF</code></td><td>Yes</td><td><code>FFFF</code></td><td>Valid encoding of a noncharacter</td></tr>
+<tr><td><code>U+10000</code></td><td>Yes</td><td><code>D800 DC00</code></td><td>First supplementary scalar</td></tr>
+<tr><td><code>U+10FFFF</code></td><td>Yes</td><td><code>DBFF DFFF</code></td><td>Last possible scalar, a noncharacter</td></tr>
+<tr><td><code>U+110000</code></td><td>No</td><td>Not representable</td><td>Outside Unicode codespace</td></tr>
+</tbody></table></div>
+<p>Test both <em>decoding correctness</em> and <em>error-policy correctness</em>. Passing only valid BMP samples will not catch off-by-one errors, bad endianness, overlong UTF-8, unpaired UTF-16 units, unexpected replacement policy, or truncated supplementary sequences.</p>
+
+<h2 id="mistakes">Common integration failures</h2>
+<ul>
+<li>Assuming <code>string.length</code> means “number of Unicode characters” in JavaScript or Java.</li>
+<li>Breaking a surrogate pair when truncating text to a UI length limit, producing replacement glyphs or URI encoding exceptions.</li>
+<li>Converting UTF-16 units individually to UTF-8 rather than decoding into scalar values before encoding.</li>
+<li>Treating the high/low pair as two independent characters in regular expressions, indexes, or substring algorithms.</li>
+<li>Rejecting noncharacters as “malformed UTF” without an actual protocol requirement.</li>
+<li>Assuming every valid scalar is assigned a visible graphic character in the latest Unicode release.</li>
+</ul>
+
+<h2 id="references">Primary specifications and further reading</h2>
+<ol class="references">
+<li><a href="https://www.unicode.org/versions/Unicode18.0.0/" rel="nofollow">The Unicode Standard 18.0.0</a>, encoding forms and definitions.</li>
+<li><a href="https://www.unicode.org/faq/utf_bom.html" rel="nofollow">Unicode FAQ — UTF-8, UTF-16, UTF-32, and BOM</a>, surrogate model and malformed units.</li>
+<li><a href="https://www.unicode.org/faq/private_use.html" rel="nofollow">Unicode FAQ — Private-use characters and noncharacters</a>, their allocation status and validity.</li>
+<li><a href="https://www.unicode.org/reports/tr44/" rel="nofollow">UAX #44 — Unicode Character Database</a>, code point categories and property definitions.</li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/isWellFormed" rel="nofollow">MDN — String.prototype.isWellFormed()</a>, detecting unpaired UTF-16 surrogates.</li>
+</ol>
+<hr><section class="related" aria-labelledby="related-title"><h2 id="related-title">Related technical references</h2><ul><li><a href="https://letrasdiferentess.github.io/us/unicode-code-points-characters-glyphs/">Code Points, Grapheme Clusters, and Glyphs</a></li><li><a href="https://letrasdiferentess.github.io/us/unicode-general-categories/">Unicode General Categories</a></li><li><a href="https://letrasdiferentess.github.io/us/combining-marks-diacritics/">Combining Marks and Diacritics</a></li></ul></section><p class="small">Independent technical commentary on public standards. Unicode property and library behavior must be checked against the version shipped with each runtime.</p></article></main><aside class="toc" aria-label="On this page"><h2>On this page</h2><a href="#codespace">Codespace, code points, and scalar values</a><a href="#utf16">UTF-16 encoding: BMP and supplementary characters</a><a href="#algorithm">Surrogate pair formulas and a worked example</a><a href="#invalid">Ill-formed sequences, lone surrogates, and error handling</a><a href="#noncharacters">Noncharacters, private use, and unassigned code points</a><a href="#implementation">Implementation patterns in JavaScript and Python</a><a href="#testing">Validation boundaries and test vectors</a><a href="#mistakes">Common integration failures</a><a href="#references">Primary specifications and further reading</a></aside></div></div><footer class="footer"><div class="shell"><span>© 2026 Letras Diferentes · Unicode Research Library</span><a href="/us/library/#unicode-characters">Explore Unicode Character Model &amp; Properties</a></div></footer></body></html>

@@ -1,0 +1,111 @@
+<!doctype html><html lang="en-US"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Unicode Combining Marks and Diacritics: Ordering, Rendering, and Normalization | Letras Diferentes Research Library</title><meta name="description" content="Explore combining marks, diacritics, canonical combining classes, NFC and NFD, grapheme boundaries, font positioning, and data-loss pitfalls."><meta name="robots" content="index,follow"><link rel="canonical" href="https://letrasdiferentess.github.io/us/combining-marks-diacritics/"><meta property="og:type" content="article"><meta property="og:title" content="Unicode Combining Marks and Diacritics: Ordering, Rendering, and Normalization"><meta property="og:description" content="Explore combining marks, diacritics, canonical combining classes, NFC and NFD, grapheme boundaries, font positioning, and data-loss pitfalls."><meta property="og:url" content="https://letrasdiferentess.github.io/us/combining-marks-diacritics/"><link rel="stylesheet" href="/us/library/article.css"><script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","@id":"https://letrasdiferentess.github.io/us/combining-marks-diacritics/#article","headline":"Unicode Combining Marks and Diacritics: Ordering, Rendering, and Normalization","description":"Explore combining marks, diacritics, canonical combining classes, NFC and NFD, grapheme boundaries, font positioning, and data-loss pitfalls.","inLanguage":"en-US","datePublished":"2026-10-25","dateModified":"2026-10-25","author":{"@type":"Organization","name":"Letras Diferentes"},"publisher":{"@type":"Organization","name":"Letras Diferentes","url":"https://letrasdiferentess.github.io/"},"mainEntityOfPage":"https://letrasdiferentess.github.io/us/combining-marks-diacritics/","isPartOf":{"@type":"WebPage","@id":"https://letrasdiferentess.github.io/us/library/"}}</script></head><body><a class="skip" href="#main">Skip to article</a><header class="sitehead"><div class="shell"><a class="brand" href="/us/">Letras <span>Diferentes</span></a><nav aria-label="Site"><a href="/us/">Fancy Text Tool</a><a href="/us/library/">Research Library</a></nav></div></header><div class="shell"><nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/us/">Home</a><span aria-hidden="true">/</span><a href="/us/library/">Research Library</a><span aria-hidden="true">/</span>Unicode Character Model &amp; Properties</nav><div class="headercopy"><span class="eyebrow">Unicode research · Combining marks</span><h1>Unicode Combining Marks and Diacritics: Ordering, Rendering, and Normalization</h1><p class="dek">Explore combining marks, diacritics, canonical combining classes, NFC and NFD, grapheme boundaries, font positioning, and data-loss pitfalls.</p><div class="meta"><span>Technical reference</span><span>Unicode baseline: 18.0.0</span><time datetime="2026-10-25">Updated 25 October 2026</time></div></div><div class="layout"><main id="main" class="article"><article>
+<h2 id="overview">Combining marks, diacritics, and base characters</h2>
+<p>Unicode represents many writing-system distinctions using <em>combining marks</em>: code points that modify, annotate, enclose, or otherwise combine with nearby text. Familiar examples include accents, vowel signs and script-specific marks, but the concept is broader than Latin diacritics. A combining mark is encoded as textual data, not as a positioning instruction to “draw a tiny symbol above the previous glyph.” Its rendering depends on the script, font, shaping engine, base character and surrounding text.</p>
+<p>A <em>diacritic</em> is a linguistic or typographic term for a distinguishing mark, often applied to a letter. Not every Unicode combining mark is an accent, and not every visible accent-like symbol is encoded as a combining mark: spacing modifier letters and symbols can also look like diacritics. Therefore the questions “is this a combining mark?” and “is this a diacritic?” require different criteria.</p>
+<p>Unicode supports both <em>precomposed</em> characters and decomposed sequences. For example, <code>U+00E9</code> LATIN SMALL LETTER E WITH ACUTE represents é as one code point. The sequence <code>U+0065 U+0301</code> represents a base e followed by COMBINING ACUTE ACCENT. These sequences are canonically equivalent under Unicode normalization and often look identical, even though they contain different numbers of code points and produce different bytes in UTF-8.</p>
+<div class="note"><strong>Model boundary:</strong> Combining marks are data. Grapheme segmentation defines editing units; canonical combining classes help normalization; OpenType anchors and shaping rules determine glyph positioning. Do not substitute one of those mechanisms for the others.</div>
+
+<h2 id="classes">General categories and canonical combining classes</h2>
+<p>The <code>General_Category</code> property groups marks into three atomic classes. Each class describes broad character behavior but does not fully determine how a mark is visually drawn:</p>
+<div class="table-scroll"><table><thead><tr><th>GC</th><th>Name</th><th>Example and behavior</th></tr></thead><tbody>
+<tr><td><code>Mn</code></td><td>Nonspacing_Mark</td><td><code>U+0301</code> COMBINING ACUTE ACCENT; normally contributes no independent advance width</td></tr>
+<tr><td><code>Mc</code></td><td>Spacing_Mark</td><td><code>U+093E</code> DEVANAGARI VOWEL SIGN AA; participates in script-sensitive syllable layout</td></tr>
+<tr><td><code>Me</code></td><td>Enclosing_Mark</td><td><code>U+20DD</code> COMBINING ENCLOSING CIRCLE; encloses or decorates base content</td></tr>
+</tbody></table></div>
+<p>The <strong>canonical combining class</strong> (<code>Canonical_Combining_Class</code>, abbreviated <code>ccc</code>) is a different property: an integer that governs canonical ordering of certain non-starter marks in Unicode normalization. Common values include <code>230</code> for COMBINING ACUTE ACCENT (<code>U+0301</code>) and <code>220</code> for COMBINING DOT BELOW (<code>U+0323</code>). The value <code>0</code> frequently indicates a starter or mark without reordering class, but <strong>ccc=0 does not imply “not a mark”</strong>. Some characters in <code>Mn</code> or <code>Mc</code> have canonical combining class zero.</p>
+<p>Canonical combining class is not a universal stacking index and should not be used to place glyphs physically above or below letters. Two marks can share a class, and the standard’s stable-ordering rules do not promise that their final visual positions follow the numeric order of those classes. Rendering engines instead use font metrics, mark-to-base and mark-to-mark attachment, substitutions and complex-script layout.</p>
+
+<h2 id="normalization">Canonical equivalence, NFC, NFD, and mark ordering</h2>
+<p>Unicode Standard Annex #15 defines four normalization forms. <code>NFD</code> recursively applies canonical decomposition and canonical ordering. <code>NFC</code> starts with canonical decomposition and reordering, then composes eligible sequences. <code>NFKD</code> and <code>NFKC</code> additionally apply <em>compatibility</em> mappings, which can erase formatting distinctions such as certain mathematical styled alphanumerics and compatibility glyphs.</p>
+<p>Canonical ordering requires that eligible marks be placed in a standard nondecreasing order of canonical combining class within the applicable sequence. For instance, <code>q U+0307 U+0323</code> (q, DOT ABOVE class 230, DOT BELOW class 220) becomes <code>q U+0323 U+0307</code> under NFD. This is a structural equivalence rule; it does not mean the user typed an incorrect sequence or that all visually alike combinations are canonically equivalent.</p>
+<pre><code>const a = "\u00E9";            // precomposed e-acute
+const b = "e\u0301";           // base e + combining acute
+console.log(a === b);         // false
+console.log(a.normalize("NFD") === b.normalize("NFD"));
+// true
+
+const unordered = "q\u0307\u0323";
+const ordered = unordered.normalize("NFD");
+console.log([...ordered].map(c =>
+  "U+" + c.codePointAt(0).toString(16).toUpperCase()));
+// ["U+71", "U+323", "U+307"]
+
+console.log("e\u0301".normalize("NFC") === "\u00E9");
+// true</code></pre>
+<p>Canonical composition is subject to defined composition exclusions and blocking rules; NFC does not necessarily turn every base-plus-mark sequence into one precomposed code point. It also does not generally erase legitimate distinctions, whereas compatibility normalization deliberately maps some distinct presentations to common forms. The appropriate form depends on the data contract, not on which output is shorter.</p>
+<p>The character <code>U+034F COMBINING GRAPHEME JOINER</code> has canonical combining class zero and can be used in specialized text processing to affect canonical ordering and grapheme behavior. It should not be inserted casually as an invisible visual fix: invisible control-like marks can complicate equality, searches and interoperability.</p>
+
+<h2 id="rendering">Grapheme clusters, font anchors, and dotted circles</h2>
+<p>A base letter followed by one or more combining marks typically belongs to one <strong>extended grapheme cluster</strong>, according to UAX #29. That is why a cursor may move past <code>e U+0301</code> as one unit. However, “one grapheme cluster” does not imply a single code point or a single glyph. The renderer may produce multiple positioned glyphs or a substituted composite glyph.</p>
+<p>When a combining mark appears without a suitable base, some fonts or editors display a dotted circle to make the intended attachment position visible. The dotted circle can be a renderer-inserted cue and should not be assumed to be an actual <code>U+25CC</code> code point in the stored text. Conversely, if a document literally contains U+25CC, that is textual data.</p>
+<p>Positioning can fail even if both characters are supported individually by fonts. A fallback font might contain the base letter but not a compatible anchor for the mark; a shaping engine can choose separate fallback fonts; or a script’s font features can be incomplete. Resulting detached accents or overlapping shapes are rendering problems rather than proof of invalid Unicode.</p>
+<p>Many Indic scripts use combining vowel signs and other dependent marks whose visual positions do not correspond to the linear encoding order. Text processing must not “fix” their storage order according to where glyphs appear. Script shaping rules should receive the underlying logical character sequence.</p>
+
+<h2 id="code">Practical Python and JavaScript examples</h2>
+<p>Python’s <code>unicodedata</code> API exposes both the broad category and canonical combining class. Use both fields when investigating a mark, but do not infer complete display behavior from them.</p>
+<pre><code>import unicodedata as ud
+
+for c in ["e", "\u0301", "\u0323", "\u034f", "\u093e"]:
+    print(
+        f"U+{ord(c):04X}",
+        ud.name(c, "?"),
+        "gc=" + ud.category(c),
+        "ccc=" + str(ud.combining(c))
+    )
+
+assert ud.combining("\u0301") == 230
+assert ud.combining("\u0323") == 220
+assert ud.normalize("NFD", "\u00E9") == "e\u0301"
+assert ud.normalize("NFD", "q\u0307\u0323") == "q\u0323\u0307"</code></pre>
+<p>The output property data come from the Unicode version bundled with Python, available as <code>unicodedata.unidata_version</code>. For JavaScript, a Unicode property escape tests General_Category=Mark without implementing canonical combining-class data:</p>
+<pre><code>const isMark = /^\p{Mark}$/u;
+console.log(isMark.test("\u0301")); // true (Mn)
+console.log(isMark.test("\u093E")); // true (Mc)
+console.log(isMark.test("e"));      // false (Ll)
+
+const graphemeSeg = new Intl.Segmenter("en", {
+  granularity: "grapheme"
+});
+console.log([...graphemeSeg.segment("e\u0301")].length);
+// 1 extended grapheme cluster</code></pre>
+<p>Neither <code>Intl.Segmenter</code> nor a regex over <code>\p{Mark}</code> is an accent-insensitive search engine. Segmentation detects boundaries; mark-category filtering may destroy meaningful distinctions and may miss spacing modifier characters. Search rules must be designed separately.</p>
+
+<h2 id="edge">Context-sensitive problems and failure cases</h2>
+<ul>
+<li><strong>Nonspacing versus width:</strong> <code>Mn</code> does not guarantee the glyph occupies zero rasterized pixels. It describes character behavior, not the drawn glyph’s bounding box.</li>
+<li><strong>Combining without a base:</strong> A leading mark is legal text data but may produce a degenerate grapheme cluster or a dotted-circle rendering. Validators should choose an application policy rather than silently deleting it.</li>
+<li><strong>Same canonical class:</strong> Unicode normalization generally preserves relative ordering of equal-class marks; do not sort equal classes arbitrarily in a homemade normalization algorithm.</li>
+<li><strong>Interaction with ZWJ and variation selectors:</strong> These affect shaping or presentation in appropriate sequences and should not be removed simply because they are invisible or categorized as marks/format characters.</li>
+<li><strong>Copy and paste across programs:</strong> An editor may preserve decomposed text, normalize to NFC, or transform formatting. Compare canonicalized sequences only when the application’s equivalence policy demands it.</li>
+<li><strong>Precomposed forms:</strong> The mere existence of a visually sensible base-plus-accent sequence does not imply Unicode defines a precomposed scalar for it.</li>
+<li><strong>Language-specific meaning:</strong> A mark can distinguish words or grammatical structures. Accents are often semantically essential, not optional decoration.</li>
+</ul>
+
+<h2 id="testing">Detailed diagnostics and Unicode test vectors</h2>
+<div class="table-scroll"><table><thead><tr><th>Stored sequence</th><th>Purpose</th><th>Expected property or result</th></tr></thead><tbody>
+<tr><td><code>U+0065 U+0301</code></td><td>Canonical equivalence</td><td>NFC equals <code>U+00E9</code></td></tr>
+<tr><td><code>U+00E9</code></td><td>Canonical decomposition</td><td>NFD equals <code>U+0065 U+0301</code></td></tr>
+<tr><td><code>U+0071 U+0307 U+0323</code></td><td>Canonical ordering</td><td>NFD yields <code>U+0071 U+0323 U+0307</code></td></tr>
+<tr><td><code>U+0301</code></td><td>Combining mark class</td><td><code>gc=Mn</code>, <code>ccc=230</code></td></tr>
+<tr><td><code>U+0323</code></td><td>Combining mark class</td><td><code>gc=Mn</code>, <code>ccc=220</code></td></tr>
+<tr><td><code>U+093E</code></td><td>Spacing mark</td><td><code>gc=Mc</code>; not all marks are nonspacing</td></tr>
+<tr><td><code>U+034F</code></td><td>Nonspacing mark with class zero</td><td><code>gc=Mn</code>, <code>ccc=0</code></td></tr>
+<tr><td><code>U+20DD</code></td><td>Enclosing mark</td><td><code>gc=Me</code></td></tr>
+</tbody></table></div>
+<p>Conformance testing should also use the version-specific <code>NormalizationTest.txt</code> and <code>GraphemeBreakTest.txt</code> datasets, not only a few handpicked European-language examples. Such files include cases intended to expose errors in canonical ordering, boundary handling and special classes.</p>
+
+<h2 id="safety">Search normalization and security considerations</h2>
+<p>A simplistic “remove all accents” approach often decomposes with NFD, removes every <code>Mn</code>, then optionally recomposes. This can be useful for a carefully scoped, secondary search key, but it is <em>not</em> a universally safe normalization of user data. It changes spelling and can merge strings that users or applications need to keep distinct. It may also fail to remove modifier symbols, affect scripts unevenly, and mishandle precomposed forms if the chosen normalization is incomplete.</p>
+<p>For reliable systems, preserve the original input, store a documented normalization form if the protocol requires one, and derive optional search-folded indexes separately. Avoid modifying passwords, signatures, code identifiers, domain names or user-visible names through unreviewed accent stripping. In security-sensitive identifier processing, use an established Unicode profile and documented confusable-handling rules rather than heuristic mark deletion.</p>
+<div class="note warn"><strong>Compatibility warning:</strong> NFKC can fold styled mathematical letters and compatibility characters to ordinary forms. If an application’s purpose is to preserve copyable decorative Unicode text, indiscriminate NFKC can remove the style the user deliberately selected. Choose normalization based on semantics, not presentation assumptions.</div>
+
+<h2 id="references">Standards and reference datasets</h2>
+<ol class="references">
+<li><a href="https://www.unicode.org/reports/tr15/" rel="nofollow">UAX #15 — Unicode Normalization Forms</a>, decomposition, composition, canonical order and exclusions.</li>
+<li><a href="https://www.unicode.org/reports/tr29/" rel="nofollow">UAX #29 — Unicode Text Segmentation</a>, extended grapheme cluster boundaries.</li>
+<li><a href="https://www.unicode.org/reports/tr44/" rel="nofollow">UAX #44 — Unicode Character Database</a>, General_Category and canonical combining class data.</li>
+<li><a href="https://www.unicode.org/Public/UCD/latest/ucd/NormalizationTest.txt" rel="nofollow">NormalizationTest.txt</a>, normative conformance data.</li>
+<li><a href="https://www.unicode.org/Public/UCD/latest/ucd/auxiliary/GraphemeBreakTest.txt" rel="nofollow">GraphemeBreakTest.txt</a>, segmentation test data.</li>
+<li><a href="https://www.unicode.org/versions/Unicode18.0.0/" rel="nofollow">The Unicode Standard 18.0.0</a>, the core character model.</li>
+</ol>
+<hr><section class="related" aria-labelledby="related-title"><h2 id="related-title">Related technical references</h2><ul><li><a href="https://letrasdiferentess.github.io/us/unicode-code-points-characters-glyphs/">Code Points, Graphemes and Glyphs</a></li><li><a href="https://letrasdiferentess.github.io/us/unicode-general-categories/">General Categories of Combining Marks</a></li><li><a href="https://letrasdiferentess.github.io/us/unicode-script-properties/">Script=Inherited and Script_Extensions</a></li></ul></section><p class="small">Independent technical guide grounded in Unicode annexes and data. Font rendering differs by font and platform; Unicode data versions may differ across runtimes.</p></article></main><aside class="toc" aria-label="On this page"><h2>On this page</h2><a href="#overview">Combining marks, diacritics, and base characters</a><a href="#classes">General categories and canonical combining classes</a><a href="#normalization">Canonical equivalence, NFC, NFD, and mark ordering</a><a href="#rendering">Grapheme clusters, font anchors, and dotted circles</a><a href="#code">Practical Python and JavaScript examples</a><a href="#edge">Context-sensitive problems and failure cases</a><a href="#testing">Detailed diagnostics and Unicode test vectors</a><a href="#safety">Search normalization and security considerations</a><a href="#references">Standards and reference datasets</a></aside></div></div><footer class="footer"><div class="shell"><span>© 2026 Letras Diferentes · Unicode Research Library</span><a href="/us/library/#unicode-characters">Explore Unicode Character Model &amp; Properties</a></div></footer></body></html>
