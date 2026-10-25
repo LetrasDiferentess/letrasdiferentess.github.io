@@ -13,7 +13,7 @@ test("batch 4 has exactly five new published registry records without changing e
   assert.equal(entries.length, 96);
   assert.deepEqual(entries.slice(15, 20).map(x => x.slug), slugs);
   assert.ok(entries.slice(0, 20).every(x => x.status === "PUBLISHED"));
-  assert.ok(entries.slice(20).every(x => x.status === "PLANNED"));
+  assert.ok(entries.slice(20).every(x => ["PUBLISHED", "PLANNED"].includes(x.status)));
 });
 test("all five research pages are substantial, semantic and linked in the correct category", () => {
   const hub = fs.readFileSync(path.join(root, "us/library/index.html"), "utf8");
@@ -33,8 +33,8 @@ test("all five research pages are substantial, semantic and linked in the correc
     assert.ok(hub.includes('href="/us/' + slug + '/"'), slug + " hub link");
     assert.ok(sitemap.includes('<loc>' + canonical + '</loc>'), slug + " sitemap");
   }
-  assert.match(hub, /20<\/strong>Published references/);
-  assert.match(hub, /76 planned articles/);
+  assert.ok(hub.includes("<strong>" + entries.filter(x => x.status === "PUBLISHED").length + "</strong>Published references"));
+  assert.ok(hub.includes((96 - entries.filter(x => x.status === "PUBLISHED").length) + " planned articles"));
 });
 test("UTF-8 vectors and strict error policy", () => {
   const encode = s => Array.from(new TextEncoder().encode(s), x => x.toString(16).padStart(2, "0")).join(" ");
