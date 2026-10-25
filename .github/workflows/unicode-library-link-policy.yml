@@ -12,6 +12,7 @@ on:
       - 'scripts/test-unicode-batch4.mjs'
       - 'scripts/test-unicode-batch5.mjs'
       - 'scripts/test-unicode-batch6.mjs'
+      - 'scripts/test-unicode-batch7.mjs'
       - '.github/workflows/unicode-library-link-policy.yml'
       - 'us/**'
   pull_request:
@@ -25,6 +26,7 @@ on:
       - 'scripts/test-unicode-batch4.mjs'
       - 'scripts/test-unicode-batch5.mjs'
       - 'scripts/test-unicode-batch6.mjs'
+      - 'scripts/test-unicode-batch7.mjs'
       - '.github/workflows/unicode-library-link-policy.yml'
       - 'us/**'
 permissions:
@@ -49,3 +51,5 @@ jobs:
         run: node --test scripts/test-unicode-batch5.mjs
       - name: Verify Batch 6 normalization and casing research vectors
         run: node --test scripts/test-unicode-batch6.mjs
+      - name: Verify Batch 7 collation and grapheme research vectors
+        run: node --test scripts/test-unicode-batch7.mjs

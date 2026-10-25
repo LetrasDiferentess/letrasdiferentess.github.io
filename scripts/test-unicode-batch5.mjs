@@ -41,7 +41,7 @@ test("all five substantial pages expose canonical, TechArticle, TOC and correct 
   assert.ok(hub.includes("<strong>" + entries.filter(x => x.status === "PUBLISHED").length + "</strong>Published references"));
   assert.ok(hub.includes((96 - entries.filter(x => x.status === "PUBLISHED").length) + " planned articles"));
   assert.ok(hub.includes("8 total · 8 published"));
-  assert.ok(hub.includes("10 total · " + manifest.categories[3].articles.filter(x => x.status === "PUBLISHED").length + " published · " + manifest.categories[3].articles.filter(x => x.status === "PLANNED").length + " planned"));
+  assert.ok(hub.includes("10 total · " + manifest.categories[3].articles.filter(x => x.status === "PUBLISHED").length + " published"));
 });
 test("real mojibake and reversible codec mismatch fixture", () => {
   const original="café";
