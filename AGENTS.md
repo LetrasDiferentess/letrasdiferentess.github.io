@@ -12,6 +12,8 @@ NON-NEGOTIABLE OWNER INSTRUCTIONS:
 4. All external website links from research articles must have rel="nofollow". For target="_blank", use rel="nofollow noopener noreferrer". Remove all UTM, GPT, ChatGPT and other tracking parameters before linking.
 5. Publishing an article requires adding its index.html at the exact registered path, marking it PUBLISHED and linking it from its proper category on the library hub in the same change.
 6. Do not alter the Brazil homepage or US money tool when preparing technical library content unless separately requested.
+7. OWNER UPDATE (2026-10-25, Batch 2): When a research article is genuinely relevant to the existing US Fancy Text tool, naturally include a useful contextual internal link to the exact canonical /us/ URL. Do not force this link into unrelated topics; never keyword-stuff, insert tracking, or add nofollow to the internal link. Keep articles independently useful and substantive. This grants permission to LINK to the tool, not to modify its code or homepage.
+
 
 Run these checks before merging any research content:
 - node scripts/check-unicode-library-links.mjs
