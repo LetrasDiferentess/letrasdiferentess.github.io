@@ -18,6 +18,7 @@ on:
       - 'scripts/test-unicode-batch10.mjs'
       - 'scripts/test-unicode-batch11.mjs'
       - 'scripts/test-unicode-batch12.mjs'
+      - 'scripts/test-unicode-batch13.mjs'
       - '.github/workflows/unicode-library-link-policy.yml'
       - 'us/**'
   pull_request:
@@ -37,6 +38,7 @@ on:
       - 'scripts/test-unicode-batch10.mjs'
       - 'scripts/test-unicode-batch11.mjs'
       - 'scripts/test-unicode-batch12.mjs'
+      - 'scripts/test-unicode-batch13.mjs'
       - '.github/workflows/unicode-library-link-policy.yml'
       - 'us/**'
 permissions:
@@ -73,3 +75,5 @@ jobs:
         run: node --test scripts/test-unicode-batch11.mjs
       - name: Verify Batch 12 language, line breaking, vertical layout and emoji vectors
         run: node --test scripts/test-unicode-batch12.mjs
+      - name: Verify Batch 13 emoji, Unicode security and accessibility vectors
+        run: node --test scripts/test-unicode-batch13.mjs
