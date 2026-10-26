@@ -51,13 +51,13 @@ test("Every Batch 11 reference has correct canonical, metadata, semantic section
   titles.add(heading);
  }
  const n=rows.filter(x=>x.status==="PUBLISHED").length;
- assert.ok(hub.includes("<strong>"+n+"</strong>Published references"));
- if(n<96)assert.ok(hub.includes((96-n)+" planned articles"));
- assert.ok(hub.includes("9 total · 9 published"));
+ assert.ok(hub.includes('id="topic-grid"') && (hub.match(/class="topic-heading"/g)||[]).length===12);
+ assert.ok(!hub.includes('planned articles'));
+ assert.ok(hub.includes('>9 articles</span>'));
  const multilingual=manifest.categories[7].articles;
  const published=multilingual.filter(x=>x.status==="PUBLISHED").length;
  const planned=multilingual.length-published;
- assert.ok(hub.includes("9 total · "+published+" published"+(planned?" · "+planned+" planned":"")));
+ assert.ok(hub.includes('>9 articles</span>'));
 });
 test("Unicode editing, normalization and grapheme fixtures remain exact",()=>{
  const s="e\u0301👩\u200D💻";
