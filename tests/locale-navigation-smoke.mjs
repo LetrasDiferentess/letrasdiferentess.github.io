@@ -45,6 +45,10 @@ for(const device of devices){
     assert.equal((await mark.textContent()).trim(),'U','logo letter U exists');
     const foreground=await mark.evaluate(el=>getComputedStyle(el).color);
     assert.equal(foreground,'rgb(255, 255, 255)','logo letter readable against teal');
+    const indicator=await page.locator('.tool-menu .chevron').evaluate(el=>({borderRight:getComputedStyle(el).borderRightWidth,borderBottom:getComputedStyle(el).borderBottomWidth,content:el.textContent.trim()}));
+    assert.equal(indicator.content,'','chevron is CSS-drawn, not a font glyph');
+    assert.equal(indicator.borderRight,'2px','chevron visible');
+    assert.equal(indicator.borderBottom,'2px','chevron visible');
     await page.locator('.tool-menu > summary').click();
     assert.ok(await page.locator('.tool-panel').isVisible(),'tool locale dropdown');
     assert.equal(await page.locator('.tool-languages a').count(),2,'only two live language links');
