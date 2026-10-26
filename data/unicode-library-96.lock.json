@@ -243,12 +243,12 @@
         {
           "slug": "deleting-grapheme-clusters",
           "url": "https://letrasdiferentess.github.io/us/deleting-grapheme-clusters/",
-          "status": "PLANNED"
+          "status": "PUBLISHED"
         },
         {
           "slug": "string-length-bytes-units-codepoints-graphemes",
           "url": "https://letrasdiferentess.github.io/us/string-length-bytes-units-codepoints-graphemes/",
-          "status": "PLANNED"
+          "status": "PUBLISHED"
         }
       ]
     },
@@ -260,17 +260,17 @@
         {
           "slug": "font-coverage-unicode-support",
           "url": "https://letrasdiferentess.github.io/us/font-coverage-unicode-support/",
-          "status": "PLANNED"
+          "status": "PUBLISHED"
         },
         {
           "slug": "font-fallback-mechanisms",
           "url": "https://letrasdiferentess.github.io/us/font-fallback-mechanisms/",
-          "status": "PLANNED"
+          "status": "PUBLISHED"
         },
         {
           "slug": "missing-glyphs-tofu-boxes",
           "url": "https://letrasdiferentess.github.io/us/missing-glyphs-tofu-boxes/",
-          "status": "PLANNED"
+          "status": "PUBLISHED"
         },
         {
           "slug": "text-shaping-vs-glyph-rendering",

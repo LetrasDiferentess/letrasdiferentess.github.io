@@ -1,0 +1,85 @@
+<!doctype html><html lang="en-US"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Unicode String Length: UTF-8 Bytes, UTF-16 Units, Code Points and Graphemes | Letras Diferentes Research Library</title><meta name="description" content="Exact Unicode string-length metrics across UTF-8 bytes, UTF-16 code units, Unicode scalar values and extended grapheme clusters, with JS/Python vectors and input limits."><meta name="robots" content="index,follow"><link rel="canonical" href="https://letrasdiferentess.github.io/us/string-length-bytes-units-codepoints-graphemes/"><meta property="og:type" content="article"><meta property="og:title" content="Unicode String Length: UTF-8 Bytes, UTF-16 Units, Code Points and Graphemes"><meta property="og:description" content="Exact Unicode string-length metrics across UTF-8 bytes, UTF-16 code units, Unicode scalar values and extended grapheme clusters, with JS/Python vectors and input limits."><meta property="og:url" content="https://letrasdiferentess.github.io/us/string-length-bytes-units-codepoints-graphemes/"><link rel="stylesheet" href="/us/library/article.css"><script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","@id":"https://letrasdiferentess.github.io/us/string-length-bytes-units-codepoints-graphemes/#article","headline":"Unicode String Length: UTF-8 Bytes, UTF-16 Units, Code Points and Graphemes","description":"Exact Unicode string-length metrics across UTF-8 bytes, UTF-16 code units, Unicode scalar values and extended grapheme clusters, with JS/Python vectors and input limits.","inLanguage":"en-US","datePublished":"2026-10-26","dateModified":"2026-10-26","author":{"@type":"Organization","name":"Letras Diferentes"},"publisher":{"@type":"Organization","name":"Letras Diferentes","url":"https://letrasdiferentess.github.io/"},"mainEntityOfPage":"https://letrasdiferentess.github.io/us/string-length-bytes-units-codepoints-graphemes/","isPartOf":{"@type":"WebPage","@id":"https://letrasdiferentess.github.io/us/library/"}}</script></head><body><a class="skip" href="#main">Skip to article</a><header class="sitehead"><div class="shell"><a class="brand" href="/us/">Letras <span>Diferentes</span></a><nav aria-label="Site"><a href="/us/">Fancy Text Tool</a><a href="/us/library/">Research Library</a></nav></div></header><div class="shell"><nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/us/">Home</a><span aria-hidden="true">/</span><a href="/us/library/">Research Library</a><span aria-hidden="true">/</span>Text Segmentation, Regex &amp; Cursor Behavior</nav><div class="headercopy"><span class="eyebrow">Unicode research · String length and storage metrics</span><h1>Unicode String Length: UTF-8 Bytes, UTF-16 Units, Code Points and Graphemes</h1><p class="dek">Exact Unicode string-length metrics across UTF-8 bytes, UTF-16 code units, Unicode scalar values and extended grapheme clusters, with JS/Python vectors and input limits.</p><div class="meta"><span>Technical reference</span><span>Unicode baseline: 18.0.0</span><time datetime="2026-10-26">Updated 26 October 2026</time></div></div><div class="layout"><main id="main" class="article"><article>
+<h2 id="meaning">“Length” is incomplete without a unit</h2>
+<p>A string length may refer to serialized UTF-8 bytes, UTF-16 code units, Unicode code points or grapheme clusters perceived as characters. These metrics are not interchangeable, especially for supplementary mathematical symbols, combining sequences and emoji. The same string can have radically different lengths under each definition even when it occupies a single perceived text element on screen.</p>
+<p>Unicode encodes abstract characters as code points and uses encoding forms for serialized representation. UTF-8 expresses scalar values using one to four bytes each; UTF-16 uses one or two 16-bit code units for each scalar; UTF-32 uses one 32-bit unit per scalar. Extended grapheme clusters are segmentation units defined by UAX #29. Pixel width and glyph count are additional measures that no one Unicode length function supplies.</p>
+<h2 id="matrix">Exact measurements of common test strings</h2>
+<div class="table-scroll"><table><thead><tr><th>String</th><th>UTF-8 bytes</th><th>UTF-16 units</th><th>Scalars</th><th>Extended graphemes</th></tr></thead><tbody>
+<tr><td><code>A</code></td><td>1</td><td>1</td><td>1</td><td>1</td></tr>
+<tr><td><code>é</code> U+00E9</td><td>2</td><td>1</td><td>1</td><td>1</td></tr>
+<tr><td><code>e</code> U+0301</td><td>3</td><td>2</td><td>2</td><td>1</td></tr>
+<tr><td><code>漢</code> U+6F22</td><td>3</td><td>1</td><td>1</td><td>1</td></tr>
+<tr><td>U+1F600 😀</td><td>4</td><td>2</td><td>1</td><td>1</td></tr>
+<tr><td>U+1D400 𝐀</td><td>4</td><td>2</td><td>1</td><td>1</td></tr>
+<tr><td>U+1F1FA U+1F1F8 🇺🇸</td><td>8</td><td>4</td><td>2</td><td>1</td></tr>
+<tr><td>U+1F469 U+200D U+1F4BB 👩‍💻</td><td>11</td><td>5</td><td>3</td><td>1</td></tr>
+<tr><td><code>\r\n</code></td><td>2</td><td>2</td><td>2</td><td>1</td></tr>
+</tbody></table></div>
+<p>The numbers assume valid Unicode scalar sequences and the default extended grapheme rules. For the woman-technologist emoji, four UTF-8 bytes represent U+1F469, three represent U+200D and four represent U+1F4BB, totaling eleven bytes. UTF-16 needs two, one and two code units respectively. Do not estimate network payload size by counting screen glyphs.</p>
+<h2 id="javascript">JavaScript length counts UTF-16 units</h2>
+<p>JavaScript's <code>String.prototype.length</code> reports UTF-16 code units; it does not report Unicode scalar count. <code>[...s]</code> advances through a valid surrogate pair as one code point, but combining sequences and emoji ZWJ sequences still contribute multiple array elements. <code>new TextEncoder().encode(s).length</code> provides UTF-8 byte length for the string after the encoder's handling of internal string data. <code>Intl.Segmenter</code> with <code>granularity:"grapheme"</code> supplies a user-facing cluster count.</p>
+<pre><code>const segmenter = new Intl.Segmenter("en",{granularity:"grapheme"});
+function measures(text) {
+  if (!text.isWellFormed()) throw new TypeError("Unpaired UTF-16 surrogate");
+  return {
+    utf8Bytes: new TextEncoder().encode(text).length,
+    utf16Units: text.length,
+    codePoints: [...text].length,
+    graphemes: [...segmenter.segment(text)].length
+  };
+}
+console.log(measures("👩‍💻"));
+// { utf8Bytes: 11, utf16Units: 5, codePoints: 3, graphemes: 1 }
+console.log(measures("e\u0301"));
+// { utf8Bytes: 3, utf16Units: 2, codePoints: 2, graphemes: 1 }</code></pre>
+<p>By checking <code>isWellFormed()</code> before measurement, the function avoids claiming that the internal JavaScript string contains a valid Unicode scalar sequence when it holds an unpaired surrogate. An ordinary <code>TextEncoder</code> conversion will replace ill-formed surrogate units under the web platform's string conversion rules, so byte counts of the encoded replacement are not the same as bytes for a hypothetical invalid UTF-8 encoding.</p>
+<h2 id="python">Python code-point counts are different from JavaScript length</h2>
+<p>For normal Python 3 strings, <code>len(s)</code> counts code points, not UTF-16 code units or graphemes. Encoding explicitly with <code>s.encode("utf-8", "strict")</code> computes bytes and reports invalid surrogate values as errors. To count UTF-16 units for a valid string, encode using an explicitly endian UTF-16 codec that does not prepend a BOM and divide the resulting byte count by two.</p>
+<pre><code>s = "👩‍💻"
+assert len(s) == 3
+assert len(s.encode("utf-8")) == 11
+assert len(s.encode("utf-16-le")) // 2 == 5
+assert len("e\u0301") == 2
+assert len("e\u0301".encode("utf-8")) == 3
+# A conforming UAX #29 implementation is needed for graphemes;
+# neither Python len() nor slicing supplies that segmentation.</code></pre>
+<p>Using <code>utf-16</code> instead of <code>utf-16-le</code> introduces a BOM by default in many Python encoders, adding two bytes to the serialized result. Always identify encoding, byte order and BOM policy when measuring or comparing serialized sizes.</p>
+<h2 id="normalization">Canonical normalization can change code point and byte counts</h2>
+<p>U+00E9 and <code>e</code> followed by U+0301 are canonically equivalent, but the former takes two UTF-8 bytes, one scalar and one UTF-16 unit, while the latter takes three UTF-8 bytes, two scalars and two UTF-16 units. NFC typically composes the latter to U+00E9; NFD decomposes the former. Thus code-point count and byte length are not invariant under canonical normalization, even when grapheme count stays one in this example.</p>
+<p>Compatibility normalization NFKC can be more destructive. It may transform mathematical bold A into ordinary A, reducing serialized bytes from four to one while discarding the encoded mathematical identity. A text system that promises exact copy-paste fidelity should not silently apply such a transform to the only stored copy.</p>
+<h2 id="limits">Choose different length policies for different constraints</h2>
+<p>An HTTP or database storage limit often applies to <strong>bytes</strong>, while a JavaScript UI's naive <code>maxlength</code> or custom count may apply code units depending on the element and platform. A message composer can reasonably display a grapheme-cluster limit because people care about perceived characters. A backend might also need independent UTF-8 byte limits to protect database capacity, and scalar/normalization validation for protocol safety.</p>
+<p>No single metric simultaneously guarantees a memory budget, visual width and perceived character count. CJK ideographs can occupy more display columns than a Latin letter in terminal environments; emoji ZWJ clusters can be visually wider than both. Shaped ligatures may combine multiple letters into one glyph. Pixel width requires measuring shaped glyph runs using actual fonts and layout settings, not multiplying grapheme count by an average character width.</p>
+<h2 id="display">Glyph count, terminal columns and screen width are separate</h2>
+<p>Unicode East Asian Width properties help some terminal applications reason about character columns, but are not a universal pixel-width metric. Font fallback, script shaping, line-break rules and emoji presentation affect visual advances. A zero-width joining character may contribute no own visible glyph while changing its neighboring sequence, so character counts alone do not predict layout.</p>
+<p>For the <a href="/us/">US Fancy Text tool</a>, one mathematical bold scalar may take four UTF-8 bytes and two UTF-16 units yet count as one grapheme. A destination's missing-font box does not mean the character's scalar count changed. Inspect the data separately from rendering when diagnosing cross-platform copy and paste.</p>
+<h2 id="truncation">Safe truncation needs a clearly chosen boundary</h2>
+<p>Slicing a UTF-8 buffer at an arbitrary byte limit may cut through a multibyte sequence and produce malformed UTF-8. Slicing JavaScript by code unit can split a surrogate pair, and slicing by code point can separate combining marks or emoji components. If truncation is specified in user-perceived characters, enumerate extended grapheme clusters and retain complete clusters; if it is also limited by bytes, measure the encoded result after adding each complete cluster.</p>
+<pre><code>function capByGraphemesAndBytes(text,maxClusters,maxBytes) {
+  const parts = new Intl.Segmenter("en",{granularity:"grapheme"}).segment(text);
+  const encoder=new TextEncoder();
+  let out="",count=0;
+  for(const {segment} of parts){
+    if(count &gt;= maxClusters) break;
+    if(encoder.encode(out + segment).length &gt; maxBytes) break;
+    out+=segment; count++;
+  }
+  return out;
+}
+console.log(capByGraphemesAndBytes("A😀B",2,5)); // A😀
+console.log(capByGraphemesAndBytes("e\u0301X",1,3)); // é</code></pre>
+<h2 id="stream">Counting streamed text with boundaries</h2>
+<p>UTF-8 byte counts add across chunks because they measure octets, provided the original byte stream is observed directly. UTF-16 code units can be counted in chunks if the encoding representation is clear, but a chunk ending with a high surrogate may not represent a complete scalar. Code point counts and grapheme counts cannot always be computed by independently decoding and segmenting arbitrary chunks, because bytes or grapheme clusters may be split across chunks.</p>
+<p>For streaming grapheme counting, the state machine needs the appropriate preceding context for combining marks, regional indicator parity, emoji ZWJ sequences and other UAX #29 rules. Use tested incremental segmentation or apply the algorithm to the complete logical string.</p>
+<h2 id="tests">Exact length regression vectors</h2>
+<div class="table-scroll"><table><thead><tr><th>Fixture</th><th>Expected result</th></tr></thead><tbody>
+<tr><td>U+00E9 é</td><td>UTF-8 2 bytes, JS length 1, 1 scalar, 1 grapheme</td></tr>
+<tr><td>e + U+0301</td><td>3 bytes, 2 units, 2 scalars, 1 grapheme</td></tr>
+<tr><td>U+1D400 𝐀</td><td>4 bytes, 2 units, 1 scalar, 1 grapheme</td></tr>
+<tr><td>US flag</td><td>8 bytes, 4 units, 2 scalars, 1 grapheme</td></tr>
+<tr><td>Woman technologist</td><td>11 bytes, 5 units, 3 scalars, 1 grapheme</td></tr>
+<tr><td>Ill-formed lone surrogate</td><td>Reject or explicitly define replacement behavior</td></tr>
+<tr><td>Legacy UTF-16 file BOM</td><td>Include or exclude two BOM bytes as specified</td></tr>
+<tr><td>Emoji with missing glyph</td><td>Encoding metrics unchanged by font coverage</td></tr>
+</tbody></table></div>
+<p>Use the Unicode conformance corpus <code>GraphemeBreakTest.txt</code> for segmentation and RFC 3629 for UTF-8 validation. Track measurement units in API field names and database schemas; an unqualified <code>length</code> field creates unnecessary interoperability defects.</p>
+<h2 id="references">Standards and implementation references</h2><ol class="references"><li><a href="https://www.unicode.org/reports/tr29/" rel="nofollow">UAX #29 — Unicode Text Segmentation</a></li><li><a href="https://www.rfc-editor.org/rfc/rfc3629" rel="nofollow">RFC 3629 — UTF-8</a></li><li><a href="https://www.unicode.org/reports/tr15/" rel="nofollow">UAX #15 — Unicode Normalization</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/API/TextEncoder" rel="nofollow">MDN — TextEncoder</a></li><li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Segmenter" rel="nofollow">MDN — Intl.Segmenter</a></li><li><a href="https://docs.python.org/3/library/stdtypes.html#text-sequence-type-str" rel="nofollow">Python string types and length</a></li></ol><hr><section class="related" aria-labelledby="related-title"><h2 id="related-title">Related technical references</h2><ul><li><a href="/us/utf8-byte-sequences/">UTF-8 Byte Sequences</a></li><li><a href="/us/utf16-surrogate-pairs/">UTF-16 Surrogate Pairs</a></li><li><a href="/us/extended-grapheme-cluster-boundaries/">Extended Grapheme Cluster Boundaries</a></li></ul></section><p class="small">Independent technical reference. Editing behavior may be tailored; preserve source text and test against version-matched Unicode data.</p></article></main><aside class="toc" aria-label="On this page"><h2>On this page</h2><a href="#meaning">“Length” is incomplete without a unit</a><a href="#matrix">Exact measurements of common test strings</a><a href="#javascript">JavaScript length counts UTF-16 units</a><a href="#python">Python code-point counts are different from JavaScript length</a><a href="#normalization">Canonical normalization can change code point and byte counts</a><a href="#limits">Choose different length policies for different constraints</a><a href="#display">Glyph count, terminal columns and screen width are separate</a><a href="#truncation">Safe truncation needs a clearly chosen boundary</a><a href="#stream">Counting streamed text with boundaries</a><a href="#tests">Exact length regression vectors</a><a href="#references">Standards and implementation references</a></aside></div></div><footer class="footer"><div class="shell"><span>© 2026 Letras Diferentes · Unicode Research Library</span><a href="/us/library/#text-segmentation">Text Segmentation, Regex &amp; Cursor Behavior</a></div></footer></body></html>
