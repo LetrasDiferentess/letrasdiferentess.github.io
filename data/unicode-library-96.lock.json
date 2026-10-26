@@ -275,37 +275,37 @@
         {
           "slug": "text-shaping-vs-glyph-rendering",
           "url": "https://letrasdiferentess.github.io/us/text-shaping-vs-glyph-rendering/",
-          "status": "PLANNED"
+          "status": "PUBLISHED"
         },
         {
           "slug": "ligatures-opentype-features",
           "url": "https://letrasdiferentess.github.io/us/ligatures-opentype-features/",
-          "status": "PLANNED"
+          "status": "PUBLISHED"
         },
         {
           "slug": "harfbuzz-text-shaping",
           "url": "https://letrasdiferentess.github.io/us/harfbuzz-text-shaping/",
-          "status": "PLANNED"
+          "status": "PUBLISHED"
         },
         {
           "slug": "unicode-range-font-subsetting",
           "url": "https://letrasdiferentess.github.io/us/unicode-range-font-subsetting/",
-          "status": "PLANNED"
+          "status": "PUBLISHED"
         },
         {
           "slug": "cross-platform-text-rendering",
           "url": "https://letrasdiferentess.github.io/us/cross-platform-text-rendering/",
-          "status": "PLANNED"
+          "status": "PUBLISHED"
         },
         {
           "slug": "font-metrics-line-height",
           "url": "https://letrasdiferentess.github.io/us/font-metrics-line-height/",
-          "status": "PLANNED"
+          "status": "PUBLISHED"
         },
         {
           "slug": "combining-mark-placement-fonts",
           "url": "https://letrasdiferentess.github.io/us/combining-mark-placement-fonts/",
-          "status": "PLANNED"
+          "status": "PUBLISHED"
         }
       ]
     },
@@ -317,17 +317,17 @@
         {
           "slug": "clipboard-text-plain-vs-text-html",
           "url": "https://letrasdiferentess.github.io/us/clipboard-text-plain-vs-text-html/",
-          "status": "PLANNED"
+          "status": "PUBLISHED"
         },
         {
           "slug": "unicode-copy-paste-round-trips",
           "url": "https://letrasdiferentess.github.io/us/unicode-copy-paste-round-trips/",
-          "status": "PLANNED"
+          "status": "PUBLISHED"
         },
         {
           "slug": "invisible-characters-text-editors",
           "url": "https://letrasdiferentess.github.io/us/invisible-characters-text-editors/",
-          "status": "PLANNED"
+          "status": "PUBLISHED"
         },
         {
           "slug": "rich-text-plain-text-conversion",
