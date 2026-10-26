@@ -53,7 +53,7 @@ test("Batch 10 articles are long-form technical references with unique metadata 
  const clipboardPublished=manifest.categories[6].articles.filter(x=>x.status==="PUBLISHED").length;
  const clipboardPlanned=manifest.categories[6].articles.length-clipboardPublished;
  assert.ok(hub.includes("<strong>"+published+"</strong>Published references"));
- assert.ok(hub.includes(planned+" planned articles"));
+ if(planned>0)assert.ok(hub.includes(planned+" planned articles"));
  assert.ok(hub.includes("10 total · 10 published"));
  assert.ok(hub.includes("9 total · "+clipboardPublished+" published"+(clipboardPlanned?" · "+clipboardPlanned+" planned":"")));
 });
