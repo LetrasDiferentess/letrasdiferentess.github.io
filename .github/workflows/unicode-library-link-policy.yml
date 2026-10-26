@@ -19,6 +19,7 @@ on:
       - 'scripts/test-unicode-batch11.mjs'
       - 'scripts/test-unicode-batch12.mjs'
       - 'scripts/test-unicode-batch13.mjs'
+      - 'scripts/test-unicode-batch14.mjs'
       - '.github/workflows/unicode-library-link-policy.yml'
       - 'us/**'
   pull_request:
@@ -39,6 +40,7 @@ on:
       - 'scripts/test-unicode-batch11.mjs'
       - 'scripts/test-unicode-batch12.mjs'
       - 'scripts/test-unicode-batch13.mjs'
+      - 'scripts/test-unicode-batch14.mjs'
       - '.github/workflows/unicode-library-link-policy.yml'
       - 'us/**'
 permissions:
@@ -77,3 +79,5 @@ jobs:
         run: node --test scripts/test-unicode-batch12.mjs
       - name: Verify Batch 13 emoji, Unicode security and accessibility vectors
         run: node --test scripts/test-unicode-batch13.mjs
+      - name: Verify final Batch 14, full 96 article publication and Unicode API vectors
+        run: node --test scripts/test-unicode-batch14.mjs
