@@ -48,10 +48,14 @@ test("Batch 10 articles are long-form technical references with unique metadata 
   assert.ok(heading&&!titles.has(heading),slug+": unique H1");
   titles.add(heading);
  }
- assert.ok(hub.includes("<strong>55</strong>Published references"));
- assert.ok(hub.includes("41 planned articles"));
+ const published=rows.filter(x=>x.status==="PUBLISHED").length;
+ const planned=rows.filter(x=>x.status==="PLANNED").length;
+ const clipboardPublished=manifest.categories[6].articles.filter(x=>x.status==="PUBLISHED").length;
+ const clipboardPlanned=manifest.categories[6].articles.length-clipboardPublished;
+ assert.ok(hub.includes("<strong>"+published+"</strong>Published references"));
+ assert.ok(hub.includes(planned+" planned articles"));
  assert.ok(hub.includes("10 total · 10 published"));
- assert.ok(hub.includes("9 total · 3 published · 6 planned"));
+ assert.ok(hub.includes("9 total · "+clipboardPublished+" published"+(clipboardPlanned?" · "+clipboardPlanned+" planned":"")));
 });
 test("Rendering and clipboard data examples distinguish scalar identity and glyph presentation",()=>{
  assert.equal("fi".length,2);
