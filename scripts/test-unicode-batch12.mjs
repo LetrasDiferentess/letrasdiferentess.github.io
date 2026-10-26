@@ -54,13 +54,13 @@ test("All ten articles include technical structure, standards, new hub links and
  }
  const published=rows.filter(x=>x.status==="PUBLISHED").length;
  assert.ok(published>=75);
- assert.ok(hub.includes("<strong>"+published+"</strong>Published references"));
- if(published<96)assert.ok(hub.includes((96-published)+" planned articles"));
- assert.ok(hub.includes("9 total · 9 published"));
+ assert.ok(hub.includes('id="topic-grid"') && (hub.match(/class="topic-heading"/g)||[]).length===12);
+ assert.ok(!hub.includes('planned articles'));
+ assert.ok(hub.includes('>9 articles</span>'));
  const emoji=registry.categories[8].articles;
  const emojiPublished=emoji.filter(x=>x.status==="PUBLISHED").length;
  const emojiPlanned=emoji.length-emojiPublished;
- assert.ok(hub.includes("6 total · "+emojiPublished+" published"+(emojiPlanned?" · "+emojiPlanned+" planned":"")));
+ assert.ok(hub.includes('>6 articles</span>'));
 });
 test("Dead keys, normalization, compatibility and script properties remain distinct",()=>{
  assert.equal("e\u0301".normalize("NFC"),"é");
