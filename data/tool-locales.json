@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "canonicalOrigin": "https://letrasdiferentess.github.io",
+  "hubPath": "/us/library/",
+  "locales": [
+    {
+      "lang": "pt-BR",
+      "path": "/",
+      "label": "Português (Brasil)"
+    },
+    {
+      "lang": "en-US",
+      "path": "/us/",
+      "label": "English (US)"
+    },
+    {
+      "lang": "es-MX",
+      "path": "/mx/",
+      "label": "Español (México)"
+    }
+  ]
+}
