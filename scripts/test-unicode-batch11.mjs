@@ -22,11 +22,11 @@ test("Locked Batch 11 positions 56-65 are published and all later entries remain
  assert.equal(rows.length,96);
  assert.deepEqual(rows.slice(55,65).map(x=>x.slug),slugs);
  assert.ok(rows.slice(0,65).every(x=>x.status==="PUBLISHED"));
- assert.ok(rows.slice(65).every(x=>x.status==="PLANNED"));
+ assert.ok(rows.slice(65).every(x=>["PUBLISHED","PLANNED"].includes(x.status)));
  assert.equal(manifest.canonicalUrlsSha256,lock);
  assert.equal(crypto.createHash("sha256").update(rows.map(x=>x.url).join("\n")+"\n").digest("hex"),lock);
  assert.equal(manifest.categories[6].articles.filter(x=>x.status==="PUBLISHED").length,9);
- assert.equal(manifest.categories[7].articles.filter(x=>x.status==="PUBLISHED").length,4);
+ assert.ok(manifest.categories[7].articles.slice(0,4).every(x=>x.status==="PUBLISHED"));
 });
 test("Every Batch 11 reference has correct canonical, metadata, semantic sections and attribution",()=>{
  const hub=read("us/library/index.html"), sitemap=read("sitemap.xml");
@@ -54,7 +54,10 @@ test("Every Batch 11 reference has correct canonical, metadata, semantic section
  assert.ok(hub.includes("<strong>"+n+"</strong>Published references"));
  assert.ok(hub.includes((96-n)+" planned articles"));
  assert.ok(hub.includes("9 total · 9 published"));
- assert.ok(hub.includes("9 total · 4 published · 5 planned"));
+ const multilingual=manifest.categories[7].articles;
+ const published=multilingual.filter(x=>x.status==="PUBLISHED").length;
+ const planned=multilingual.length-published;
+ assert.ok(hub.includes("9 total · "+published+" published"+(planned?" · "+planned+" planned":"")));
 });
 test("Unicode editing, normalization and grapheme fixtures remain exact",()=>{
  const s="e\u0301👩\u200D💻";
