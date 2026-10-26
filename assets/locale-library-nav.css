@@ -1,0 +1,18 @@
+/* Localized tool navigation: isolated from all generator UI/behavior. */
+.ld-resource-panel{font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;color:#f4f6fa;background:#10131c;border-top:1px solid #2e3542;border-bottom:1px solid #2e3542;padding:28px 22px}
+.ld-resource-wrap{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.6fr);gap:28px;align-items:center}
+.ld-resource-panel h2{font:750 clamp(18px,2vw,24px)/1.25 Inter,system-ui,sans-serif;letter-spacing:-.025em;color:#fff;margin:0 0 7px}
+.ld-resource-panel p{color:#aebdcc;font-size:13px;line-height:1.65;margin:0}
+.ld-resource-options{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,.85fr);gap:12px}
+.ld-language-nav{min-width:0}
+.ld-language-caption{display:block;font-size:11px;font-weight:750;letter-spacing:.08em;text-transform:uppercase;color:#b6c4d1;margin-bottom:8px}
+.ld-locale-list{display:flex;gap:8px;flex-wrap:wrap}
+.ld-locale-list a,.ld-library-link{display:inline-flex;align-items:center;gap:6px;min-height:38px;border:1px solid #455363;color:#ecf5fc;text-decoration:none;border-radius:9px;padding:9px 12px;font:650 12px/1.3 Inter,system-ui,sans-serif;background:#1a202b}
+.ld-locale-list a:hover,.ld-library-link:hover{background:#253140;border-color:#8fa5b9;color:#fff}
+.ld-locale-list a[aria-current="page"]{background:#123d42;color:#b9f3e7;border-color:#397b80}
+.ld-library-link{display:flex;min-height:68px;align-self:end;justify-content:space-between;border-color:#517b7c;background:#153639;color:#e4fff5;line-height:1.4}
+.ld-library-link strong{display:block;color:#fff;font-size:13px}.ld-library-link small{display:block;font-size:11px;color:#bbd9d6;margin-top:4px;font-weight:500}.ld-library-arrow{font-size:20px}
+.ld-resource-panel a:focus-visible{outline:3px solid #ffd600;outline-offset:3px}
+@media(max-width:870px){.ld-resource-wrap{grid-template-columns:1fr;gap:18px}.ld-resource-options{grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr)}}
+@media(max-width:570px){.ld-resource-panel{padding:22px 16px}.ld-resource-options{grid-template-columns:1fr}.ld-locale-list a{min-height:42px}.ld-library-link{min-height:56px}}
+@media(prefers-reduced-motion:reduce){.ld-resource-panel *{scroll-behavior:auto}}
