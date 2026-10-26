@@ -446,7 +446,7 @@
         {
           "slug": "emoji-rendering-compatibility",
           "url": "https://letrasdiferentess.github.io/us/emoji-rendering-compatibility/",
-          "status": "PLANNED"
+          "status": "PUBLISHED"
         }
       ]
     },
@@ -458,37 +458,37 @@
         {
           "slug": "unicode-confusables-lookalikes",
           "url": "https://letrasdiferentess.github.io/us/unicode-confusables-lookalikes/",
-          "status": "PLANNED"
+          "status": "PUBLISHED"
         },
         {
           "slug": "unicode-homograph-attacks",
           "url": "https://letrasdiferentess.github.io/us/unicode-homograph-attacks/",
-          "status": "PLANNED"
+          "status": "PUBLISHED"
         },
         {
           "slug": "mixed-script-identifier-detection",
           "url": "https://letrasdiferentess.github.io/us/mixed-script-identifier-detection/",
-          "status": "PLANNED"
+          "status": "PUBLISHED"
         },
         {
           "slug": "invisible-character-spoofing",
           "url": "https://letrasdiferentess.github.io/us/invisible-character-spoofing/",
-          "status": "PLANNED"
+          "status": "PUBLISHED"
         },
         {
           "slug": "unicode-identifier-security-profiles",
           "url": "https://letrasdiferentess.github.io/us/unicode-identifier-security-profiles/",
-          "status": "PLANNED"
+          "status": "PUBLISHED"
         },
         {
           "slug": "idna-internationalized-domain-names",
           "url": "https://letrasdiferentess.github.io/us/idna-internationalized-domain-names/",
-          "status": "PLANNED"
+          "status": "PUBLISHED"
         },
         {
           "slug": "displaying-untrusted-unicode-safely",
           "url": "https://letrasdiferentess.github.io/us/displaying-untrusted-unicode-safely/",
-          "status": "PLANNED"
+          "status": "PUBLISHED"
         }
       ]
     },
@@ -500,12 +500,12 @@
         {
           "slug": "screen-readers-styled-unicode",
           "url": "https://letrasdiferentess.github.io/us/screen-readers-styled-unicode/",
-          "status": "PLANNED"
+          "status": "PUBLISHED"
         },
         {
           "slug": "accessible-alternatives-decorative-text",
           "url": "https://letrasdiferentess.github.io/us/accessible-alternatives-decorative-text/",
-          "status": "PLANNED"
+          "status": "PUBLISHED"
         },
         {
           "slug": "emoji-names-assistive-technology",
