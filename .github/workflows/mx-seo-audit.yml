@@ -1,0 +1,37 @@
+name: Mexico es-MX Fancy Text smoke audit
+on:
+  pull_request:
+    paths:
+      - 'mx/**'
+      - 'assets/localizacao-esmx.js'
+      - 'tests/mx-seo-smoke.mjs'
+      - '.github/workflows/mx-seo-audit.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'mx/**'
+      - 'assets/localizacao-esmx.js'
+      - 'tests/mx-seo-smoke.mjs'
+      - '.github/workflows/mx-seo-audit.yml'
+permissions:
+  contents: read
+jobs:
+  mexico-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install Playwright
+        run: |
+          npm install --no-save playwright@1.56.1
+          if ! command -v google-chrome >/dev/null 2>&1; then npx playwright install chromium; fi
+      - name: Serve local static site
+        run: |
+          python3 -m http.server 8080 --bind 127.0.0.1 > /tmp/mx-static.log 2>&1 &
+          for i in $(seq 1 30); do curl -sf http://127.0.0.1:8080/mx/ -o /dev/null && break; sleep 1; done
+      - name: Check es-MX translation, font engine, SEO tags, tool behavior and mobile
+        run: |
+          if command -v google-chrome >/dev/null 2>&1; then USE_SYSTEM_CHROME=1 node tests/mx-seo-smoke.mjs; else node tests/mx-seo-smoke.mjs; fi
