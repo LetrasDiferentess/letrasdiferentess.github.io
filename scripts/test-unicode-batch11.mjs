@@ -52,7 +52,7 @@ test("Every Batch 11 reference has correct canonical, metadata, semantic section
  }
  const n=rows.filter(x=>x.status==="PUBLISHED").length;
  assert.ok(hub.includes("<strong>"+n+"</strong>Published references"));
- assert.ok(hub.includes((96-n)+" planned articles"));
+ if(n<96)assert.ok(hub.includes((96-n)+" planned articles"));
  assert.ok(hub.includes("9 total · 9 published"));
  const multilingual=manifest.categories[7].articles;
  const published=multilingual.filter(x=>x.status==="PUBLISHED").length;

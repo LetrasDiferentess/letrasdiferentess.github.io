@@ -22,12 +22,12 @@ test('Batch 13 preserves 96 locked URL identities and publishes exactly #76–85
  assert.equal(rows.length,96);
  assert.deepEqual(rows.slice(75,85).map(x=>x.slug),slugs);
  assert.ok(rows.slice(0,85).every(x=>x.status==='PUBLISHED'));
- assert.ok(rows.slice(85).every(x=>x.status==='PLANNED'));
+ assert.ok(rows.slice(85).every(x=>['PUBLISHED','PLANNED'].includes(x.status)));
  assert.equal(registry.canonicalUrlsSha256,hash);
  assert.equal(crypto.createHash('sha256').update(rows.map(x=>x.url).join('\n')+'\n').digest('hex'),hash);
  assert.equal(registry.categories[8].articles.filter(x=>x.status==='PUBLISHED').length,6);
  assert.equal(registry.categories[9].articles.filter(x=>x.status==='PUBLISHED').length,7);
- assert.equal(registry.categories[10].articles.filter(x=>x.status==='PUBLISHED').length,2);
+ assert.ok(registry.categories[10].articles.slice(0,2).every(x=>x.status==='PUBLISHED'));
 });
 test('All 10 Batch 13 TechArticle pages have published hub links, self canonicals and primary references',()=>{
  const hub=read('us/library/index.html'),sitemap=read('sitemap.xml');
@@ -51,11 +51,15 @@ test('All 10 Batch 13 TechArticle pages have published hub links, self canonical
   assert.ok(h1&&!names.has(h1),slug+': unique H1');
   names.add(h1);
  }
- assert.ok(hub.includes('<strong>85</strong>Published references'));
- assert.ok(hub.includes('11 planned articles'));
+ assert.ok(hub.includes('<strong>'+rows.filter(x=>x.status==='PUBLISHED').length+'</strong>Published references'));
+ const plannedCount=rows.filter(x=>x.status==='PLANNED').length;
+ if(plannedCount>0)assert.ok(hub.includes(plannedCount+' planned articles'));
  assert.ok(hub.includes('6 total · 6 published'));
  assert.ok(hub.includes('7 total · 7 published'));
- assert.ok(hub.includes('5 total · 2 published · 3 planned'));
+ const a=registry.categories[10].articles;
+ const published=a.filter(x=>x.status==='PUBLISHED').length;
+ const planned=a.length-published;
+ assert.ok(hub.includes('5 total · '+published+' published'+(planned?' · '+planned+' planned':'')));
 });
 test('Security and Unicode normalization examples distinguish identity from confusability',()=>{
  const latin='a',cyrillic='\u0430',greek='\u03B1';

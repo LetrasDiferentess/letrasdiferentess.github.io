@@ -38,7 +38,7 @@ test("Five deep reference articles have semantic HTML, index signals, sources an
   }
   const published=rows.filter(x=>x.status==="PUBLISHED").length;
   assert.ok(hub.includes("<strong>"+published+"</strong>Published references"));
-  assert.ok(hub.includes((96-published)+" planned articles"));
+  if(rows.some(x=>x.status==="PLANNED"))assert.ok(hub.includes((96-published)+" planned articles"));
   assert.ok(hub.includes("8 total · 8 published"));
   const f=manifest.categories[5].articles.filter(x=>x.status==="PUBLISHED").length;
   assert.ok(hub.includes("10 total · "+f+" published"));

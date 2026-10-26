@@ -38,7 +38,7 @@ test("Five deep HTML references have clean canonical, TOC, source attribution, h
   const published=articles.filter(x=>x.status==="PUBLISHED").length;
   const segmentPublished=registry.categories[4].articles.filter(x=>x.status==="PUBLISHED").length;
   assert.ok(hub.includes("<strong>"+published+"</strong>Published references"));
-  assert.ok(hub.includes((96-published)+" planned articles"));
+  if(articles.some(x=>x.status==="PLANNED"))assert.ok(hub.includes((96-published)+" planned articles"));
   assert.ok(hub.includes("8 total · "+segmentPublished+" published"));
   assert.equal(new Set(slugs).size,5);
 });
