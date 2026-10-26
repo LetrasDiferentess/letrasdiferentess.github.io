@@ -1,12 +1,16 @@
 import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
 import { chromium } from 'playwright';
 
 const origin = 'http://127.0.0.1:8080';
-const cases = [
-  {name:'Brazil',path:'/',lang:'pt-BR',canonical:'https://letrasdiferentess.github.io/',other:'/us/'},
-  {name:'US',path:'/us/',lang:'en-US',canonical:'https://letrasdiferentess.github.io/us/',other:'/'},
-  {name:'Mexico',path:'/mx/',lang:'es-MX',canonical:'https://letrasdiferentess.github.io/mx/',other:'/us/'}
-];
+const localeManifest=JSON.parse(readFileSync('data/tool-locales.json','utf8'));
+const cases=localeManifest.locales.map(item=>({
+ name:item.label,
+ path:item.path,
+ lang:item.lang,
+ canonical:localeManifest.canonicalOrigin+item.path,
+ other:localeManifest.locales.find(x=>x.path!==item.path)?.path
+}));
 const devices = [
   {name:'mobile320',width:320,height:720},
   {name:'mobile390',width:390,height:844},
@@ -30,7 +34,7 @@ for(const device of devices){
       const nav=page.locator('.ld-resource-panel');
       assert.equal(await nav.count(),1,entry.name+' navigation section');
       assert.ok(await nav.isVisible(),entry.name+' navigation visible');
-      assert.equal(await nav.locator('.ld-language-nav a').count(),3,'only verified tool locales');
+      assert.equal(await nav.locator('.ld-language-nav a').count(),cases.length,'every verified tool locale');
       assert.equal(await nav.locator('a[href="'+entry.other+'"]').count(),1,'cross-locale link');
       assert.equal(await nav.locator('a[href="/us/library/"]').count(),1,'library backlink');
       assert.equal(await nav.locator('a[aria-current="page"]').getAttribute('href'),entry.path,'active locale');
@@ -52,7 +56,7 @@ for(const device of devices){
     assert.equal(indicator.borderBottom,'2px','chevron visible');
     await page.locator('.tool-menu > summary').click();
     assert.ok(await page.locator('.tool-panel').isVisible(),'tool locale dropdown');
-    assert.equal(await page.locator('.tool-languages a').count(),3,'three verified live language links');
+    assert.equal(await page.locator('.tool-languages a').count(),cases.length,'every verified live language link');
     assert.equal(await page.locator('#topic-grid > section.topic').count(),12);
     console.log('PASS locale library navigation '+device.name);
   }catch(err){
