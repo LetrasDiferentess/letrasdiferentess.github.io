@@ -41,7 +41,8 @@ test('Library header is navigable, accessible, and locale list has no fabricated
   assert.ok(hub.includes('<details class="tool-menu">'));
   assert.ok(hub.includes('href="/us/" lang="en-US"'));
   assert.ok(hub.includes('href="/" lang="pt-BR"'));
-  assert.equal((hub.match(/data-locale="/g) || []).length, 2);
+  assert.ok(hub.includes('href="/mx/" lang="es-MX"'));
+  assert.equal((hub.match(/data-locale="/g) || []).length, 3);
   assert.ok(hub.includes('toolLinks.length>6'));
   assert.ok(hub.includes('max-height:min(50vh,390px)'));
   assert.ok(hub.includes('@media(max-width:700px)'));
