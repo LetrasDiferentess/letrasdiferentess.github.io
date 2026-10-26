@@ -510,17 +510,17 @@
         {
           "slug": "emoji-names-assistive-technology",
           "url": "https://letrasdiferentess.github.io/us/emoji-names-assistive-technology/",
-          "status": "PLANNED"
+          "status": "PUBLISHED"
         },
         {
           "slug": "bidirectional-text-accessibility",
           "url": "https://letrasdiferentess.github.io/us/bidirectional-text-accessibility/",
-          "status": "PLANNED"
+          "status": "PUBLISHED"
         },
         {
           "slug": "visual-vs-accessible-text-meaning",
           "url": "https://letrasdiferentess.github.io/us/visual-vs-accessible-text-meaning/",
-          "status": "PLANNED"
+          "status": "PUBLISHED"
         }
       ]
     },
@@ -532,42 +532,42 @@
         {
           "slug": "javascript-strings-code-points",
           "url": "https://letrasdiferentess.github.io/us/javascript-strings-code-points/",
-          "status": "PLANNED"
+          "status": "PUBLISHED"
         },
         {
           "slug": "javascript-intl-segmenter",
           "url": "https://letrasdiferentess.github.io/us/javascript-intl-segmenter/",
-          "status": "PLANNED"
+          "status": "PUBLISHED"
         },
         {
           "slug": "python-unicodedata",
           "url": "https://letrasdiferentess.github.io/us/python-unicodedata/",
-          "status": "PLANNED"
+          "status": "PUBLISHED"
         },
         {
           "slug": "icu-unicode-text-apis",
           "url": "https://letrasdiferentess.github.io/us/icu-unicode-text-apis/",
-          "status": "PLANNED"
+          "status": "PUBLISHED"
         },
         {
           "slug": "unicode-safe-string-truncation",
           "url": "https://letrasdiferentess.github.io/us/unicode-safe-string-truncation/",
-          "status": "PLANNED"
+          "status": "PUBLISHED"
         },
         {
           "slug": "unicode-input-validation",
           "url": "https://letrasdiferentess.github.io/us/unicode-input-validation/",
-          "status": "PLANNED"
+          "status": "PUBLISHED"
         },
         {
           "slug": "unicode-regression-test-cases",
           "url": "https://letrasdiferentess.github.io/us/unicode-regression-test-cases/",
-          "status": "PLANNED"
+          "status": "PUBLISHED"
         },
         {
           "slug": "text-interoperability-test-checklist",
           "url": "https://letrasdiferentess.github.io/us/text-interoperability-test-checklist/",
-          "status": "PLANNED"
+          "status": "PUBLISHED"
         }
       ]
     }
