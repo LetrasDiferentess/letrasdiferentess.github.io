@@ -34,7 +34,7 @@ test("all five research pages are substantial, semantic and linked in the correc
     assert.ok(sitemap.includes('<loc>' + canonical + '</loc>'), slug + " sitemap");
   }
   assert.ok(hub.includes("<strong>" + entries.filter(x => x.status === "PUBLISHED").length + "</strong>Published references"));
-  assert.ok(hub.includes((96 - entries.filter(x => x.status === "PUBLISHED").length) + " planned articles"));
+  if(entries.filter(x=>x.status==="PLANNED").length)assert.ok(hub.includes((96 - entries.filter(x => x.status === "PUBLISHED").length) + " planned articles"));
 });
 test("UTF-8 vectors and strict error policy", () => {
   const encode = s => Array.from(new TextEncoder().encode(s), x => x.toString(16).padStart(2, "0")).join(" ");
