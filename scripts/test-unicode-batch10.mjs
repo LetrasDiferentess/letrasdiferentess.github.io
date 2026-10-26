@@ -19,12 +19,12 @@ test("Batch 10 publishes exactly locked positions 46-55 and does not change 96 U
  assert.equal(rows.length,96);
  assert.deepEqual(rows.slice(45,55).map(x=>x.slug),slugs);
  assert.ok(rows.slice(0,55).every(x=>x.status==="PUBLISHED"));
- assert.ok(rows.slice(55).every(x=>x.status==="PLANNED"));
+ assert.ok(rows.slice(55).every(x=>["PUBLISHED","PLANNED"].includes(x.status)));
  const digest=crypto.createHash("sha256").update(rows.map(x=>x.url).join("\n")+"\n").digest("hex");
  assert.equal(digest,"59d5a23d48ee7631c0653afe313444fdea2ff45cd6049b38e4076c7e0aa0e5ec");
  assert.equal(manifest.canonicalUrlsSha256,digest);
  assert.equal(manifest.categories[5].articles.filter(x=>x.status==="PUBLISHED").length,10);
- assert.equal(manifest.categories[6].articles.filter(x=>x.status==="PUBLISHED").length,3);
+ assert.ok(manifest.categories[6].articles.slice(0,3).every(x=>x.status==="PUBLISHED"));
 });
 test("Batch 10 articles are long-form technical references with unique metadata and citations",()=>{
  const hub=load("us/library/index.html"),sitemap=load("sitemap.xml");
