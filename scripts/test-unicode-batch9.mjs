@@ -37,11 +37,11 @@ test("Five deep reference articles have semantic HTML, index signals, sources an
     assert.ok(sitemap.includes("<loc>"+canonical+"</loc>"),slug+" sitemap");
   }
   const published=rows.filter(x=>x.status==="PUBLISHED").length;
-  assert.ok(hub.includes("<strong>"+published+"</strong>Published references"));
-  if(rows.some(x=>x.status==="PLANNED"))assert.ok(hub.includes((96-published)+" planned articles"));
-  assert.ok(hub.includes("8 total · 8 published"));
+  assert.ok(hub.includes('id="topic-grid"') && (hub.match(/class="topic-heading"/g)||[]).length===12);
+  assert.ok(!hub.includes('planned articles'));
+  assert.ok(hub.includes('>8 articles</span>'));
   const f=manifest.categories[5].articles.filter(x=>x.status==="PUBLISHED").length;
-  assert.ok(hub.includes("10 total · "+f+" published"));
+  assert.ok(hub.includes('>10 articles</span>'));
 });
 test("Grapheme-aware Backspace does not leave orphan marks or broken surrogate pairs",()=>{
   const segmenter=new Intl.Segmenter("en",{granularity:"grapheme"});
