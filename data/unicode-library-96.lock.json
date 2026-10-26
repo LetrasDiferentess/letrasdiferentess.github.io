@@ -332,32 +332,32 @@
         {
           "slug": "rich-text-plain-text-conversion",
           "url": "https://letrasdiferentess.github.io/us/rich-text-plain-text-conversion/",
-          "status": "PLANNED"
+          "status": "PUBLISHED"
         },
         {
           "slug": "contenteditable-unicode-text",
           "url": "https://letrasdiferentess.github.io/us/contenteditable-unicode-text/",
-          "status": "PLANNED"
+          "status": "PUBLISHED"
         },
         {
           "slug": "markdown-escaping-special-characters",
           "url": "https://letrasdiferentess.github.io/us/markdown-escaping-special-characters/",
-          "status": "PLANNED"
+          "status": "PUBLISHED"
         },
         {
           "slug": "html-entities-vs-unicode-characters",
           "url": "https://letrasdiferentess.github.io/us/html-entities-vs-unicode-characters/",
-          "status": "PLANNED"
+          "status": "PUBLISHED"
         },
         {
           "slug": "text-selection-grapheme-clusters",
           "url": "https://letrasdiferentess.github.io/us/text-selection-grapheme-clusters/",
-          "status": "PLANNED"
+          "status": "PUBLISHED"
         },
         {
           "slug": "unicode-text-spreadsheet-import-export",
           "url": "https://letrasdiferentess.github.io/us/unicode-text-spreadsheet-import-export/",
-          "status": "PLANNED"
+          "status": "PUBLISHED"
         }
       ]
     },
@@ -369,22 +369,22 @@
         {
           "slug": "unicode-bidirectional-algorithm",
           "url": "https://letrasdiferentess.github.io/us/unicode-bidirectional-algorithm/",
-          "status": "PLANNED"
+          "status": "PUBLISHED"
         },
         {
           "slug": "right-to-left-text-web-interfaces",
           "url": "https://letrasdiferentess.github.io/us/right-to-left-text-web-interfaces/",
-          "status": "PLANNED"
+          "status": "PUBLISHED"
         },
         {
           "slug": "bcp47-language-tags-unicode",
           "url": "https://letrasdiferentess.github.io/us/bcp47-language-tags-unicode/",
-          "status": "PLANNED"
+          "status": "PUBLISHED"
         },
         {
           "slug": "ime-composition-events",
           "url": "https://letrasdiferentess.github.io/us/ime-composition-events/",
-          "status": "PLANNED"
+          "status": "PUBLISHED"
         },
         {
           "slug": "dead-keys-combining-character-input",
