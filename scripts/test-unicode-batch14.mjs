@@ -48,15 +48,15 @@ test("All 96 published pages exist with exact canonical, title, H1, hub and site
   allH1.add(head);
  }
  assert.equal(allH1.size,96);
- assert.ok(hub.includes("<strong>96</strong>Published references"));
- assert.ok(hub.includes("All 96 independently referenced technical articles"));
+ assert.ok(hub.includes('id="topic-grid"') && (hub.match(/class="topic-heading"/g)||[]).length===12);
+ assert.ok(hub.includes('How to use this library'));
  assert.ok(!hub.includes("11 planned articles"));
  for(const category of manifest.categories){
   assert.ok(category.articles.every(x=>x.status==="PUBLISHED"),category.id+": complete");
   assert.ok(hub.includes('id="'+category.id+'"'),category.id+": category anchor");
  }
- assert.ok(hub.includes("5 total · 5 published"));
- assert.ok(hub.includes("8 total · 8 published"));
+ assert.ok(hub.includes('>5 articles</span>'));
+ assert.ok(hub.includes('>8 articles</span>'));
 });
 
 test("The final 11 long-form references include verifiable technical substance and accessibility metadata",()=>{

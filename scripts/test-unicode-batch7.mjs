@@ -38,11 +38,10 @@ test("Five reference pages: substantial, semantic, canonical, sourced, indexed, 
     assert.ok(sitemap.includes("<loc>"+url+"</loc>"),slug+" sitemap");
   }
   const num=entries.filter(x=>x.status==="PUBLISHED").length;
-  assert.ok(hub.includes("<strong>"+num+"</strong>Published references"));
-  if(entries.some(x=>x.status==="PLANNED"))assert.ok(hub.includes((96-num)+" planned articles"));
-  assert.ok(hub.includes("10 total · 10 published"));
-  assert.ok(hub.includes("8 total · 1 published · 7 planned") ||
-    registry.categories[4].articles.filter(x=>x.status==="PUBLISHED").length>1);
+  assert.ok(hub.includes('id="topic-grid"') && (hub.match(/class="topic-heading"/g)||[]).length===12);
+  assert.ok(!hub.includes('planned articles'));
+  assert.ok(hub.includes('>10 articles</span>'));
+  assert.ok(hub.includes('>8 articles</span>'));
 });
 test("Canonical equality differs from code-unit equality, compatibility and accent folding",()=>{
   const a="\u00E9",b="e\u0301";

@@ -37,9 +37,9 @@ test("Five deep HTML references have clean canonical, TOC, source attribution, h
   }
   const published=articles.filter(x=>x.status==="PUBLISHED").length;
   const segmentPublished=registry.categories[4].articles.filter(x=>x.status==="PUBLISHED").length;
-  assert.ok(hub.includes("<strong>"+published+"</strong>Published references"));
-  if(articles.some(x=>x.status==="PLANNED"))assert.ok(hub.includes((96-published)+" planned articles"));
-  assert.ok(hub.includes("8 total · "+segmentPublished+" published"));
+  assert.ok(hub.includes('id="topic-grid"') && (hub.match(/class="topic-heading"/g)||[]).length===12);
+  assert.ok(!hub.includes('planned articles'));
+  assert.ok(hub.includes('>8 articles</span>'));
   assert.equal(new Set(slugs).size,5);
 });
 test("Word segmentation provides original UTF-16 offsets and word-like markers",()=>{

@@ -33,9 +33,9 @@ test("Every new article has semantic metadata, public canonical and correct virt
     assert.ok(hub.includes('href="/us/'+slug+'/"'),slug+": published silo link");
     assert.ok(sitemap.includes("<loc>"+canonical+"</loc>"),slug+": sitemap");
   }
-  assert.ok(hub.includes("<strong>"+entries.filter(x=>x.status==="PUBLISHED").length+"</strong>Published references"));
-  if(entries.filter(x=>x.status==="PLANNED").length)assert.ok(hub.includes((96-entries.filter(x=>x.status==="PUBLISHED").length)+" planned articles"));
-  assert.ok(hub.includes("10 total · "+manifest.categories[3].articles.filter(x=>x.status==="PUBLISHED").length+" published"));
+  assert.ok(hub.includes('id="topic-grid"') && (hub.match(/class="topic-heading"/g)||[]).length===12);
+  assert.ok(!hub.includes('planned articles'));
+  assert.ok(hub.includes('>10 articles</span>'));
 });
 test("NFKC/NFKD compatibility mappings preserve exact fraction slash",()=>{
   assert.equal("𝐀".normalize("NFC"),"𝐀");
