@@ -1,0 +1,41 @@
+name: Fancy Text locale integrity
+on:
+  pull_request:
+    paths:
+      - 'index.html'
+      - '*/index.html'
+      - 'us/library/index.html'
+      - 'data/tool-locales.json'
+      - 'sitemap.xml'
+      - 'scripts/test-tool-locales.mjs'
+      - 'scripts/test-unicode-reader-library.mjs'
+      - 'tests/locale-navigation-smoke.mjs'
+      - 'docs/TOOL_LOCALE_PUBLISH_POLICY.md'
+      - 'AGENTS.md'
+      - '.github/workflows/tool-locales.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'index.html'
+      - '*/index.html'
+      - 'us/library/index.html'
+      - 'data/tool-locales.json'
+      - 'sitemap.xml'
+      - 'scripts/test-tool-locales.mjs'
+      - 'scripts/test-unicode-reader-library.mjs'
+      - 'tests/locale-navigation-smoke.mjs'
+      - 'docs/TOOL_LOCALE_PUBLISH_POLICY.md'
+      - 'AGENTS.md'
+      - '.github/workflows/tool-locales.yml'
+permissions:
+  contents: read
+jobs:
+  verify-locales:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Assert every published tool locale appears on all pages and in library, sitemap and hreflang
+        run: node --test scripts/test-tool-locales.mjs

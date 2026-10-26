@@ -20,3 +20,13 @@ Run these checks before merging any research content:
 - node --test scripts/test-unicode-library-links.mjs
 
 The canonical registry, NOT ChatGPT memory, is the source of truth.
+
+## MANDATORY: Every newly published Fancy Text locale
+
+When adding or removing a money tool language, READ `docs/TOOL_LOCALE_PUBLISH_POLICY.md` and update in the SAME PR:
+- `data/tool-locales.json`, the source-of-truth list of published editions.
+- The language selector BELOW THE TOOL (`.ld-locale-list`) on **EVERY** money page, including the new local.
+- The Research Library header **Text tools** dropdown (`/us/library/`, `.tool-languages`).
+- Reciprocal hreflang across all money pages and `sitemap.xml`.
+- CI and live smoke validation that all menu targets exist and appear on mobile and desktop.
+Never merge a local tool if any of the two reader-visible menus omits it. Run `node --test scripts/test-tool-locales.mjs`. Do not modify the locked 96 research articles while doing this.

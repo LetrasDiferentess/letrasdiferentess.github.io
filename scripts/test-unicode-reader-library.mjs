@@ -5,6 +5,7 @@ import fs from 'node:fs';
 const hub = fs.readFileSync('us/library/index.html', 'utf8');
 const manifest = JSON.parse(fs.readFileSync('data/unicode-library-96.lock.json', 'utf8'));
 const rows = manifest.categories.flatMap(category => category.articles);
+const localeManifest = JSON.parse(fs.readFileSync('data/tool-locales.json','utf8'));
 
 test('Reader-first hub keeps the exact 96 locked articles and 12 live topic sections', () => {
   assert.equal(manifest.categories.length, 12);
@@ -39,10 +40,10 @@ test('Library header is navigable, accessible, and locale list has no fabricated
   assert.ok(hub.includes('href="#areas"'));
   assert.ok(hub.includes('href="#about"'));
   assert.ok(hub.includes('<details class="tool-menu">'));
-  assert.ok(hub.includes('href="/us/" lang="en-US"'));
-  assert.ok(hub.includes('href="/" lang="pt-BR"'));
-  assert.ok(hub.includes('href="/mx/" lang="es-MX"'));
-  assert.equal((hub.match(/data-locale="/g) || []).length, 3);
+  for(const locale of localeManifest.locales){
+    assert.ok(hub.includes('href="'+locale.path+'" lang="'+locale.lang+'"'),'library locale link '+locale.lang);
+  }
+  assert.equal((hub.match(/data-locale="/g) || []).length,localeManifest.locales.length);
   assert.ok(hub.includes('toolLinks.length>6'));
   assert.ok(hub.includes('max-height:min(50vh,390px)'));
   assert.ok(hub.includes('@media(max-width:700px)'));
