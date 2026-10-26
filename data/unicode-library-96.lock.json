@@ -389,27 +389,27 @@
         {
           "slug": "dead-keys-combining-character-input",
           "url": "https://letrasdiferentess.github.io/us/dead-keys-combining-character-input/",
-          "status": "PLANNED"
+          "status": "PUBLISHED"
         },
         {
           "slug": "transliteration-vs-script-conversion",
           "url": "https://letrasdiferentess.github.io/us/transliteration-vs-script-conversion/",
-          "status": "PLANNED"
+          "status": "PUBLISHED"
         },
         {
           "slug": "mixed-script-text-processing",
           "url": "https://letrasdiferentess.github.io/us/mixed-script-text-processing/",
-          "status": "PLANNED"
+          "status": "PUBLISHED"
         },
         {
           "slug": "unicode-line-breaking-scripts",
           "url": "https://letrasdiferentess.github.io/us/unicode-line-breaking-scripts/",
-          "status": "PLANNED"
+          "status": "PUBLISHED"
         },
         {
           "slug": "vertical-writing-systems-web",
           "url": "https://letrasdiferentess.github.io/us/vertical-writing-systems-web/",
-          "status": "PLANNED"
+          "status": "PUBLISHED"
         }
       ]
     },
@@ -421,27 +421,27 @@
         {
           "slug": "emoji-vs-text-presentation",
           "url": "https://letrasdiferentess.github.io/us/emoji-vs-text-presentation/",
-          "status": "PLANNED"
+          "status": "PUBLISHED"
         },
         {
           "slug": "emoji-variation-selectors",
           "url": "https://letrasdiferentess.github.io/us/emoji-variation-selectors/",
-          "status": "PLANNED"
+          "status": "PUBLISHED"
         },
         {
           "slug": "emoji-zwj-sequences",
           "url": "https://letrasdiferentess.github.io/us/emoji-zwj-sequences/",
-          "status": "PLANNED"
+          "status": "PUBLISHED"
         },
         {
           "slug": "emoji-skin-tone-modifiers",
           "url": "https://letrasdiferentess.github.io/us/emoji-skin-tone-modifiers/",
-          "status": "PLANNED"
+          "status": "PUBLISHED"
         },
         {
           "slug": "regional-indicator-flag-sequences",
           "url": "https://letrasdiferentess.github.io/us/regional-indicator-flag-sequences/",
-          "status": "PLANNED"
+          "status": "PUBLISHED"
         },
         {
           "slug": "emoji-rendering-compatibility",
