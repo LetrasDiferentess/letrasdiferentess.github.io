@@ -6,7 +6,8 @@ import { auditLink, validateManifest, validateRepository } from './check-unicode
 const manifest = JSON.parse(fs.readFileSync('data/unicode-library-96.lock.json', 'utf8'));
 const entries = validateManifest(manifest);
 const first = entries[0].url;
-const second = entries.find(x => x.status === 'PLANNED').url;
+// Keep a simulated unpublished target even after the real registry reaches 96/96.
+const second = entries.find(x => x.status === 'PLANNED')?.url ?? entries[1].url;
 const common = {
   siteOrigin: manifest.siteOrigin,
   libraryHub: manifest.libraryHub,
@@ -29,7 +30,7 @@ test('valid internal URLs and category anchors are accepted', () => {
   assert.deepEqual(auditLink('#usage-notes', '', common), []);
 });
 
-test('unknown internal paths and unpublished articles are rejected', () => {
+test('unknown internal paths and simulated unpublished articles are rejected', () => {
   assert.match(auditLink('/us/unplanned-article/', '', common).join(' '), /unapproved/);
   assert.match(auditLink(second, '', common).join(' '), /PLANNED/);
 });
@@ -48,6 +49,6 @@ test('every external link requires rel nofollow', () => {
   assert.match(auditLink('javascript:alert(1)', 'nofollow', common).join(' '), /disallowed/);
 });
 
-test('repository currently validates with 96 planned articles', () => {
+test('repository validates the locked list and all real publication statuses', () => {
   assert.equal(validateRepository(), true);
 });
