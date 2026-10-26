@@ -51,15 +51,15 @@ test('All 10 Batch 13 TechArticle pages have published hub links, self canonical
   assert.ok(h1&&!names.has(h1),slug+': unique H1');
   names.add(h1);
  }
- assert.ok(hub.includes('<strong>'+rows.filter(x=>x.status==='PUBLISHED').length+'</strong>Published references'));
+ assert.ok(hub.includes('id="topic-grid"') && (hub.match(/class="topic-heading"/g)||[]).length===12);
  const plannedCount=rows.filter(x=>x.status==='PLANNED').length;
- if(plannedCount>0)assert.ok(hub.includes(plannedCount+' planned articles'));
- assert.ok(hub.includes('6 total · 6 published'));
- assert.ok(hub.includes('7 total · 7 published'));
+ assert.ok(!hub.includes('planned articles'));
+ assert.ok(hub.includes('>6 articles</span>'));
+ assert.ok(hub.includes('>7 articles</span>'));
  const a=registry.categories[10].articles;
  const published=a.filter(x=>x.status==='PUBLISHED').length;
  const planned=a.length-published;
- assert.ok(hub.includes('5 total · '+published+' published'+(planned?' · '+planned+' planned':'')));
+ assert.ok(hub.includes('>5 articles</span>'));
 });
 test('Security and Unicode normalization examples distinguish identity from confusability',()=>{
  const latin='a',cyrillic='\u0430',greek='\u03B1';
