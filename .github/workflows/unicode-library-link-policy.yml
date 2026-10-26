@@ -16,6 +16,7 @@ on:
       - 'scripts/test-unicode-batch8.mjs'
       - 'scripts/test-unicode-batch9.mjs'
       - 'scripts/test-unicode-batch10.mjs'
+      - 'scripts/test-unicode-batch11.mjs'
       - '.github/workflows/unicode-library-link-policy.yml'
       - 'us/**'
   pull_request:
@@ -33,6 +34,7 @@ on:
       - 'scripts/test-unicode-batch8.mjs'
       - 'scripts/test-unicode-batch9.mjs'
       - 'scripts/test-unicode-batch10.mjs'
+      - 'scripts/test-unicode-batch11.mjs'
       - '.github/workflows/unicode-library-link-policy.yml'
       - 'us/**'
 permissions:
@@ -65,3 +67,5 @@ jobs:
         run: node --test scripts/test-unicode-batch9.mjs
       - name: Verify Batch 10 rendering, metrics and clipboard research
         run: node --test scripts/test-unicode-batch10.mjs
+      - name: Verify Batch 11 Unicode markup, text export, bidi and locale conformance
+        run: node --test scripts/test-unicode-batch11.mjs
